@@ -1,0 +1,33 @@
+Package: fingertipscharts
+Type: Package
+Version: 0.0.1.9000
+Title: Produce charts that you see on the Fingertips website (<http://fingertips.phe.org.uk/>)
+Description: User Fingertips charts to add the Fingertips theme to your markdown documents.
+Author: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")))
+Maintainer: Sebastian Fox <sebastian.fox@phe.gov.uk>
+BugReports: https://github.com/PublicHealthEngland/fingertipscharts/issues
+Imports:
+    broom,
+    dplyr,
+    fingertipsR,
+    geojsonio,
+    ggplot2,
+    leaflet,
+    lemon,
+    purrr,
+    rlang,
+    scales,
+    stats,
+    stringr,
+    tibble, 
+    tidyr,
+    utils
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat
+License: GPL-3
+VignetteBuilder: knitr
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
