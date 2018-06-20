@@ -1,7 +1,6 @@
 ---
 title: "Producing charts from Fingertips"
-output: 
-    phecharts::html_fingertips
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
@@ -20,7 +19,7 @@ The charts produced, generally, do not order data for you. In the [static map](#
 
 ```{r libraries, message=FALSE}
 library(fingertipsR)
-library(phecharts)
+library(fingertipscharts)
 library(dplyr)
 library(tidyr)
 library(broom)
@@ -123,7 +122,7 @@ df <- df %>%
 The default map type is static:
 
 ```{r map static, out.width='80%', fig.width=8, fig.height=8, fig.align='center', warning=FALSE}
-p <- phecharts::map(data = df,
+p <- fingertipscharts::map(data = df,
                     ons_api = ons_api,
                     area_code = AreaCode,
                     fill = ComparedtoEnglandvalueorpercentiles,
@@ -221,28 +220,43 @@ p
 
 ## Area profiles
 
-The area profiles image is created using the `spine_chart()` function. This section shows how to produce a spine chart with the same data as in used in the [Overview](#overview) section, but we need to include the `rank = TRUE` parameter as this returns a polarity field, which is needed for the spine chart:
+The area profiles image is created using the `area_profiles()` function. This section shows how to produce a spine chart with the same data as in used in the [Overview](#overview) section, but we need to include the `rank = TRUE` parameter as this returns a polarity field, which is needed for the spine chart:
 
 ```{r area profiles data, cache=TRUE}
-dfspine <- fingertips_data(DomainID = 8000037, rank = TRUE) %>%
-        group_by(IndicatorID) %>%
-        filter(TimeperiodSortable == max(TimeperiodSortable) &
-                       Sex == "Persons") %>%
-        ungroup() %>%
-        mutate(Value = round(Value, 1))
+dfspine<- fingertips_data(DomainID = 1938132762,
+                          rank = TRUE) %>%
+        filter(((IndicatorID == 41001 &
+                         Timeperiod == "2014 - 16" &
+                         Sex == "Persons") |
+                        (IndicatorID == 91393 &
+                                 Timeperiod == "2011 - 15" &
+                                 Sex == "Female") |
+                        (IndicatorID == 92607 &
+                                 Timeperiod == "2016" &
+                                 Sex == "Not applicable")))
 ```
 
-The `spine_chart()` function was developed prior to the other quick chart functions in this package. As a result it is both more and less flexible than the others. More flexible in controlling the aesthetics of the outputs (eg, colours of lines and shapes etc), but less flexible in terms of the input data.frame needing to be the outputs from the `fingertips_data()` function from the `fingertipsR` package. This function will undergo future development and the current thinking is that the more flexible function will be called `area_profiles()` - maintaining consistency with the names on Fingertips.
 
 ```{r area profiles, warning=FALSE, out.width='100%', fig.width=10, fig.height=4.5}
-p <- spine_chart(dfspine,
-                 AreaCode = "E06000022",
-                 show.datatable = TRUE,
-                 indicator_wrap_length = 45,
-                 relative_point_size = 2,
-                 relative_text_size = 1.25,
-                 bar_width = 0.6)
-p$plot
+p <- area_profiles(df,
+                    value = Value,
+                    count = Count,
+                    area_code = AreaCode,
+                    local_area_code = "E06000020",
+                    indicator = IndicatorName,
+                    timeperiod = Timeperiod,
+                    polarity = Polarity,
+                    significance = ComparedtoEnglandvalueorpercentiles,
+                    area_type = AreaType,
+                    cols = "fingertips",
+                    median_line_area_code = "E92000001",
+                    comparator_area_code = "E12000005",
+                    datatable = TRUE,
+                    relative_domain_text_size = 0.75,
+                    relative_text_size = 1.2,
+                    bar_width = 0.68,
+                    indicator_label_nudgex = -0.5)
+p
 ```
 
 ## Population
