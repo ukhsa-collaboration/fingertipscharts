@@ -12,6 +12,7 @@ Imports:
     fingertipsR,
     geojsonio,
     ggplot2,
+    jqr,
     leaflet,
     lemon,
     mapproj,
