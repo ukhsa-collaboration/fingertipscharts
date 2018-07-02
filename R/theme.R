@@ -116,18 +116,3 @@ scale_fill_phe <- function(theme="fingertips", ...) {
         )
         scale_fill_manual(values=phe_key[[theme]], ...)
 }
-
-#' Fingertips colour
-#' @inheritParams scale_fill_phe
-#' @importFrom ggplot2 scale_fill_manual
-#' @name scale_colour_phe
-#' @title Fingertips scale colour for ggplot2
-scale_colour_phe <- function(theme="fingertips", ...) {
-        phe_key <- list(
-                fingertips = c('Better' = '#92D050', 'Same' = '#FFC000',
-                               'Worse' = '#C00000', 'Not compared' = '#C9C9C9',
-                               'None' = '#A6A6A6', 'Higher' = '#BED2FF',
-                               'Similar' = '#FFC000', 'Lower'='#5555E6')
-        )
-        scale_colour_manual(values=phe_key[[theme]], ...)
-}

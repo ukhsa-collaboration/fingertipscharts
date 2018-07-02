@@ -79,6 +79,11 @@ df_parent <- df_parent %>%
 
 df <- bind_rows(df_local,
                 df_parent,
-                df_country)
+                df_country) %>%
+        mutate(Domain = case_when(
+                grepl("1$", IndicatorName) ~ "Dom 1",
+                grepl("2$", IndicatorName) ~ "Dom 2",
+                TRUE ~ "Dom 3"
+        ))
 
 test_check("fingertipscharts")

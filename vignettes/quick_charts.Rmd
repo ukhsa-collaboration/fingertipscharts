@@ -9,11 +9,11 @@ vignette: >
 
 ## Introduction
 
-This vignette demonstrates how to create some of the quick charts available in this package. All of the names of the functions should match the name on Fingertips except for the area profiles chart, which is currently called `spine_chart()`.
+This vignette demonstrates how to create some of the charts available in this package. All of the names of the functions match the name for the chart on Fingertips.
 
 ### A note on ordering within the charts
 
-The charts produced, generally, do not order data for you. In the [static map](#static) section and the [compare areas](#compareareas), there are worked examples of reordering the factor levels so they are presented in the required order in the legends.
+The charts produced, generally, order the data alphabetically. In the [static map](#static) section and the [compare areas](#compareareas), there are worked examples of reordering the factor levels so they are presented in the required order in the legends.
 
 ## Libraries
 
@@ -60,7 +60,7 @@ p
 
 ## Compare indicators
 
-Here is a function that helps produce a scatter plot as displayed on Fingertips. First we have to get the data in the correct format. The two variables that will be plotted need to be in different columns.
+Here is a function that helps produce a scatter plot as displayed on Fingertips. First the data needs to be changed to the correct format. The two variables that will be plotted need to be in separate fields. The `spread()` function from the `tidyr` package demonstrates how to do this below:
 
 ```{r compare indicators data}
 df <- fingertips_data(c(90362, 90366)) %>%
@@ -106,7 +106,7 @@ ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca
 
 ### Static {#static}
 
-**Note,** before plotting the chart, we need to reorder the levels of the field that is being used to fill the polygons, as if we don't they will be ordered alphabetically in the legend:
+**Note,** before plotting the chart, the levels of the field that is determining the fill of the polygons need to be reordered, as if they aren't, they will be ordered alphabetically in the legend:
 
 ```{r static reorder}
 ordered_levels <- c("Better",
@@ -134,7 +134,7 @@ p
 
 ### Interactive
 
-It is also possible to have interactive maps. Note, for this to work the value parameter must be included and subtite doesn't work.
+It is also possible to have interactive maps. Note, for this to work the value parameter must be included and subtitle doesn't work.
 
 ```{r map interactive, out.width='80%', fig.width=8, fig.height=8, fig.align='center', warning=FALSE}
 p <- map(df,
@@ -150,7 +150,7 @@ p
 
 ## Trends
 
-This function allows users to plot the trends graph. First, we will get data for life expectancy at birth for males:
+This function allows users to plot the trends graph. First, the data for life expectancy at birth for males is extracted:
 
 ```{r trends get data}
 df <- fingertips_data(90366) %>%
@@ -192,7 +192,7 @@ df <- fingertips_data(90316) %>%
         ungroup()
 ```
 
-**Note,** before plotting the chart, we need to reorder the levels of the field that is being used to fill the bars, as if we don't they will be ordered alphabetically in the legend:
+**Note,** before plotting the chart, the levels of the field that is determining the fill of the polygons need to be reordered, as if they aren't, they will be ordered alphabetically in the legend:
 
 ```{r compare areas reorder}
 ordered_levels <- c("Better",
@@ -202,7 +202,8 @@ ordered_levels <- c("Better",
 df <- df %>%
         mutate(ComparedtoEnglandvalueorpercentiles = 
                        factor(ComparedtoEnglandvalueorpercentiles,
-                              levels = ordered_levels))
+                              levels = ordered_levels)) %>%
+        filter(Sex == "Persons")
 ```
 
 The `compare_areas` function makes plotting the compare areas chart straight forward. 
@@ -220,7 +221,7 @@ p
 
 ## Area profiles
 
-The area profiles image is created using the `area_profiles()` function. This section shows how to produce a spine chart with the same data as in used in the [Overview](#overview) section, but we need to include the `rank = TRUE` parameter as this returns a polarity field, which is needed for the spine chart:
+The area profiles image is created using the `area_profiles()` function. This section shows how to produce a spine chart with the same data as in used in the [Overview](#overview) section, but the argument `rank = TRUE` needs to be included as this returns a polarity field, which is needed for the spine chart:
 
 ```{r area profiles data, cache=TRUE}
 dfspine<- fingertips_data(DomainID = 1938132762,
@@ -238,30 +239,30 @@ dfspine<- fingertips_data(DomainID = 1938132762,
 
 
 ```{r area profiles, warning=FALSE, out.width='100%', fig.width=10, fig.height=4.5}
-p <- area_profiles(df,
-                    value = Value,
-                    count = Count,
-                    area_code = AreaCode,
-                    local_area_code = "E06000020",
-                    indicator = IndicatorName,
-                    timeperiod = Timeperiod,
-                    polarity = Polarity,
-                    significance = ComparedtoEnglandvalueorpercentiles,
-                    area_type = AreaType,
-                    cols = "fingertips",
-                    median_line_area_code = "E92000001",
-                    comparator_area_code = "E12000005",
-                    datatable = TRUE,
-                    relative_domain_text_size = 0.75,
-                    relative_text_size = 1.2,
-                    bar_width = 0.68,
-                    indicator_label_nudgex = -0.5)
+p <- area_profiles(dfspine,
+                   value = Value,
+                   count = Count,
+                   area_code = AreaCode,
+                   local_area_code = "E06000020",
+                   indicator = IndicatorName,
+                   timeperiod = Timeperiod,
+                   polarity = Polarity,
+                   significance = ComparedtoEnglandvalueorpercentiles,
+                   area_type = AreaType,
+                   cols = "fingertips",
+                   median_line_area_code = "E92000001",
+                   comparator_area_code = "E12000005",
+                   datatable = TRUE,
+                   relative_domain_text_size = 0.75,
+                   relative_text_size = 1.2,
+                   bar_width = 0.68,
+                   indicator_label_nudgex = -0.5)
 p
 ```
 
 ## Population
 
-This function provides the ability to draw the traditional population pyramid. First, we need some data using the `fingertipsR` package. Also, note that the ordering of the age bands are defined prior to the data being provided to the `population()` function:
+This function provides the ability to draw the traditional population pyramid. First, the population data is extracted using `fingertipsR` package. Also, note that the ordering of the age bands are defined prior to the data being provided to the `population()` function:
 
 ```{r population data}
 agelevels <- c("0-4", "5-9","10-14","15-19",
@@ -300,7 +301,7 @@ p
 
 ## Box plots
 
-Box plots can be found on some profiles. First we will import some data using the `fingertipsR` package:
+Box plots can be found on some profiles. First the data is extracted using the `fingertipsR` package:
 
 ```{r boxplots data}
 df <- fingertips_data(90366) %>%
@@ -308,7 +309,7 @@ df <- fingertips_data(90366) %>%
                        AreaType == "County & UA")
 ```
 
-This is how the function works. Note, you may need to re-order the levels of the factor for the `timeperiod` parameter, as this determines the order along the x-axis:
+This is how the function works. Note, the levels of the factor for the `timeperiod` parameter may need to be reordered, as this determines the order along the x-axis:
 
 ```{r boxplots, out.width='80%', fig.width=10, fig.height=7, fig.align='center'}
 p <- box_plots(df,

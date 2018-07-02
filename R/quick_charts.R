@@ -1004,9 +1004,14 @@ area_profiles <- function(data,
                 mutate(!!quo_name(dummy_polarity) :=
                                stringr::str_trim(!!dummy_polarity))
 
-        # create data table
         area_code <- enquo(area_code)
         indicator <- enquo(indicator)
+
+        # check for multiple values for an area per indicator
+        check_message <- spine_data_check(data, indicator, area_code)
+        if (!is.na(check_message)) stop(check_message)
+
+        # create data table
         value <- enquo(value)
         count <- enquo(count)
         timeperiod <- enquo(timeperiod)

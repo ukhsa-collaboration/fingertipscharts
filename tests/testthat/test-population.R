@@ -15,22 +15,68 @@ pops <- fingertips_data(92708) %>%
                Age = factor(Age,
                             levels = agelevels)) %>%
         droplevels()
-p <- population(pops,
-                value = Value,
-                sex = Sex,
-                age = Age,
-                area = AreaName,
-                area_name = "Nottingham",
-                comparator_1 = "England",
-                comparator_2 = "East Midlands region",
-                title = "Age Profile",
-                subtitle = paste(unique(pops$IndicatorName), unique(pops$Timeperiod)),
-                xlab = "% of total population")
+full_p <- population(pops,
+                     value = Value,
+                     sex = Sex,
+                     age = Age,
+                     area = AreaName,
+                     area_name = "Nottingham",
+                     comparator_1 = "England",
+                     comparator_2 = "East Midlands region",
+                     title = "Age Profile",
+                     subtitle = paste(unique(pops$IndicatorName), unique(pops$Timeperiod)),
+                     xlab = "% of total population")
+
+one_comparator_p <- population(pops,
+                               value = Value,
+                               sex = Sex,
+                               age = Age,
+                               area = AreaName,
+                               area_name = "Nottingham",
+                               comparator_1 = "England",
+                               title = "Age Profile",
+                               subtitle = paste(unique(pops$IndicatorName), unique(pops$Timeperiod)),
+                               xlab = "% of total population")
+
+no_comparator_p <- population(pops,
+                              value = Value,
+                              sex = Sex,
+                              age = Age,
+                              area = AreaName,
+                              area_name = "Nottingham",
+                              title = "Age Profile",
+                              subtitle = paste(unique(pops$IndicatorName), unique(pops$Timeperiod)),
+                              xlab = "% of total population")
+
+test_that("Error for missing area name works", {
+        expect_error(population(pops,
+                                value = Value,
+                                sex = Sex,
+                                age = Age,
+                                area = AreaName,
+                                title = "Age Profile",
+                                subtitle = paste(unique(pops$IndicatorName), unique(pops$Timeperiod)),
+                                xlab = "% of total population"),
+                     "area_name must be complete for a population pyramid to be drawn")
+})
+
 
 # Visual tests ------------------------------------------------------------
 
-test_that("population draws correctly", {
-        vdiffr::expect_doppelganger("population",
-                                    p
+test_that("full population pyramid draws correctly", {
+        vdiffr::expect_doppelganger("full pop pyramid",
+                                    full_p
+        )
+})
+
+test_that("one comparator population pyramid draws correctly", {
+        vdiffr::expect_doppelganger("one comparator pop pyramid",
+                                    one_comparator_p
+        )
+})
+
+test_that("no comparator population pyramid draws correctly", {
+        vdiffr::expect_doppelganger("no comparator pop pyramid",
+                                    no_comparator_p
         )
 })

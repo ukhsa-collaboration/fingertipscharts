@@ -25,6 +25,27 @@ spine_preprocess <- function(data, indicator, timeperiod_sortable) {
                                max(!!timeperiod_sortable))
 }
 
+#' Check function for multiple values for an area in an indicator for spine chart
+#' @inheritParams area_profiles
+spine_data_check <- function(data, indicator, area_code) {
+        data <- data %>%
+                group_by(!!indicator, !!area_code) %>%
+                count() %>%
+                filter(n > 1)
+        if (nrow(data) > 0) {
+                area <- data[1,2]
+                indicatorname <- data[1,1]
+                message <- paste("Some areas have multiple values for an indicator. An example is",
+                                 area,
+                                 "for the indicator",
+                                 indicatorname)
+        } else {
+                message <- NA
+        }
+        return(message)
+
+}
+
 #' Data table supporting information
 #'
 #' Returns a data frame containing the data that sits next to the spine chart

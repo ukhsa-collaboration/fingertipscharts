@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 README\.Rmd
+vignettes/quick_charts_cache/
