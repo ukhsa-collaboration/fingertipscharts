@@ -14,6 +14,7 @@ Imports:
     ggplot2,
     leaflet,
     lemon,
+    mapproj,
     purrr,
     rlang,
     scales,
