@@ -1,6 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+[![Coverage
+Status](https://coveralls.io/repos/github/PublicHealthEngland/fingertipscharts/badge.svg?branch=master)](https://coveralls.io/github/PublicHealthEngland/fingertipscharts?branch=master)
+
 # fingertipscharts
 
 This is an R package to help users to easily reproduce charts that are
