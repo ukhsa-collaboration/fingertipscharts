@@ -4,3 +4,5 @@
 ^README_files
 cran-comments.md
 vignettes/quick_charts_cache/
+.covrignore
+^\.travis\.yml$
