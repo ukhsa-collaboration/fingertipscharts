@@ -10,9 +10,7 @@ Imports:
     broom,
     dplyr,
     fingertipsR,
-    geojsonio,
     ggplot2,
-    jqr,
     leaflet,
     lemon,
     mapproj,
@@ -25,6 +23,7 @@ Imports:
     tidyr,
     utils
 Suggests:
+    geojsonio,
     knitr,
     rmarkdown,
     testthat
