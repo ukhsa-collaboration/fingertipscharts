@@ -1,22 +1,15 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
+dist: trusty
 sudo: required
-#sudo: false
 cache: packages
 
-addons:
-  apt:
-    sources:
-      - sourceline: 'ppa:opencpu/jq'
-    packages:
-      - libjq-dev
-      - valgrind
-      - libv8-3.14-dev
-      - libudunits2-dev
-      - libprotobuf-dev
-      - protobuf-compiler
+before_install:
+- sudo apt-get install -y libudunits2-dev libproj-dev libgeos-dev libgdal-dev netcdf-bin libv8-dev libjq-dev
 
+compiler:
+  - clang
 
 r_github_packages:
   - r-lib/covr
