@@ -1,14 +1,22 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
+sudo: required
 #sudo: false
 cache: packages
 
-#to avoid ERROR: dependency ‘V8’ is not available for package ‘geojsonio’
-before_install:
-#  - sudo apt-get install libv8-dev
-#to avoid sudo error
-sudo: required
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:opencpu/jq'
+    packages:
+      - libjq-dev
+      - valgrind
+      - libv8-3.14-dev
+      - libudunits2-dev
+      - libprotobuf-dev
+      - protobuf-compiler
+
 
 r_github_packages:
   - r-lib/covr
