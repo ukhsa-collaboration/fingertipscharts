@@ -1,8 +1,14 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: R
-sudo: false
+#sudo: false
 cache: packages
+
+#to avoid ERROR: dependency ‘V8’ is not available for package ‘geojsonio’
+before_install:
+#  - sudo apt-get install libv8-dev
+#to avoid sudo error
+sudo: required
 
 r_github_packages:
   - r-lib/covr
