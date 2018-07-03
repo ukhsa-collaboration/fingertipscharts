@@ -1,7 +1,7 @@
 Package: fingertipscharts
 Type: Package
 Version: 0.0.1.9000
-Title: Produce charts that you see on the Fingertips website (<http://fingertips.phe.org.uk/>)
+Title: Produce Charts that you See on the Fingertips Website (<http://fingertips.phe.org.uk/>)
 Description: User Fingertips charts to add the Fingertips theme to your markdown documents.
 Author: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")))
 Maintainer: Sebastian Fox <sebastian.fox@phe.gov.uk>
@@ -10,6 +10,7 @@ Imports:
     broom,
     dplyr,
     fingertipsR,
+    geojsonio,
     ggplot2,
     leaflet,
     lemon,
@@ -23,7 +24,6 @@ Imports:
     tidyr,
     utils
 Suggests:
-    geojsonio,
     knitr,
     rmarkdown,
     testthat
