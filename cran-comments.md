@@ -5,7 +5,7 @@ This package allows users to easily recreate visualisations seen on the [Fingert
 ## Test
 
 * local Windows 7 install, R 3.5.0
-* used Travis to check on Linux [INSERT DATE]
+* used Travis to check on Linux (2018-7-4)
 
 ## R CMD check results
 

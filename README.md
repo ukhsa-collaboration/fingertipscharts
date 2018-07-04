@@ -18,7 +18,11 @@ data on the website into their own outputs.
 
 ### CRAN
 
-The package is not yet on CRAN.
+Get the latest released, stable version from CRAN:
+
+``` r
+install.packages("fingertipscharts")
+```
 
 ### With devtools
 
@@ -28,8 +32,7 @@ You can install the latest development version from github using
 ``` r
 # install.packages("devtools")
 devtools::install_github("PublicHealthEngland/fingertipscharts",
-                         build_vignettes = TRUE,
-                         dependencies = "suggests")
+                         build_vignettes = TRUE)
 ```
 
 ### From zip
@@ -68,6 +71,8 @@ library(fingertipscharts)
 library(dplyr)
 df <- fingertips_data(90366) %>%
           filter(Sex == "Male")
+#> Warning: Unnamed `col_types` should have the same length as `col_names`.
+#> Using smaller of the two.
 p <- trends(df,
             timeperiod = Timeperiod,
             value = Value,

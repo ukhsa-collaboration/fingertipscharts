@@ -1,30 +1,27 @@
 context("population")
 
-library(fingertipsR)
 agelevels <- c("0-4", "5-9","10-14","15-19",
                "20-24","25-29","30-34",
                "35-39","40-44","45-49",
                "50-54","55-59","60-64",
                "65-69","70-74","75-79",
                "80-84","85-89","90+")
-pops <- fingertips_data(92708) %>%
-        filter(Timeperiod == "2015" &
-               Sex %in% c("Male", "Female") &
-               Age != "All ages") %>%
-        mutate(Age = gsub(" yrs","", Age),
-               Age = factor(Age,
-                            levels = agelevels)) %>%
-        droplevels()
+areas <- c("Area 1", "Area 2", "Area 3")
+pops <- data.frame(Age = factor(rep(agelevels, length(areas) * 2), levels = agelevels),
+                   Value = rep(sample(1000:3000, length(agelevels), replace = TRUE), length(areas) * 2),
+                   Sex = rep(rep(c("Male", "Female"), each = length(agelevels)), length(areas)),
+                   AreaName = rep(areas, each = length(agelevels) * 2))
+
 full_p <- population(pops,
                      value = Value,
                      sex = Sex,
                      age = Age,
                      area = AreaName,
-                     area_name = "Nottingham",
-                     comparator_1 = "England",
-                     comparator_2 = "East Midlands region",
+                     area_name = "Area 1",
+                     comparator_1 = "Area 3",
+                     comparator_2 = "Area 2",
                      title = "Age Profile",
-                     subtitle = paste(unique(pops$IndicatorName), unique(pops$Timeperiod)),
+                     subtitle = "2015/16",
                      xlab = "% of total population")
 
 one_comparator_p <- population(pops,
@@ -32,10 +29,10 @@ one_comparator_p <- population(pops,
                                sex = Sex,
                                age = Age,
                                area = AreaName,
-                               area_name = "Nottingham",
-                               comparator_1 = "England",
+                               area_name = "Area 1",
+                               comparator_1 = "Area 3",
                                title = "Age Profile",
-                               subtitle = paste(unique(pops$IndicatorName), unique(pops$Timeperiod)),
+                               subtitle = "2015/16",
                                xlab = "% of total population")
 
 no_comparator_p <- population(pops,
@@ -43,9 +40,9 @@ no_comparator_p <- population(pops,
                               sex = Sex,
                               age = Age,
                               area = AreaName,
-                              area_name = "Nottingham",
+                              area_name = "Area 1",
                               title = "Age Profile",
-                              subtitle = paste(unique(pops$IndicatorName), unique(pops$Timeperiod)),
+                              subtitle = "2015/16",
                               xlab = "% of total population")
 
 test_that("Error for missing area name works", {

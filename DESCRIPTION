@@ -1,6 +1,6 @@
 Package: fingertipscharts
 Type: Package
-Version: 0.0.1.9000
+Version: 0.0.1
 Title: Produce Charts that you See on the Fingertips Website (<http://fingertips.phe.org.uk/>)
 Description: User Fingertips charts to add the Fingertips theme to your markdown documents.
 Author: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")))
