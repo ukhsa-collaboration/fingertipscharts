@@ -26,7 +26,8 @@ Imports:
 Suggests:
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    vdiffr
 License: GPL-3
 VignetteBuilder: knitr
 Encoding: UTF-8
