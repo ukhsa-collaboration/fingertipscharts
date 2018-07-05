@@ -71,8 +71,6 @@ library(fingertipscharts)
 library(dplyr)
 df <- fingertips_data(90366) %>%
           filter(Sex == "Male")
-#> Warning: Unnamed `col_types` should have the same length as `col_names`.
-#> Using smaller of the two.
 p <- trends(df,
             timeperiod = Timeperiod,
             value = Value,
@@ -89,7 +87,7 @@ p <- trends(df,
 p
 ```
 
-![](README_files/figure-gfm/trends-1.png)<!-- -->
+![](tools/README-trends-1.png)<!-- -->
 
 ### Compare indicators
 
@@ -114,4 +112,4 @@ p <- compare_indicators(df,
 p
 ```
 
-![](README_files/figure-gfm/compare%20indicators-1.png)<!-- -->
+![](tools/README-compare-indicators-1.png)<!-- -->

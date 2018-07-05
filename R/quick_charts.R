@@ -921,7 +921,8 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #' @importFrom stringr str_trim
 #' @importFrom lemon facet_rep_grid
 #' @examples
-#' \dontrun{library(fingertipsR)
+#' \dontrun{
+#' library(fingertipsR)
 #' library(dplyr)
 #' df <- fingertips_data(DomainID = 1938132762,
 #'                       rank = TRUE) %>%
