@@ -2,7 +2,7 @@ Package: fingertipscharts
 Type: Package
 Version: 0.0.1
 Title: Produce Charts that you See on the Fingertips Website (<http://fingertips.phe.org.uk/>)
-Description: User Fingertips charts to add the Fingertips theme to your markdown documents.
+Description: Use Fingertips charts to to recreate the visualisations that the Fingertips website within your own reports.
 Author: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")))
 Maintainer: Sebastian Fox <sebastian.fox@phe.gov.uk>
 BugReports: https://github.com/PublicHealthEngland/fingertipscharts/issues
