@@ -20,7 +20,7 @@ compare_indicators(data, x, y, xlab = "", ylab = "", point_size = 4,
 
 \item{point_size}{number; size of point}
 
-\item{highlight_area}{character vector; list of areas for highlightin}
+\item{highlight_area}{character vector; list of areas for highlighting}
 
 \item{area}{field containing areas - should contain contents of
 highlight_area. Only required if highlight_area has a value (unquoted)}

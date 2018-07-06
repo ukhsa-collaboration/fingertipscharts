@@ -30,13 +30,13 @@ should all exist in this field)}
 \item{local_area_code}{string; the code of the area that the spine chart is
 being drawn for}
 
-\item{median_line_area_code}{string; area code for the median line. Defauls
+\item{median_line_area_code}{string; area code for the median line. Defaults
 to "E92000001" (England)}
 
 \item{comparator_area_code}{string; area code for the comparator point.
 Defaults to NA}
 
-\item{dps}{number of decimal places to use in the data tabe}
+\item{dps}{number of decimal places to use in the data table}
 }
 \value{
 A data frame containing the information that sits alongside the spine

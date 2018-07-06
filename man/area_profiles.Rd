@@ -56,7 +56,7 @@ significance field. The names should contain all of the levels in the
 significance field of the data frame. Defaults to the Fingertips colours
 based on the outputs from the API}
 
-\item{median_line_area_code}{string; area code for the median line. Defauls
+\item{median_line_area_code}{string; area code for the median line. Defaults
 to "E92000001" (England)}
 
 \item{comparator_area_code}{string; area code for the comparator point.

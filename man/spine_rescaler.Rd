@@ -40,7 +40,7 @@ areas, regions and national area types will be removed)}
 \item{local_area_code}{string; the code of the area that the spine chart is
 being drawn for}
 
-\item{median_line_area_code}{string; area code for the median line. Defauls
+\item{median_line_area_code}{string; area code for the median line. Defaults
 to "E92000001" (England)}
 
 \item{comparator_area_code}{string; area code for the comparator point.
@@ -49,7 +49,7 @@ Defaults to NA}
 \item{percent_display}{number between 0 and 1; the percentage of values that
 needs to exist for a spine to display. Default is 0.25}
 
-\item{dps}{number of decimal places to use in the data tabe}
+\item{dps}{number of decimal places to use in the data table}
 }
 \value{
 A list containing "bars" and "points" which contains data that can be

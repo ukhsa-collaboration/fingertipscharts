@@ -50,7 +50,7 @@ spine_data_check <- function(data, indicator, area_code) {
 #'
 #' Returns a data frame containing the data that sits next to the spine chart
 #' @inheritParams area_profiles
-#' @param dps number of decimal places to use in the data tabe
+#' @param dps number of decimal places to use in the data table
 #' @import dplyr
 #' @importFrom tidyr spread
 #' @importFrom rlang quo_text

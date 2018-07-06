@@ -277,7 +277,7 @@ overview <- function(data, area, indicator, value,
 #' @param x field containing x variable (unquoted)
 #' @param y field containing y variable (unquoted)
 #' @param point_size number; size of point
-#' @param highlight_area character vector; list of areas for highlightin
+#' @param highlight_area character vector; list of areas for highlighting
 #' @param area field containing areas - should contain contents of
 #'   highlight_area. Only required if highlight_area has a value (unquoted)
 #' @param add_R2 boolean; should R2 be displayed?
@@ -864,7 +864,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'   significance field. The names should contain all of the levels in the
 #'   significance field of the data frame. Defaults to the Fingertips colours
 #'   based on the outputs from the API
-#' @param median_line_area_code string; area code for the median line. Defauls
+#' @param median_line_area_code string; area code for the median line. Defaults
 #'   to "E92000001" (England)
 #' @param comparator_area_code string; area code for the comparator point.
 #'   Defaults to NA
