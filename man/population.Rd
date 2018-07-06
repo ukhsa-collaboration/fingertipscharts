@@ -40,6 +40,7 @@ a ggplot of a population pyramid against 2 optional comparators
 Plot population pyramid
 }
 \examples{
+\dontrun{
 library(fingertipsR)
 library(dplyr)
 agelevels <- c("0-4", "5-9","10-14","15-19",
@@ -67,7 +68,7 @@ p <- population(pops,
                 title = "Age Profile",
                 subtitle = paste(unique(pops$IndicatorName), unique(pops$Timeperiod)),
                 xlab = "\% of total population")
-p
+p}
 }
 \seealso{
 Other quick charts: \code{\link{box_plots}},

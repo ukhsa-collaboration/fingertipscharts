@@ -48,6 +48,7 @@ a ggplot of trends for an indicator alongside a comparator
 Plot trend chart
 }
 \examples{
+\dontrun{
 library(fingertipsR)
 library(dplyr)
 df <- fingertips_data(90366) \%>\%
@@ -63,7 +64,7 @@ p <- trends(df,
             subtitle = "Cambridgeshire compared to England",
             xlab = "Year",
             ylab = "Age (years)")
-p
+p}
 }
 \seealso{
 Other quick charts: \code{\link{box_plots}},

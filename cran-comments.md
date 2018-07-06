@@ -9,7 +9,9 @@ This package allows users to easily recreate visualisations seen on the [Fingert
 
 ## R CMD check results
 
-There were no NOTEs, WARNINGs or ERRORs.
+There was 1 NOTE - new submission.
+
+There were no WARNINGs or ERRORs.
 
 ## Downstream dependencies
 

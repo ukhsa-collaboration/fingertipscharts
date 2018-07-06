@@ -34,6 +34,7 @@ a ggplot of compare indicators for 2 indicators
 Plot compare indicators plot
 }
 \examples{
+\dontrun{
 library(fingertipsR)
 library(dplyr)
 library(tidyr)
@@ -53,7 +54,7 @@ p <- compare_indicators(df,
                         highlight_area = c("England", "Dorset"),
                         area = AreaName,
                         add_R2 = TRUE)
-p
+p}
 }
 \seealso{
 Other quick charts: \code{\link{box_plots}},

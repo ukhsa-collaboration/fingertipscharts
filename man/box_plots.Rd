@@ -29,6 +29,7 @@ a ggplot of boxplots for many areas over time
 Plot a series of boxplots
 }
 \examples{
+\dontrun{
 library(fingertipsR)
 library(dplyr)
 df <- fingertips_data(90366) \%>\%
@@ -40,7 +41,7 @@ p <- box_plots(df,
                title = "Life expectancy at birth",
                subtitle = "Males in Uper Tier Local Authorities England",
                ylab = "Age (years)")
-p
+p}
 }
 \seealso{
 Other quick charts: \code{\link{compare_areas}},

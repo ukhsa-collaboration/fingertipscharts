@@ -287,6 +287,7 @@ overview <- function(data, area, indicator, value,
 #' @importFrom rlang quo_text
 #' @importFrom stats lm as.formula
 #' @examples
+#' \dontrun{
 #' library(fingertipsR)
 #' library(dplyr)
 #' library(tidyr)
@@ -306,7 +307,7 @@ overview <- function(data, area, indicator, value,
 #'                         highlight_area = c("England", "Dorset"),
 #'                         area = AreaName,
 #'                         add_R2 = TRUE)
-#' p
+#' p}
 #' @export
 compare_indicators <- function(data, x, y,
                                xlab = "", ylab = "",
@@ -394,6 +395,7 @@ compare_indicators <- function(data, x, y,
 #' @import dplyr
 #' @importFrom rlang quo_text
 #' @examples
+#' \dontrun{
 #' library(fingertipsR)
 #' library(dplyr)
 #' df <- fingertips_data(90366) %>%
@@ -409,7 +411,7 @@ compare_indicators <- function(data, x, y,
 #'             subtitle = "Cambridgeshire compared to England",
 #'             xlab = "Year",
 #'             ylab = "Age (years)")
-#' p
+#' p}
 #' @export
 trends <- function(data, timeperiod, value,
                    area, comparator, area_name, fill,
@@ -491,6 +493,7 @@ trends <- function(data, timeperiod, value,
 #' @importFrom rlang quo_text
 #' @importFrom scales pretty_breaks
 #' @examples
+#' \dontrun{
 #' library(fingertipsR)
 #' library(dplyr)
 #' agelevels <- c("0-4", "5-9","10-14","15-19",
@@ -518,7 +521,7 @@ trends <- function(data, timeperiod, value,
 #'                 title = "Age Profile",
 #'                 subtitle = paste(unique(pops$IndicatorName), unique(pops$Timeperiod)),
 #'                 xlab = "% of total population")
-#' p
+#' p}
 #' @export
 population <- function(data, value, sex, age,
                        area, area_name, comparator_1, comparator_2,
@@ -627,6 +630,7 @@ population <- function(data, value, sex, age,
 #' @importFrom rlang quo_text
 #' @importFrom stats median quantile
 #' @examples
+#' \dontrun{
 #' library(fingertipsR)
 #' library(dplyr)
 #' df <- fingertips_data(90366) %>%
@@ -638,7 +642,7 @@ population <- function(data, value, sex, age,
 #'                title = "Life expectancy at birth",
 #'                subtitle = "Males in Uper Tier Local Authorities England",
 #'                ylab = "Age (years)")
-#' p
+#' p}
 #' @export
 box_plots <- function(data, timeperiod, value,
                       title = "", subtitle = "",
