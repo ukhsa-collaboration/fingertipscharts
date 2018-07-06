@@ -11,7 +11,7 @@ Imports:
     dplyr,
     fingertipsR,
     geojsonio,
-    ggplot2,
+    ggplot2 (>= 3.0),
     leaflet,
     lemon,
     mapproj,

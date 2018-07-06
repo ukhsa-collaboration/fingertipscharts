@@ -132,6 +132,7 @@ This function filters for the area type that is the same as your
   are removed before the spine is produced.
 }
 \examples{
+\dontrun{
 library(fingertipsR)
 library(dplyr)
 df <- fingertips_data(DomainID = 1938132762,
@@ -163,6 +164,6 @@ p <- area_profiles(df,
                    relative_text_size = 1.2,
                    bar_width = 0.68,
                    indicator_label_nudgex = -0.5)
-p
+p}
 
 }

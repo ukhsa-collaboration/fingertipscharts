@@ -95,6 +95,11 @@ theme_phe <- function (theme = "fingertips",
                                         hjust = 0,
                                         colour = phe_key[[theme]]$colour_title,
                                         lineheight=.8, face="bold"),
+              plot.subtitle = element_text(size = rel(1.0),
+                                           margin = margin(b = half_line * 1.2),
+                                           hjust = 0,
+                                           colour = phe_key[[theme]]$base_colour,
+                                           lineheight=.8, face="bold"),
               plot.margin = margin(half_line, half_line, half_line, half_line),
               complete = TRUE)
 }

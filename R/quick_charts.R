@@ -1155,7 +1155,7 @@ area_profiles <- function(data,
                                tp = !!dt_timeperiod)
 
                 p <- p +
-                        scale_y_continuous(position = "top",
+                        scale_y_continuous(position = "bottom",
                                            breaks = header_positions,
                                            labels = header_labels,
                                            expand = c(0, 0)) +
