@@ -6,6 +6,13 @@ Status](https://travis-ci.org/PublicHealthEngland/fingertipscharts.svg)](https:/
 [![Coverage
 Status](https://coveralls.io/repos/github/PublicHealthEngland/fingertipscharts/badge.svg?branch=master)](https://coveralls.io/github/PublicHealthEngland/fingertipscharts?branch=master)
 
+[![CRAN Status
+Badge](http://www.r-pkg.org/badges/version/fingertipscharts)](https://cran.r-project.org/package=fingertipscharts)
+[![CRAN Total
+Downloads](http://cranlogs.r-pkg.org/badges/grand-total/fingertipscharts)](https://cran.r-project.org/package=fingertipscharts)
+[![CRAN Monthly
+Downloads](http://cranlogs.r-pkg.org/badges/fingertipscharts)](https://cran.r-project.org/package=fingertipscharts)
+
 # fingertipscharts
 
 This is an R package to help users to easily reproduce charts that are

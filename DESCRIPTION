@@ -1,6 +1,6 @@
 Package: fingertipscharts
 Type: Package
-Version: 0.0.1
+Version: 0.0.1.9000
 Title: Produce Charts that you See on the Fingertips Website
 Description: Use Fingertips charts to to recreate the visualisations 
     that the Fingertips website (<http://fingertips.phe.org.uk/>) within 

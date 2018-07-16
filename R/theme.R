@@ -3,7 +3,6 @@
 #' @param base_size base font size
 #' @param base_family base font family
 #' @import ggplot2
-#' @name phe_theme
 #' @title Fingertips theme for ggplot2
 theme_phe <- function (theme = "fingertips",
                        base_size = 11, base_family = ""){
@@ -110,7 +109,6 @@ theme_phe <- function (theme = "fingertips",
 #'   scales
 #' @param ... inputs to the scale_manual (for discrete values)
 #' @importFrom ggplot2 scale_fill_manual
-#' @name scale_fill_phe
 #' @title Fingertips scale fill for ggplot2
 scale_fill_phe <- function(theme="fingertips", ...) {
         phe_key <- list(
