@@ -294,7 +294,7 @@ overview <- function(data, area, indicator, value,
 #' df <- fingertips_data(c(90362, 90366)) %>%
 #'         group_by(IndicatorID) %>%
 #'         filter(Timeperiod == "2014 - 16" &
-#'                        Sex == "Male") %>%
+#'                        Sex == "Female") %>%
 #'         ungroup() %>%
 #'         select(IndicatorID, AreaName, Value) %>%
 #'         mutate(IndicatorID = paste0("x", IndicatorID)) %>%
@@ -305,8 +305,7 @@ overview <- function(data, area, indicator, value,
 #'                         xlab = "Healthy life expectancy at birth",
 #'                         ylab = "Life expectancy at birth",
 #'                         highlight_area = c("England", "Dorset"),
-#'                         area = AreaName,
-#'                         add_R2 = TRUE)
+#'                         area = AreaName)
 #' p}
 #' @export
 compare_indicators <- function(data, x, y,

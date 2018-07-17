@@ -10,27 +10,27 @@ df_ci <- df %>%
                Ind3 = `Indicator 3`) %>%
         mutate(Ind2 = runif(nrow(.), min = Ind1 * 0.5, max = Ind1 * 1.5))
 comp_ind_p <- compare_indicators(df_ci,
+                                 x = Ind1,
+                                 y = Ind3,
+                                 xlab = "Indicator 1 label",
+                                 ylab = "Indicator 3 label",
+                                 add_R2 = TRUE)
+
+comp_ind_highlight_p <- compare_indicators(df_ci,
                                            x = Ind1,
                                            y = Ind3,
                                            xlab = "Indicator 1 label",
                                            ylab = "Indicator 3 label",
+                                           highlight_area = c("C001", "AC172"),
+                                           area = AreaCode,
                                            add_R2 = TRUE)
 
-comp_ind_highlight_p <- compare_indicators(df_ci,
-                        x = Ind1,
-                        y = Ind3,
-                        xlab = "Indicator 1 label",
-                        ylab = "Indicator 3 label",
-                        highlight_area = c("C001", "AC172"),
-                        area = AreaCode,
-                        add_R2 = TRUE)
-
 comp_ind__R2_p <- compare_indicators(df_ci,
-                                 x = Ind1,
-                                 y = Ind2,
-                                 xlab = "Indicator 1 label",
-                                 ylab = "Indicator 2 label",
-                                 add_R2 = TRUE)
+                                     x = Ind1,
+                                     y = Ind2,
+                                     xlab = "Indicator 1 label",
+                                     ylab = "Indicator 2 label",
+                                     add_R2 = TRUE)
 
 test_that("Error for missing area field works", {
         expect_error(compare_indicators(df_ci,

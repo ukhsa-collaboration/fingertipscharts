@@ -1,4 +1,7 @@
-This is the first submission of this package.
+This is a resubmission of the first submission of this package following feedback from Uwe Ligges.
+
+The feedback was to correct the Description in the DESCRIPTION file. This is done now.
+Also Uwe questioned why so many of the examples were surrounded by "dontrun{}". I have now added all of these examples to test-examples.R so they are tested.
 
 This package allows users to easily recreate visualisations seen on the [Fingertips tool](http://fingertips.phe.org.uk) that is made available by Public Health England.
 
