@@ -688,9 +688,9 @@ box_plots <- function(data, timeperiod, value,
 
 }
 
-#' Plot a chloropleth map for an indicator
+#' Plot a choropleth map for an indicator
 #'
-#' @return a either a static or interactive ggplot chloropleth map
+#' @return a either a static or interactive ggplot choropleth map
 #' @inheritParams compare_areas
 #' @inheritParams trends
 #' @param area_code field containing area codes to join to shape file imported

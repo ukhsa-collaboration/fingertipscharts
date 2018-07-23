@@ -2,7 +2,7 @@
 % Please edit documentation in R/quick_charts.R
 \name{map}
 \alias{map}
-\title{Plot a chloropleth map for an indicator}
+\title{Plot a choropleth map for an indicator}
 \usage{
 map(data, ons_api, area_code, fill, type = "static", value, name_for_label,
   title = "", subtitle = "", copyright_size = 4)
@@ -31,10 +31,10 @@ to be used for label (unquoted) - optional}
 \item{copyright_size}{number; determine size of the copyright text}
 }
 \value{
-a either a static or interactive ggplot chloropleth map
+a either a static or interactive ggplot choropleth map
 }
 \description{
-Plot a chloropleth map for an indicator
+Plot a choropleth map for an indicator
 }
 \examples{
 \donttest{
