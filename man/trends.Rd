@@ -48,7 +48,7 @@ a ggplot of trends for an indicator alongside a comparator
 Plot trend chart
 }
 \examples{
-\dontrun{
+\donttest{
 library(fingertipsR)
 library(dplyr)
 df <- fingertips_data(90366) \%>\%

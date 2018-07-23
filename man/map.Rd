@@ -37,7 +37,7 @@ a either a static or interactive ggplot chloropleth map
 Plot a chloropleth map for an indicator
 }
 \examples{
-\dontrun{
+\donttest{
 library(fingertipsR)
 library(dplyr)
 df <- fingertips_data(90366) \%>\%

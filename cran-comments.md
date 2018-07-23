@@ -1,14 +1,13 @@
-This is a resubmission of the first submission of this package following feedback from Uwe Ligges.
+This is a resubmission of the first submission of this package following feedback on 2018-07-21.
 
-The feedback was to correct the Description in the DESCRIPTION file. This is done now.
-Also Uwe questioned why so many of the examples were surrounded by "dontrun{}". I have now added all of these examples to test-examples.R so they are tested.
+The feedback was to use person only in the Author@R field and to replace all instances of dontrun with donttest where examples are greater than 5 seconds long (and unwrap them otherwise).
 
 This package allows users to easily recreate visualisations seen on the [Fingertips tool](http://fingertips.phe.org.uk) that is made available by Public Health England.
 
 ## Test
 
-* local Windows 7 install, R 3.5.0
-* used Travis to check on Linux (2018-7-4)
+* local Windows 7 install, R 3.5.1
+* used Travis to check on Linux (2018-7-23)
 
 ## R CMD check results
 

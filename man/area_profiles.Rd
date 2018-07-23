@@ -132,7 +132,7 @@ This function filters for the area type that is the same as your
   are removed before the spine is produced.
 }
 \examples{
-\dontrun{
+\donttest{
 library(fingertipsR)
 library(dplyr)
 df <- fingertips_data(DomainID = 1938132762,

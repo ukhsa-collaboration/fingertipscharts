@@ -40,7 +40,7 @@ a ggplot of a population pyramid against 2 optional comparators
 Plot population pyramid
 }
 \examples{
-\dontrun{
+\donttest{
 library(fingertipsR)
 library(dplyr)
 agelevels <- c("0-4", "5-9","10-14","15-19",

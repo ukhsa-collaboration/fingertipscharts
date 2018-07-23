@@ -29,7 +29,7 @@ a ggplot of boxplots for many areas over time
 Plot a series of boxplots
 }
 \examples{
-\dontrun{
+\donttest{
 library(fingertipsR)
 library(dplyr)
 df <- fingertips_data(90366) \%>\%

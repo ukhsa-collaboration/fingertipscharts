@@ -34,7 +34,7 @@ a ggplot of compare indicators for 2 indicators
 Plot compare indicators plot
 }
 \examples{
-\dontrun{
+\donttest{
 library(fingertipsR)
 library(dplyr)
 library(tidyr)
