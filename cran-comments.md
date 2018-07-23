@@ -11,7 +11,10 @@ This package allows users to easily recreate visualisations seen on the [Fingert
 
 ## R CMD check results
 
-There was 1 NOTE - new submission.
+There were 2 NOTEs
+
+1. new submission
+2. Examples with CPU or elapsed time > 5s (these are wrapped in \\donttest{} as recommended by CRAN in email on 2018-07-21)
 
 There were no WARNINGs or ERRORs.
 

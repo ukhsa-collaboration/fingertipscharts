@@ -41,6 +41,7 @@ Plot population pyramid
 }
 \examples{
 \donttest{
+# This example is untested because of the time required to retrieve the data
 library(fingertipsR)
 library(dplyr)
 agelevels <- c("0-4", "5-9","10-14","15-19",

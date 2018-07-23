@@ -30,6 +30,7 @@ Plot a series of boxplots
 }
 \examples{
 \donttest{
+# This example is untested because of the time required to retrieve the data
 library(fingertipsR)
 library(dplyr)
 df <- fingertips_data(90366) \%>\%

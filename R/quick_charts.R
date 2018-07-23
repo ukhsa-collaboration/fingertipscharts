@@ -288,6 +288,7 @@ overview <- function(data, area, indicator, value,
 #' @importFrom stats lm as.formula
 #' @examples
 #' \donttest{
+#' # This example is untested because of the time required to retrieve the data
 #' library(fingertipsR)
 #' library(dplyr)
 #' library(tidyr)
@@ -395,6 +396,7 @@ compare_indicators <- function(data, x, y,
 #' @importFrom rlang quo_text
 #' @examples
 #' \donttest{
+#' # This example is untested because of the time required to retrieve the data
 #' library(fingertipsR)
 #' library(dplyr)
 #' df <- fingertips_data(90366) %>%
@@ -493,6 +495,7 @@ trends <- function(data, timeperiod, value,
 #' @importFrom scales pretty_breaks
 #' @examples
 #' \donttest{
+#' # This example is untested because of the time required to retrieve the data
 #' library(fingertipsR)
 #' library(dplyr)
 #' agelevels <- c("0-4", "5-9","10-14","15-19",
@@ -630,6 +633,7 @@ population <- function(data, value, sex, age,
 #' @importFrom stats median quantile
 #' @examples
 #' \donttest{
+#' # This example is untested because of the time required to retrieve the data
 #' library(fingertipsR)
 #' library(dplyr)
 #' df <- fingertips_data(90366) %>%
@@ -710,6 +714,7 @@ box_plots <- function(data, timeperiod, value,
 #' @importFrom broom tidy
 #' @examples
 #' \donttest{
+#' # This example is untested because of the time required to retrieve the data
 #' library(fingertipsR)
 #' library(dplyr)
 #' df <- fingertips_data(90366) %>%
@@ -925,6 +930,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #' @importFrom lemon facet_rep_grid
 #' @examples
 #' \donttest{
+#' # This example is untested because of the time required to retrieve the data
 #' library(fingertipsR)
 #' library(dplyr)
 #' df <- fingertips_data(DomainID = 1938132762,

@@ -35,6 +35,7 @@ Plot compare indicators plot
 }
 \examples{
 \donttest{
+# This example is untested because of the time required to retrieve the data
 library(fingertipsR)
 library(dplyr)
 library(tidyr)
