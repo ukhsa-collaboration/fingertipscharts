@@ -108,7 +108,7 @@ domain labels (if include.domains = TRUE) relative to 1}
 indicators. Values can be "all" or "outer". Any other value will not
 generate lines}
 
-\item{datatable}{boolean; default = TRUE, display data table alongside spine
+\item{datatable}{logical; default = TRUE, display data table alongside spine
 chart}
 
 \item{datatable_line_height}{number; height of wrapped lines in the data
@@ -124,6 +124,15 @@ a ggplot object containing a spine chart
 Returns ggplot of spine chart
 }
 \details{
+the function draws a bar chart (which is the spine) and then plots
+  the data table (if datatable = TRUE) using geom_text. The bar chart is
+  always plotted between 0 and 1 on the x scale. The columns in the data
+  table are controlled by the header_positions argument. To adjust the length
+  of the bars in the visualisation, amend the header_positions argument. The
+  more negative the first value of the vector that goes into
+  header_positions, the more condensed the bar part of the visualisation will
+  be.
+
 This function filters for the area type that is the same as your
   local area type and then calculates the "vertebra" from those data.
   Therefore, if you are comparing outputs with those seen on the Fingertips
