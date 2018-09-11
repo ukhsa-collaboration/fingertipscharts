@@ -44,7 +44,7 @@ but data exist for multiple sub-categories (for example, sex or age)}
 (currently only handles polarity returned by fingertipsR package)}
 
 \item{significance}{unquoted field name describing the statistical
-significance for that indicator (eg, Better, Worse, Same etc)}
+significance for that indicator (eg, Better, Worse, Similar etc)}
 
 \item{area_type}{unquoted field name containing area type information. This
 ensures the vertabra are only plotted for the same area types as the

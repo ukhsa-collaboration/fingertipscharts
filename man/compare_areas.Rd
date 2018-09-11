@@ -49,7 +49,7 @@ library(dplyr)
 region <- "South East region"
 top_names <- c("England", region)
 ordered_levels <- c("Better",
-                    "Same",
+                    "Similar",
                     "Worse",
                     "Not compared")
 df <- fingertips_data(90316) \%>\%

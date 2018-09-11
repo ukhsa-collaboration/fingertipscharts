@@ -23,7 +23,7 @@ labels. Take care as errors will occur where indicator labels are the same
 but data exist for multiple sub-categories (for example, sex or age)}
 
 \item{significance}{unquoted field name describing the statistical
-significance for that indicator (eg, Better, Worse, Same etc)}
+significance for that indicator (eg, Better, Worse, Similar etc)}
 
 \item{polarity}{unquoted field name containing the polarity information
 (currently only handles polarity returned by fingertipsR package)}

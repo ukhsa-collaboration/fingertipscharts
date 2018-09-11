@@ -28,7 +28,7 @@
 #' region <- "South East region"
 #' top_names <- c("England", region)
 #' ordered_levels <- c("Better",
-#'                     "Same",
+#'                     "Similar",
 #'                     "Worse",
 #'                     "Not compared")
 #' df <- fingertips_data(90316) %>%
@@ -712,6 +712,7 @@ box_plots <- function(data, timeperiod, value,
 #' @importFrom leaflet colorFactor leaflet addTiles addPolygons addLegend
 #' @importFrom stats setNames
 #' @importFrom broom tidy
+#' @importFrom fingertipsR fingertips_data
 #' @examples
 #' \donttest{
 #' # This example is untested because of the time required to retrieve the data
@@ -871,7 +872,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #' @param polarity unquoted field name containing the polarity information
 #'   (currently only handles polarity returned by fingertipsR package)
 #' @param significance unquoted field name describing the statistical
-#'   significance for that indicator (eg, Better, Worse, Same etc)
+#'   significance for that indicator (eg, Better, Worse, Similar etc)
 #' @param area_type unquoted field name containing area type information. This
 #'   ensures the vertabra are only plotted for the same area types as the
 #'   local_area area type (eg, when plotting a spine chart for County & UA

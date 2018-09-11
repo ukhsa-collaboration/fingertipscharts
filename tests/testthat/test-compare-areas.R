@@ -3,7 +3,7 @@ context("compare_areas")
 parent <- "PAC11"
 top_names <- c("C001", parent)
 ordered_levels <- c("Better",
-                    "Same",
+                    "Similar",
                     "Worse",
                     "Not compared")
 df_ca <- df %>%
