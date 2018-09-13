@@ -5,3 +5,4 @@ cran-comments.md
 vignettes/quick_charts_cache/
 .covrignore
 ^\.travis\.yml$
+LOCAL_APPDATA_FONTCONFIG_CACHE
