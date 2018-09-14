@@ -1,4 +1,6 @@
 context("trends")
+library(fingertipscharts)
+df <- create_test_data()
 
 df_trend <- df %>%
         arrange(IndicatorName) %>%

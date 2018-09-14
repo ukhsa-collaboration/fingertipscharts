@@ -1,4 +1,6 @@
 context("compare_areas")
+library(fingertipscharts)
+df <- create_test_data()
 
 parent <- "PAC11"
 top_names <- c("C001", parent)

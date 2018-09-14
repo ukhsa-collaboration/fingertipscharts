@@ -7,6 +7,7 @@ agelevels <- c("0-4", "5-9","10-14","15-19",
                "65-69","70-74","75-79",
                "80-84","85-89","90+")
 areas <- c("Area 1", "Area 2", "Area 3")
+set.seed(42)
 pops <- data.frame(Age = factor(rep(agelevels, length(areas) * 2), levels = agelevels),
                    Value = rep(sample(1000:3000, length(agelevels), replace = TRUE), length(areas) * 2),
                    Sex = rep(rep(c("Male", "Female"), each = length(agelevels)), length(areas)),

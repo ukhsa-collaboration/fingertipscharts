@@ -1,6 +1,8 @@
 context("compare_indicators")
-
 library(tidyr)
+library(fingertipscharts)
+df <- create_test_data()
+
 set.seed(42)
 df_ci <- df %>%
         filter(IndicatorName %in% c("Indicator 1", "Indicator 3")) %>%

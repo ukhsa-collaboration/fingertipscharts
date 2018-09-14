@@ -1,4 +1,6 @@
 context("overview")
+library(fingertipscharts)
+df <- create_test_data()
 
 parent <- "PAC14"
 top_names <- c("C001", parent)

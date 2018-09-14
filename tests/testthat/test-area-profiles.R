@@ -1,5 +1,7 @@
 context("area-profiles")
 library(dplyr)
+library(fingertipscharts)
+df <- create_test_data()
 
 df2 <- df %>%
         mutate(IndicatorName = factor(IndicatorName,

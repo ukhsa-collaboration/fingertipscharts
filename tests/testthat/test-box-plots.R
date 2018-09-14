@@ -1,4 +1,6 @@
 context("box-plots")
+library(fingertipscharts)
+df <- create_test_data()
 
 df_box <- df %>%
         filter(AreaType == "Local") %>%

@@ -80,7 +80,8 @@ create_datatable <- function(data, indicator,
                        !!quo_name(value) := suppressWarnings(case_when(
                                is.na(as.numeric(!!value)) ~ !!value,
                                TRUE ~ paste0("\'",
-                                             format(comma(round2(as.numeric(!!value), dps)), nsmall = 1),
+                                             format(comma(round2(as.numeric(!!value), dps),
+                                                          accuracy = 1 / (10 * dps)), nsmall = 1),
                                              "\'")))) %>%
                 select(!!indicator, !!area_code, !!timeperiod, !!value) %>%
                 tidyr::spread(!!area_code, !!value)
@@ -91,7 +92,8 @@ create_datatable <- function(data, indicator,
                                suppressWarnings(ifelse(is.na(as.integer(!!count)),
                                                        !!count,
                                                        paste0("'",
-                                                              scales::comma(round2(as.numeric(!!count), 0)),
+                                                              scales::comma(round2(as.numeric(!!count), 0),
+                                                                            accuracy = 1),
                                                               "'"))))
         data_temp <- merge(data_temp, data_count,
                            by = rlang::quo_text(indicator),
@@ -280,7 +282,8 @@ spine_rescaler <- function(data,
                 mutate(y = ifelse(GraphPoint == "Best", 1.05, -0.05),
                        label = ifelse(is.na(label),
                                       NA,
-                                      format(comma(round2(as.numeric(label), dps)), nsmall = 1)),
+                                      format(comma(round2(as.numeric(label), dps),
+                                                   accuracy = 1 / (10 * dps)), nsmall = 1)),
                        GraphPoint = factor(GraphPoint, levels = c("Best","Q75","Q25","Worst")))
 
         timeperiod <- data %>%
