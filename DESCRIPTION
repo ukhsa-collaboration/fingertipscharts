@@ -7,24 +7,25 @@ Description: Use Fingertips charts to recreate the visualisations
 Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")))
 BugReports: https://github.com/PublicHealthEngland/fingertipscharts/issues
 Imports:
-    broom,
     dplyr,
     fingertipsR,
     geojsonio,
     ggplot2 (>= 3.0),
     leaflet,
     lemon,
+    mapproj,
     purrr,
     rlang,
     scales,
+    sf,
     stats,
     stringr,
     tibble, 
     tidyr,
     utils
 Suggests:
+    gdtools,
     knitr,
-    mapproj,
     rmarkdown,
     testthat,
     vdiffr

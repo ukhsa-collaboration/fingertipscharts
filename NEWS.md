@@ -1,6 +1,8 @@
 # fingertipscharts 0.0.1.9000
 
 * Added detail around the `area_profiles()` function
+* Added `create_test_data()`
+
 
 # fingertipscharts 0.0.1
 
