@@ -22,9 +22,6 @@ library(fingertipsR)
 library(fingertipscharts)
 library(dplyr)
 library(tidyr)
-library(broom)
-library(geojsonio)
-library(leaflet)
 ```
 
 ## Overview {#overview}
