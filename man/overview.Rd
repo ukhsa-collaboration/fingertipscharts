@@ -68,3 +68,4 @@ Other quick charts: \code{\link{box_plots}},
   \code{\link{compare_indicators}}, \code{\link{map}},
   \code{\link{population}}, \code{\link{trends}}
 }
+\concept{quick charts}

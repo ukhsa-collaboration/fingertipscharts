@@ -704,6 +704,7 @@ box_plots <- function(data, timeperiod, value,
 #' @param copyright_size number; determine size of the copyright text
 #' @param name_for_label if interactive map, name of field containing area names
 #'   to be used for label (unquoted) - optional
+#' @param fill field to be used to determine the colouring of the areas (unquoted)
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr

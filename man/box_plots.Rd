@@ -4,8 +4,8 @@
 \alias{box_plots}
 \title{Plot a series of boxplots}
 \usage{
-box_plots(data, timeperiod, value, title = "", subtitle = "", xlab = "",
-  ylab = "")
+box_plots(data, timeperiod, value, title = "", subtitle = "",
+  xlab = "", ylab = "")
 }
 \arguments{
 \item{data}{data.frame object to plot using ggplot2 functions}
@@ -50,3 +50,4 @@ Other quick charts: \code{\link{compare_areas}},
   \code{\link{overview}}, \code{\link{population}},
   \code{\link{trends}}
 }
+\concept{quick charts}

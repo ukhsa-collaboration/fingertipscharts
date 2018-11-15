@@ -4,8 +4,8 @@
 \alias{map}
 \title{Plot a choropleth map for an indicator}
 \usage{
-map(data, ons_api, area_code, fill, type = "static", value, name_for_label,
-  title = "", subtitle = "", copyright_size = 4)
+map(data, ons_api, area_code, fill, type = "static", value,
+  name_for_label, title = "", subtitle = "", copyright_size = 4)
 }
 \arguments{
 \item{data}{data.frame object to plot using ggplot2 functions}
@@ -15,7 +15,7 @@ map(data, ons_api, area_code, fill, type = "static", value, name_for_label,
 \item{area_code}{field containing area codes to join to shape file imported
 from ONS API}
 
-\item{fill}{field to be used to determine the colouring of the bars (unquoted)}
+\item{fill}{field to be used to determine the colouring of the areas (unquoted)}
 
 \item{type}{string; the output map required. Can be "static" or "interactive"}
 
@@ -71,3 +71,4 @@ Other quick charts: \code{\link{box_plots}},
   \code{\link{compare_indicators}}, \code{\link{overview}},
   \code{\link{population}}, \code{\link{trends}}
 }
+\concept{quick charts}
