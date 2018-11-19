@@ -1,4 +1,8 @@
-# fingertipscharts 0.0.2
+# fingertipscharts 0.0.2.9000
+
+* Improved functionality for `area_profiles()` to accept field names other than `IndicatorName` and `Polarity` for those two arguments
+
+# fingertipscharts 0.0.2 (2018-09-14)
 
 * Added detail around the `area_profiles()` function
 * Added `create_test_data()`

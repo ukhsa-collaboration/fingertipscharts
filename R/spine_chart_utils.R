@@ -118,6 +118,7 @@ create_datatable <- function(data, indicator,
 #' @importFrom tidyr gather
 #' @importFrom stats quantile
 #' @importFrom scales comma
+#' @importFrom rlang quo_name
 spine_rescaler <- function(data,
                            area_code,
                            indicator,
@@ -193,7 +194,7 @@ spine_rescaler <- function(data,
         names(quantiles) <- c(paste0("Q", 100 * seq(0, 1, by = 0.25)))
         quantiles[,3] <- NULL
         quantiles <- quantiles %>%
-                rownames_to_column(var="IndicatorName") %>%
+                rownames_to_column(var = rlang::quo_text(indicator)) %>%
                 merge(mean,
                       by = rlang::quo_text(indicator),
                       all.x = TRUE) %>%
@@ -239,13 +240,13 @@ spine_rescaler <- function(data,
                 }
 
                 graphpoints <- c("Worst","Q25","Q75","Best")
-                scaled_spine_inputs <- list(bars = data.frame(IndicatorName = IndicatorName,
-                                                              quantiles = quantiles,
-                                                              GraphPoint = factor(graphpoints, levels = rev(graphpoints))),
-                                            points = data.frame(IndicatorName = IndicatorName,
-                                                                significance = Significance,
-                                                                area = pointdata[1],
-                                                                region = pointdata[2]))
+                scaled_spine_inputs <- list(bars = tibble(!!quo_name(indicator) := IndicatorName,
+                                                          quantiles = quantiles,
+                                                          GraphPoint = factor(graphpoints, levels = rev(graphpoints))),
+                                            points = tibble(!!quo_name(indicator) := IndicatorName,
+                                                            significance = Significance,
+                                                            area = pointdata[1],
+                                                            region = pointdata[2]))
         }
 
         dfgraph <- merge(quantiles, areadata,
@@ -262,6 +263,8 @@ spine_rescaler <- function(data,
         }
 
         dfgraph <- dfgraph %>%
+                rename(IndicatorName = !!indicator,
+                       Polarity = !!polarity) %>%
                 lapply(purrr::map, .f = as.character) %>%
                 pmap(scaled_spine_inputs)
         dfgraphfinal <- list(bars = suppressWarnings(map_df(dfgraph, "bars")),
