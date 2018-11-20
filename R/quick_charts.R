@@ -769,9 +769,12 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                               by.y = quo_text(area_code),
                               all.x = TRUE)
                 copyright <- data.frame(val = paste0("Contains Ordnance Survey data\n",
-                                                     "\uA9 Crown copyright and database right 2017.\n",
+                                                     paste0("\uA9 Crown copyright and database right ",
+                                                            format(Sys.Date(), "%Y")),
+                                                            "\n",
                                                      "Contains National Statistics data\n",
-                                                     "\uA9 Crown copyright and database right 2017."),
+                                                     paste0("\uA9 Crown copyright and database right ",
+                                                            format(Sys.Date(), "%Y"))),
                                         x = max(shp$long),
                                         y = min(shp$lat))
                 map <- ggplot(shp) +
