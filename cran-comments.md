@@ -3,7 +3,7 @@ Package has been modified because tests were failing.
 ## Test
 
 * local Windows 7 install, R 3.5.1
-* used Travis to check on Linux (2018-9-14)
+* used Travis to check on Linux (2018-12-11)
 
 ## R CMD check results
 

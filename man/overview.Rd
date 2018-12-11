@@ -38,20 +38,10 @@ library(fingertipsR)
 library(dplyr)
 region <- "North East region"
 top_names <- c("England", region)
-dfdom <- fingertips_data(DomainID = 1938132762) \%>\%
-group_by(IndicatorID) \%>\%
-        filter(((IndicatorID == 41001 &
-                         Timeperiod == "2014 - 16" &
-                         Sex == "Persons") |
-                        (IndicatorID == 91393 &
-                                 Timeperiod == "2011 - 15" &
-                                 Sex == "Female") |
-                        (IndicatorID == 92607 &
-                                 Timeperiod == "2016" &
-                                 Sex == "Not applicable")) &
-                       (AreaName \%in\% top_names |
-                                ParentName == region)) \%>\%
-        ungroup() \%>\%
+dfdom <- fingertips_data(DomainID = 1938133060) \%>\%
+        filter(Timeperiod == "2016",
+               Age == "All ages",
+               (AreaName \%in\% top_names | ParentName == region)) \%>\%
         mutate(Value = round(Value, 1))
 p <- overview(dfdom,
               area = AreaName,

@@ -123,17 +123,9 @@ test_that("map example draws correctly", {
 
 
 context("area-profiles-example")
-df_ex <- fingertips_data(DomainID = 1938132762,
-                      rank = TRUE) %>%
-        filter(((IndicatorID == 41001 &
-                         Timeperiod == "2014 - 16" &
-                         Sex == "Persons") |
-                        (IndicatorID == 91393 &
-                                 Timeperiod == "2011 - 15" &
-                                 Sex == "Female") |
-                        (IndicatorID == 92607 &
-                                 Timeperiod == "2016" &
-                                 Sex == "Not applicable")))
+df_ex <- fingertips_data(DomainID = 1938133060, rank = TRUE) %>%
+        filter(Timeperiod == "2016",
+               Age == "All ages")
 p <- area_profiles(df_ex,
                    value = Value,
                    count = Count,

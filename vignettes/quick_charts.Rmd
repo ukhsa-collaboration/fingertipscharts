@@ -218,20 +218,12 @@ p
 
 ## Area profiles
 
-The area profiles image is created using the `area_profiles()` function. This section shows how to produce a spine chart with the same data as in used in the [Overview](#overview) section, but the argument `rank = TRUE` needs to be included as this returns a polarity field, which is needed for the spine chart:
+The area profiles image is created using the `area_profiles()` function. The argument `rank = TRUE` needs to be included as this returns a polarity field, which is needed for the spine chart:
 
 ```{r area profiles data, cache=TRUE}
-dfspine<- fingertips_data(DomainID = 1938132762,
-                          rank = TRUE) %>%
-        filter(((IndicatorID == 41001 &
-                         Timeperiod == "2014 - 16" &
-                         Sex == "Persons") |
-                        (IndicatorID == 91393 &
-                                 Timeperiod == "2011 - 15" &
-                                 Sex == "Female") |
-                        (IndicatorID == 92607 &
-                                 Timeperiod == "2016" &
-                                 Sex == "Not applicable")))
+dfspine <- fingertips_data(DomainID = 1938133060, rank = TRUE) %>%
+        filter(Timeperiod == "2016",
+               Age == "All ages")
 ```
 
 
