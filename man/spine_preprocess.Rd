@@ -22,7 +22,7 @@ that is numeric and sortable, such that higher values are a later time
 period}
 }
 \value{
-A processsed data frame for latest time periods of given indicators
+A processed data frame for latest time periods of given indicators
 }
 \description{
 Returns a data frame with the latest time period of data for each indicator
