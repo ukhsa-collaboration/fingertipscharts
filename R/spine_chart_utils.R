@@ -14,7 +14,7 @@
 #'   that is numeric and sortable, such that higher values are a later time
 #'   period
 #' @import dplyr
-#' @return A processsed data frame for latest time periods of given indicators
+#' @return A processed data frame for latest time periods of given indicators
 #' @export
 spine_preprocess <- function(data, indicator, timeperiod_sortable) {
         timeperiod_sortable <- enquo(timeperiod_sortable)
