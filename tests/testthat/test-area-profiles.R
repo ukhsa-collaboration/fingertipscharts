@@ -3,6 +3,13 @@ library(dplyr)
 library(fingertipscharts)
 df <- create_test_data()
 
+df_preprocess1 <- df %>%
+        filter(IndicatorName == "Indicator 1")
+df_preprocess <- df_preprocess1 %>%
+        mutate(Timeperiod = "2015") %>%
+        rbind(df_preprocess1) %>%
+        mutate(TimeperiodSortable = as.numeric(Timeperiod))
+
 df2 <- df %>%
         mutate(IndicatorName = factor(IndicatorName,
                                       levels = rev(unique(df$IndicatorName))),
@@ -155,6 +162,8 @@ test_that("area profiles with no dt draws correctly", {
         )
 })
 
+
+
 test_that("area profiles with domains draws correctly", {
         vdiffr::expect_doppelganger("domains included area profiles",
                                     full_with_domains_p
@@ -165,4 +174,51 @@ test_that("full area profiles all dividers draws correctly", {
         vdiffr::expect_doppelganger("full area all dividers profiles",
                                     full_all_dividers_p
         )
+})
+
+test_that("error messages work for area_profiles", {
+        expect_error(area_profiles(df,
+                                   value = Value,
+                                   count = Count,
+                                   area_code = AreaCode,
+                                   local_area_code = "BB2",
+                                   indicator = IndicatorName,
+                                   timeperiod = Timeperiod,
+                                   polarity = Polarity,
+                                   significance = Significance,
+                                   area_type = AreaType,
+                                   median_line_area_code = "C001"),
+                     "BB2 not in area_code field provided")
+        expect_error(area_profiles(df,
+                                   value = Value,
+                                   count = Count,
+                                   area_code = AreaCode,
+                                   local_area_code = "AC122",
+                                   indicator = IndicatorName,
+                                   timeperiod = Timeperiod,
+                                   polarity = Polarity,
+                                   significance = Significance,
+                                   area_type = AreaType,
+                                   median_line_area_code = "AB1"),
+                     "AB1 not in area_code field provided")
+        expect_error(area_profiles(df,
+                                   value = Value,
+                                   count = Count,
+                                   area_code = AreaCode,
+                                   local_area_code = "AC122",
+                                   indicator = IndicatorName,
+                                   timeperiod = Timeperiod,
+                                   polarity = Polarity,
+                                   significance = Significance,
+                                   area_type = AreaType,
+                                   median_line_area_code = "C001",
+                                   comparator_area_code = "CB1"),
+                     "CB1 not in area_code field provided")
+})
+
+df_preprocess_test <- spine_preprocess(df_preprocess,
+                                       IndicatorName,
+                                       TimeperiodSortable)
+test_that("area_profiles preprocessing function works", {
+        expect_equal(unique(df_preprocess_test$Timeperiod), "2016")
 })

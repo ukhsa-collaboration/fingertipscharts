@@ -795,7 +795,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                         labs(title = title,
                              subtitle = subtitle)
 
-        } else if (type == "interactive") {
+        } else if (type == "interactive") { # nocov start
                 ftipspal <- scale_fill_phe("fingertips")
                 ftipspal <- ftipspal$palette(1)
                 data <- data %>%
@@ -841,7 +841,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                                   values = fill,
                                   title = title,
                                   opacity = 1)
-        }
+        } # nocov end
         return(map)
 
 }

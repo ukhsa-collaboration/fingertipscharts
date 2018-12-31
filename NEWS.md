@@ -1,6 +1,7 @@
 # fingertipscharts 0.0.3.9000
 
 * added copyright_year argument to map function
+* improved code coverage
 
 # fingertipscharts 0.0.3 (2018-12-12)
 

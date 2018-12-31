@@ -22,7 +22,8 @@ spine_preprocess <- function(data, indicator, timeperiod_sortable) {
         data <- data %>%
                 group_by(!!indicator) %>%
                 filter((!!timeperiod_sortable) ==
-                               max(!!timeperiod_sortable))
+                               max(!!timeperiod_sortable)) %>%
+                ungroup()
 }
 
 #' Check function for multiple values for an area in an indicator for spine chart
