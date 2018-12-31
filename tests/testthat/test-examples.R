@@ -113,7 +113,8 @@ p <- fingertipscharts::map(df_ex,
                            area_code = AreaCode,
                            fill = ComparedtoEnglandvalueorpercentiles,
                            title = "Life expectancy at birth",
-                           subtitle = "Males in Upper Tier Local Authorities England")
+                           subtitle = "Males in Upper Tier Local Authorities England",
+                           copyright_year = 2018)
 
 test_that("map example draws correctly", {
         vdiffr::expect_doppelganger("map example",

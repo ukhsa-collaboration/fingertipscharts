@@ -5,7 +5,8 @@
 \title{Plot a choropleth map for an indicator}
 \usage{
 map(data, ons_api, area_code, fill, type = "static", value,
-  name_for_label, title = "", subtitle = "", copyright_size = 4)
+  name_for_label, title = "", subtitle = "", copyright_size = 4,
+  copyright_year = Sys.Date())
 }
 \arguments{
 \item{data}{data.frame object to plot using ggplot2 functions}
@@ -15,7 +16,8 @@ map(data, ons_api, area_code, fill, type = "static", value,
 \item{area_code}{field containing area codes to join to shape file imported
 from ONS API}
 
-\item{fill}{field to be used to determine the colouring of the areas (unquoted)}
+\item{fill}{field to be used to determine the colouring of the areas
+(unquoted)}
 
 \item{type}{string; the output map required. Can be "static" or "interactive"}
 
@@ -29,6 +31,9 @@ to be used for label (unquoted) - optional}
 \item{subtitle}{string; text to use as subtitle to graph}
 
 \item{copyright_size}{number; determine size of the copyright text}
+
+\item{copyright_year}{number (length 4) or Date class; the copyright year
+displayed at bottom of the map. Applies to static maps only}
 }
 \value{
 a either a static or interactive ggplot choropleth map
@@ -52,7 +57,8 @@ p <- map(df,
          area_code = AreaCode,
          fill = ComparedtoEnglandvalueorpercentiles,
          title = "Life expectancy at birth",
-         subtitle = "Males in Upper Tier Local Authorities England")
+         subtitle = "Males in Upper Tier Local Authorities England",
+         copyright_year = 2018)
 
 ## For an interactive (leaflet) map
 p <- map(df,

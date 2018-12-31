@@ -692,9 +692,12 @@ box_plots <- function(data, timeperiod, value,
 #' @param type string; the output map required. Can be "static" or "interactive"
 #' @param ons_api string; GeoJSON address provided from the ONS geography portal
 #' @param copyright_size number; determine size of the copyright text
+#' @param copyright_year number (length 4) or Date class; the copyright year
+#'   displayed at bottom of the map. Applies to static maps only
 #' @param name_for_label if interactive map, name of field containing area names
 #'   to be used for label (unquoted) - optional
-#' @param fill field to be used to determine the colouring of the areas (unquoted)
+#' @param fill field to be used to determine the colouring of the areas
+#'   (unquoted)
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr
@@ -720,7 +723,8 @@ box_plots <- function(data, timeperiod, value,
 #'          area_code = AreaCode,
 #'          fill = ComparedtoEnglandvalueorpercentiles,
 #'          title = "Life expectancy at birth",
-#'          subtitle = "Males in Upper Tier Local Authorities England")
+#'          subtitle = "Males in Upper Tier Local Authorities England",
+#'          copyright_year = 2018)
 #'
 #' ## For an interactive (leaflet) map
 #' p <- map(df,
@@ -734,7 +738,7 @@ box_plots <- function(data, timeperiod, value,
 #' p}
 #' @export
 map <- function(data, ons_api, area_code, fill, type = "static", value, name_for_label,
-                title = "", subtitle = "", copyright_size = 4) {
+                title = "", subtitle = "", copyright_size = 4, copyright_year = Sys.Date()) {
         area_code <- enquo(area_code)
         fill <- enquo(fill)
         shp <- geojson_read(ons_api, what = "sp") %>%
@@ -758,13 +762,20 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                               by.x = "AreaCode",
                               by.y = quo_text(area_code),
                               all.x = TRUE)
+                if (is.numeric(copyright_year) & nchar(copyright_year) == 4) {
+                        copyright_year <- as.character(copyright_year)
+                } else if (inherits(copyright_year, 'Date')) {
+                        copyright_year <- format(copyright_year, "%Y")
+                } else {
+                        stop("copyright_year must be either a 4 digit numeric class or Date class")
+                }
                 copyright <- data.frame(val = paste0("Contains Ordnance Survey data\n",
                                                      paste0("\uA9 Crown copyright and database right ",
-                                                            format(Sys.Date(), "%Y")),
+                                                            copyright_year),
                                                             "\n",
                                                      "Contains National Statistics data\n",
                                                      paste0("\uA9 Crown copyright and database right ",
-                                                            format(Sys.Date(), "%Y"))),
+                                                            copyright_year)),
                                         x = max(shp$long),
                                         y = min(shp$lat))
                 map <- ggplot(shp) +
