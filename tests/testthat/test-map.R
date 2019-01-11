@@ -18,7 +18,7 @@ p <- map(df,
 p1 <- map(df,
           ons_api = ons_api,
           area_code = AreaCode,
-          fill = ComparedtoEnglandvalueorpercentiles,
+          fill = ComparedtoRegionvalueorpercentiles,
           title = "Life expectancy at birth",
           subtitle = "Males in Upper Tier Local Authorities England",
           copyright_year = as.Date("2018-01-01"))
@@ -29,7 +29,7 @@ ons_regions <- "https://opendata.arcgis.com/datasets/f99b145881724e15a04a8a11354
 
 test_that("map draws correctly", {
         vdiffr::expect_doppelganger("map", p)
-        vdiffr::expect_doppelganger("map", p1)
+        vdiffr::expect_doppelganger("map-region-comparison", p1)
 })
 
 test_that("error messages work for map", {
