@@ -2,8 +2,8 @@ Package has been modified because tests were failing.
 
 ## Test
 
-* local Windows 7 install, R 3.5.1
-* used Travis to check on Linux (2018-12-11)
+* local Windows 10 install, R 3.5.2
+* used Travis to check on Linux (2019-02-06)
 
 ## R CMD check results
 
