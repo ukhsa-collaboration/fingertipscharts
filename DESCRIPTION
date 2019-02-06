@@ -7,6 +7,7 @@ Description: Use Fingertips charts to recreate the visualisations
 Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")))
 BugReports: https://github.com/PublicHealthEngland/fingertipscharts/issues
 Imports:
+    curl,
     dplyr,
     fingertipsR,
     geojsonio,
