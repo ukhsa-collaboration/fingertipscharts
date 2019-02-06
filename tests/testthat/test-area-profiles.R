@@ -33,10 +33,10 @@ full_p <- area_profiles(df,
                         relative_domain_text_size = 0.75,
                         relative_text_size = 1.2,
                         bar_width = 0.68,
-                        indicator_label_nudgex = -0.5,
+                        indicator_label_nudgex = -0.1,
                         show_dividers = "outer",
-                        header_positions = c(-0.7, -0.53, -0.35, -0.25,
-                                             -0.15, -0.05, 1.05)
+                        header_positions = c(-0.7, -0.44, -0.35, -0.25,
+                                             -0.15, -0.05, 1.08)
 )
 
 full_with_factor_indicators_p <- area_profiles(df2,
@@ -55,10 +55,10 @@ full_with_factor_indicators_p <- area_profiles(df2,
                                                relative_domain_text_size = 0.75,
                                                relative_text_size = 1.2,
                                                bar_width = 0.68,
-                                               indicator_label_nudgex = -0.5,
+                                               indicator_label_nudgex = -0.1,
                                                show_dividers = "outer",
                                                header_positions = c(-0.7, -0.53, -0.35, -0.25,
-                                                                    -0.15, -0.05, 1.05)
+                                                                    -0.15, -0.05, 1.08)
 )
 
 
@@ -93,7 +93,7 @@ full_with_domains_p <- area_profiles(df,
                                      relative_domain_text_size = 0.75,
                                      relative_text_size = 1.2,
                                      bar_width = 0.68,
-                                     indicator_label_nudgex = -0.5,
+                                     indicator_label_nudgex = -0.1,
                                      show_dividers = "outer",
                                      header_positions = c(-0.7, -0.53, -0.35, -0.25,
                                                           -0.15, -0.05, 1.05),
@@ -115,7 +115,7 @@ full_all_dividers_p <- area_profiles(df,
                                      relative_domain_text_size = 0.75,
                                      relative_text_size = 1.2,
                                      bar_width = 0.68,
-                                     indicator_label_nudgex = -0.5,
+                                     indicator_label_nudgex = -0.1,
                                      show_dividers = "all",
                                      header_positions = c(-0.7, -0.53, -0.35, -0.25,
                                                           -0.15, -0.05, 1.05)

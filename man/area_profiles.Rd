@@ -147,9 +147,8 @@ This function filters for the area type that is the same as your
 # This example is untested because of the time required to retrieve the data
 library(fingertipsR)
 library(dplyr)
-df <- fingertips_data(DomainID = 1938133060, rank = TRUE) \%>\%
-filter(Timeperiod == "2016",
-       Age == "All ages")
+df <- fingertips_data(DomainID = 1938133222, rank = TRUE) \%>\%
+           filter(Timeperiod == "2016")
 p <- area_profiles(df,
                    value = Value,
                    count = Count,

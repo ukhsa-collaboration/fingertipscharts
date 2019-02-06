@@ -946,9 +946,8 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #' # This example is untested because of the time required to retrieve the data
 #' library(fingertipsR)
 #' library(dplyr)
-#' df <- fingertips_data(DomainID = 1938133060, rank = TRUE) %>%
-#' filter(Timeperiod == "2016",
-#'        Age == "All ages")
+#' df <- fingertips_data(DomainID = 1938133222, rank = TRUE) %>%
+#'            filter(Timeperiod == "2016")
 #' p <- area_profiles(df,
 #'                    value = Value,
 #'                    count = Count,
@@ -1167,10 +1166,13 @@ area_profiles <- function(data,
                         rename(ind = !!dt_indicator,
                                count = !!dt_area_count,
                                tp = !!dt_timeperiod)
-
+                lims <- range(header_positions)
+                lims[1] <- lims[1] + indicator_label_nudgex
+                lims <- lims * 1.06
                 p <- p +
                         scale_y_continuous(position = "bottom",
                                            breaks = header_positions,
+                                           limits = lims,
                                            labels = header_labels,
                                            expand = c(0, 0)) +
                         geom_text(aes(label = label, y = y),
