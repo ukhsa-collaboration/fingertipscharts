@@ -923,6 +923,9 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #' @param show_dividers string; whether to display horizontal lines between
 #'   indicators. Values can be "all" or "outer". Any other value will not
 #'   generate lines
+#' @param dps number; number of decimal places to be displayed in the data
+#'   table. The default is 1. Set to NA if this should be the same as the input
+#'   data
 #' @param datatable_line_height number; height of wrapped lines in the data
 #'   table
 #' @param percent_display number between 0 and 1; the percentage of values that
@@ -968,6 +971,34 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'                    indicator_label_nudgex = -0.5)
 #' p}
 #'
+#' ## or an example with differing decimal places for individual indicators
+#'
+#' df <- create_test_data() %>%
+#' mutate(Value = case_when(
+#'         grepl("2$|4$|6$", IndicatorName) ~ round(Value,1),
+#'         TRUE ~ round(Value, 0)))
+#' full_p <- area_profiles(df,
+#'                         value = Value,
+#'                         count = Count,
+#'                         area_code = AreaCode,
+#'                         local_area_code = "AC122",
+#'                         indicator = IndicatorName,
+#'                         timeperiod = Timeperiod,
+#'                         polarity = Polarity,
+#'                         significance = Significance,
+#'                         area_type = AreaType,
+#'                         median_line_area_code = "C001",
+#'                         comparator_area_code = "PAC12",
+#'                         datatable = TRUE,
+#'                         relative_domain_text_size = 0.75,
+#'                         relative_text_size = 1.2,
+#'                         bar_width = 0.68,
+#'                         indicator_label_nudgex = -0.1,
+#'                         show_dividers = "outer",
+#'                         header_positions = c(-0.7, -0.44, -0.35, -0.25,
+#'                                              -0.15, -0.05, 1.08),
+#'                         dps = NA)
+#' full_p
 #' @export
 area_profiles <- function(data,
                           value,
@@ -1001,6 +1032,7 @@ area_profiles <- function(data,
                           show_dividers = "none",
                           datatable = TRUE,
                           datatable_line_height = 0.6,
+                          dps = 1,
                           percent_display = 0.25) {
 
         test_area_code <- enquo(area_code)
@@ -1039,6 +1071,7 @@ area_profiles <- function(data,
         }
 
         if (datatable == TRUE) {
+                if (!is.na(dps) & !is.integer(dps) & !is.numeric(dps)) stop("The dps argument must be a number or NA")
                 dftable <- create_datatable(data,
                                             indicator,
                                             area_code,
@@ -1046,7 +1079,8 @@ area_profiles <- function(data,
                                             count, value,
                                             local_area_code,
                                             median_line_area_code,
-                                            comparator_area_code)
+                                            comparator_area_code,
+                                            dps = dps)
                 dftable <- dftable %>%
                         mutate(!!quo_name(indicator) :=
                                                   factor(!!indicator,
@@ -1070,7 +1104,8 @@ area_profiles <- function(data,
                                      local_area_code,
                                      median_line_area_code,
                                      comparator_area_code,
-                                     percent_display)
+                                     percent_display,
+                                     dps = dps)
         domain <- enquo(domain)
         if (quo_text(domain) == "no_domains") {
                 domain_field <- NA

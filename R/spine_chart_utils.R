@@ -78,12 +78,21 @@ create_datatable <- function(data, indicator,
                                          (!!area_code) == comparator_area_code ~ "Comparator_value",
                                          TRUE ~ "Error"),
                        !!quo_name(value) := as.character(!!value),
+                       dps_2b_removed = !!dps,
                        !!quo_name(value) := suppressWarnings(case_when(
                                is.na(as.numeric(!!value)) ~ !!value,
-                               TRUE ~ paste0("\'",
-                                             format(comma(round2(as.numeric(!!value), dps),
-                                                          accuracy = 1 / (10 * dps)), nsmall = 1),
-                                             "\'")))) %>%
+                               TRUE ~ ifelse(
+                                       !is.na(dps_2b_removed), paste0("\'",
+                                                                      format(comma(round2(as.numeric(!!value), dps),
+                                                                                   accuracy = 1 / (10 ^ dps)), nsmall = 1),
+                                                                      "\'"),
+                                       paste0("\'",
+                                              formatC(as.numeric(!!value),
+                                                      format = "f",
+                                                      big.mark = ",",
+                                                      drop0trailing = TRUE),
+                                              "\'")
+                                       )))) %>%
                 select(!!indicator, !!area_code, !!timeperiod, !!value) %>%
                 tidyr::spread(!!area_code, !!value)
         data_count <- data %>%

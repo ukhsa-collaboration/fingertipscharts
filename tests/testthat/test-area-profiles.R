@@ -15,6 +15,11 @@ df2 <- df %>%
                                       levels = rev(unique(df$IndicatorName))),
                Value = ifelse(IndicatorName == "Indicator 5", NA, Value + 1))
 
+df_dps <- df %>%
+        mutate(Value = case_when(
+                grepl("2$|4$|6$", IndicatorName) ~ round(Value,1),
+                TRUE ~ round(Value, 0)))
+
 df_error <- rbind(df, df2)
 
 full_p <- area_profiles(df,
@@ -121,6 +126,28 @@ full_all_dividers_p <- area_profiles(df,
                                                           -0.15, -0.05, 1.05)
 )
 
+dps_p <- area_profiles(df,
+                       value = Value,
+                       count = Count,
+                       area_code = AreaCode,
+                       local_area_code = "AC122",
+                       indicator = IndicatorName,
+                       timeperiod = Timeperiod,
+                       polarity = Polarity,
+                       significance = Significance,
+                       area_type = AreaType,
+                       median_line_area_code = "C001",
+                       comparator_area_code = "PAC12",
+                       datatable = TRUE,
+                       relative_domain_text_size = 0.75,
+                       relative_text_size = 1.2,
+                       bar_width = 0.68,
+                       indicator_label_nudgex = -0.1,
+                       show_dividers = "outer",
+                       header_positions = c(-0.7, -0.44, -0.35, -0.25,
+                                            -0.15, -0.05, 1.08),
+                       dps = NA)
+
 test_that("Error for duplicate values in spine chart works", {
         expect_error(area_profiles(df_error,
                                    value = Value,
@@ -221,4 +248,10 @@ df_preprocess_test <- spine_preprocess(df_preprocess,
                                        TimeperiodSortable)
 test_that("area_profiles preprocessing function works", {
         expect_equal(unique(df_preprocess_test$Timeperiod), "2016")
+})
+
+test_that("differing dps area profiles draws correctly", {
+        vdiffr::expect_doppelganger("differing dps area profiles",
+                                    dps_p
+        )
 })
