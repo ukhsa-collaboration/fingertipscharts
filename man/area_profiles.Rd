@@ -17,7 +17,7 @@ area_profiles(data, value, count, area_code, local_area_code, indicator,
   "Worst/\\nLowest", "Best/\\nHighest"), indicator_label_nudgex = -0.075,
   domain = no_domains, relative_domain_text_size = 1,
   show_dividers = "none", datatable = TRUE,
-  datatable_line_height = 0.6, percent_display = 0.25)
+  datatable_line_height = 0.6, dps = 1, percent_display = 0.25)
 }
 \arguments{
 \item{data}{a data frame to create the spine chart from. the data frame
@@ -116,6 +116,10 @@ chart}
 \item{datatable_line_height}{number; height of wrapped lines in the data
 table}
 
+\item{dps}{number; number of decimal places to be displayed in the data
+table. The default is 1. Set to NA if this should be the same as the input
+data}
+
 \item{percent_display}{number between 0 and 1; the percentage of values that
 needs to exist for a spine to display. Default is 0.25}
 }
@@ -169,4 +173,33 @@ p <- area_profiles(df,
                    indicator_label_nudgex = -0.5)
 p}
 
+## or an example with differing decimal places for individual indicators
+
+library(dplyr)
+df <- create_test_data() \%>\%
+mutate(Value = case_when(
+        grepl("2$|4$|6$", IndicatorName) ~ round(Value,1),
+        TRUE ~ round(Value, 0)))
+full_p <- area_profiles(df,
+                        value = Value,
+                        count = Count,
+                        area_code = AreaCode,
+                        local_area_code = "AC122",
+                        indicator = IndicatorName,
+                        timeperiod = Timeperiod,
+                        polarity = Polarity,
+                        significance = Significance,
+                        area_type = AreaType,
+                        median_line_area_code = "C001",
+                        comparator_area_code = "PAC12",
+                        datatable = TRUE,
+                        relative_domain_text_size = 0.75,
+                        relative_text_size = 1.2,
+                        bar_width = 0.68,
+                        indicator_label_nudgex = -0.1,
+                        show_dividers = "outer",
+                        header_positions = c(-0.7, -0.44, -0.35, -0.25,
+                                             -0.15, -0.05, 1.08),
+                        dps = NA)
+full_p
 }

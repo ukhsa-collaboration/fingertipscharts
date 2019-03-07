@@ -973,6 +973,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'
 #' ## or an example with differing decimal places for individual indicators
 #'
+#' library(dplyr)
 #' df <- create_test_data() %>%
 #' mutate(Value = case_when(
 #'         grepl("2$|4$|6$", IndicatorName) ~ round(Value,1),

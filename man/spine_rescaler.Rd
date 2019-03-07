@@ -49,7 +49,9 @@ Defaults to NA}
 \item{percent_display}{number between 0 and 1; the percentage of values that
 needs to exist for a spine to display. Default is 0.25}
 
-\item{dps}{number of decimal places to use in the data table}
+\item{dps}{number; number of decimal places to be displayed in the data
+table. The default is 1. Set to NA if this should be the same as the input
+data}
 }
 \value{
 A list containing "bars" and "points" which contains data that can be

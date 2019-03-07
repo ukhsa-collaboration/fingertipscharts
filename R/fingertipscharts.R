@@ -46,4 +46,5 @@ globalVariables(c(':=',
                   'Polarity',
                   'Timeperiod',
                   'UCI',
-                  'Value'))
+                  'Value',
+                  'dps_2b_removed'))

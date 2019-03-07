@@ -293,11 +293,18 @@ spine_rescaler <- function(data,
                 select(!!indicator, Best, Worst) %>%
                 gather(GraphPoint, label, Best:Worst) %>%
                 mutate(y = ifelse(GraphPoint == "Best", 1.05, -0.05),
+                       dps_2b_removed = dps,
                        label = ifelse(is.na(label),
                                       NA,
-                                      format(comma(round2(as.numeric(label), dps),
-                                                   accuracy = 1 / (10 * dps)), nsmall = 1)),
-                       GraphPoint = factor(GraphPoint, levels = c("Best","Q75","Q25","Worst")))
+                                      ifelse(!is.na(dps_2b_removed),
+                                             format(comma(round2(as.numeric(label), dps),
+                                                          accuracy = 1 / (10 ^ dps)), nsmall = 1),
+                                             formatC(as.numeric(label),
+                                                     format = "f",
+                                                     big.mark = ",",
+                                                     drop0trailing = TRUE))),
+                       GraphPoint = factor(GraphPoint, levels = c("Best","Q75","Q25","Worst"))) %>%
+                select(-(dps_2b_removed))
 
         timeperiod <- data %>%
                 select(!!indicator, !!timeperiod) %>%

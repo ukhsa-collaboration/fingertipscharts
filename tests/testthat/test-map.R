@@ -31,7 +31,7 @@ if (curl::has_internet()){
 
         test_that("map draws correctly", {
                 vdiffr::expect_doppelganger("map", p)
-                vdiffr::expect_doppelganger("map", p1)
+                vdiffr::expect_doppelganger("map p1", p1)
         })
 
         test_that("error messages work for map", {

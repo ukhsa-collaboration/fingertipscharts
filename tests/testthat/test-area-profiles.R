@@ -126,7 +126,7 @@ full_all_dividers_p <- area_profiles(df,
                                                           -0.15, -0.05, 1.05)
 )
 
-dps_p <- area_profiles(df,
+dps_p <- area_profiles(df_dps,
                        value = Value,
                        count = Count,
                        area_code = AreaCode,
