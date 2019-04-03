@@ -285,7 +285,8 @@ overview <- function(data, area, indicator, value,
 #' df <- fingertips_data(c(90362, 90366)) %>%
 #'         group_by(IndicatorID) %>%
 #'         filter(Timeperiod == "2014 - 16" &
-#'                        Sex == "Female") %>%
+#'                        Sex == "Female",
+#'                        Age == "All ages") %>%
 #'         ungroup() %>%
 #'         select(IndicatorID, AreaName, Value) %>%
 #'         mutate(IndicatorID = paste0("x", IndicatorID)) %>%
@@ -295,7 +296,7 @@ overview <- function(data, area, indicator, value,
 #'                         y = x90366,
 #'                         xlab = "Healthy life expectancy at birth",
 #'                         ylab = "Life expectancy at birth",
-#'                         highlight_area = c("England", "Dorset"),
+#'                         highlight_area = c("England", "Dorset (Cty)"),
 #'                         area = AreaName)
 #' p}
 #' @export
@@ -390,7 +391,8 @@ compare_indicators <- function(data, x, y,
 #' library(fingertipsR)
 #' library(dplyr)
 #' df <- fingertips_data(90366) %>%
-#'           filter(Sex == "Male")
+#'             filter(Sex == "Male",
+#'                    Age == "All ages")
 #' p <- trends(df,
 #'             timeperiod = Timeperiod,
 #'             value = Value,
@@ -627,8 +629,9 @@ population <- function(data, value, sex, age,
 #' library(fingertipsR)
 #' library(dplyr)
 #' df <- fingertips_data(90366) %>%
-#'       filter(Sex == "Male" &
-#'              AreaType == "County & UA")
+#'       filter(Sex == "Male",
+#'       AreaType == "County & UA",
+#'       Age == "All ages")
 #' p <- box_plots(df,
 #'                timeperiod = Timeperiod,
 #'                value = Value,
@@ -713,9 +716,10 @@ box_plots <- function(data, timeperiod, value,
 #' library(fingertipsR)
 #' library(dplyr)
 #' df <- fingertips_data(90366) %>%
-#'         filter(Sex == "Male" &
-#'                        AreaType == "County & UA" &
-#'                        Timeperiod == "2014 - 16")
+#'         filter(Sex == "Male" ,
+#'                AreaType == "County & UA",
+#'                Timeperiod == "2014 - 16",
+#'                Age == "All ages")
 #' ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
 #'
 #' p <- map(df,

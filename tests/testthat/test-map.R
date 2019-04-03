@@ -5,9 +5,10 @@ library(dplyr)
 
 if (curl::has_internet()){
         df <- fingertips_data(90366) %>%
-                filter(Sex == "Male" &
-                               AreaType == "County & UA" &
-                               Timeperiod == "2014 - 16")
+                filter(Sex == "Male",
+                       AreaType == "County & UA",
+                       Timeperiod == "2014 - 16",
+                       Age == "All ages")
         ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
 
         p <- map(df,

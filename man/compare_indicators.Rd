@@ -42,7 +42,8 @@ library(tidyr)
 df <- fingertips_data(c(90362, 90366)) \%>\%
         group_by(IndicatorID) \%>\%
         filter(Timeperiod == "2014 - 16" &
-                       Sex == "Female") \%>\%
+                       Sex == "Female",
+                       Age == "All ages") \%>\%
         ungroup() \%>\%
         select(IndicatorID, AreaName, Value) \%>\%
         mutate(IndicatorID = paste0("x", IndicatorID)) \%>\%
@@ -52,7 +53,7 @@ p <- compare_indicators(df,
                         y = x90366,
                         xlab = "Healthy life expectancy at birth",
                         ylab = "Life expectancy at birth",
-                        highlight_area = c("England", "Dorset"),
+                        highlight_area = c("England", "Dorset (Cty)"),
                         area = AreaName)
 p}
 }

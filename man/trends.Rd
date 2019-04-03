@@ -53,7 +53,8 @@ Plot trend chart
 library(fingertipsR)
 library(dplyr)
 df <- fingertips_data(90366) \%>\%
-          filter(Sex == "Male")
+            filter(Sex == "Male",
+                   Age == "All ages")
 p <- trends(df,
             timeperiod = Timeperiod,
             value = Value,

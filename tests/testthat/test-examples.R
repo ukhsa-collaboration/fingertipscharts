@@ -10,7 +10,8 @@ if(curl::has_internet()) {
                 group_by(IndicatorID) %>%
                 filter(Timeperiod == "2014 - 16",
                        Sex == "Female",
-                       AreaType %in% c("County & UA", "England")) %>%
+                       AreaType %in% c("County & UA", "England"),
+                       Age == "All ages") %>%
                 ungroup() %>%
                 select(IndicatorID, AreaName, Value) %>%
                 mutate(IndicatorID = paste0("x", IndicatorID)) %>%
@@ -20,7 +21,7 @@ if(curl::has_internet()) {
                                 y = x90366,
                                 xlab = "Healthy life expectancy at birth",
                                 ylab = "Life expectancy at birth",
-                                highlight_area = c("England", "Dorset"),
+                                highlight_area = c("England", "Dorset (Cty)"),
                                 area = AreaName)
 
         test_that("compare indicators example draws correctly", {
@@ -33,7 +34,8 @@ if(curl::has_internet()) {
         context("trends-example")
 
         df_ex <- fingertips_data(90366) %>%
-                  filter(Sex == "Male")
+                  filter(Sex == "Male",
+                         Age == "All ages")
         p <- trends(df_ex,
                     timeperiod = Timeperiod,
                     value = Value,
@@ -88,8 +90,9 @@ if(curl::has_internet()) {
 
         context("box-plots-example")
         df_ex <- fingertips_data(90366) %>%
-              filter(Sex == "Male" &
-                     AreaType == "County & UA")
+              filter(Sex == "Male",
+                     AreaType == "County & UA",
+                     Age == "All ages")
         p <- box_plots(df_ex,
                        timeperiod = Timeperiod,
                        value = Value,
@@ -105,9 +108,10 @@ if(curl::has_internet()) {
 
         context("map-example")
         df_ex <- fingertips_data(90366) %>%
-                filter(Sex == "Male" &
-                               AreaType == "County & UA" &
-                               Timeperiod == "2014 - 16")
+                filter(Sex == "Male",
+                       AreaType == "County & UA",
+                       Timeperiod == "2014 - 16",
+                       Age == "All ages")
         ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
 
         p <- fingertipscharts::map(df_ex,

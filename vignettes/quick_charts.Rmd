@@ -62,8 +62,9 @@ Here is a function that helps produce a scatter plot as displayed on Fingertips.
 ```{r compare indicators data}
 df <- fingertips_data(c(90362, 90366)) %>%
         group_by(IndicatorID) %>%
-        filter(TimeperiodSortable == max(TimeperiodSortable) &
-                       Sex == "Male") %>%
+        filter(TimeperiodSortable == max(TimeperiodSortable),
+               Sex == "Male",
+               Age == "All ages") %>%
         ungroup() %>%
         select(IndicatorID, AreaName, Value) %>%
         mutate(IndicatorID = paste0("x", IndicatorID)) %>%
@@ -151,7 +152,8 @@ This function allows users to plot the trends graph. First, the data for life ex
 
 ```{r trends get data}
 df <- fingertips_data(90366) %>%
-        filter(Sex == "Male")
+        filter(Sex == "Male",
+               Age == "All ages")
 ```
 
 Here is an example of how to use the `trends()` function:
@@ -293,8 +295,9 @@ Box plots can be found on some profiles. First the data is extracted using the `
 
 ```{r boxplots data}
 df <- fingertips_data(90366) %>%
-        filter(Sex == "Male" &
-                       AreaType == "County & UA")
+        filter(Sex == "Male",
+               AreaType == "County & UA",
+               Age == "All ages")
 ```
 
 This is how the function works. Note, the levels of the factor for the `timeperiod` parameter may need to be reordered, as this determines the order along the x-axis:
