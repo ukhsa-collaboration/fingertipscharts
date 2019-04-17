@@ -6,7 +6,7 @@
 \usage{
 compare_areas(data, area, value, lowerci, upperci, fill, order = "desc",
   top_areas, title = "", xlab = "", ylab = "",
-  legend.position = "bottom")
+  legend.position = "bottom", display.values = FALSE, dps = 1)
 }
 \arguments{
 \item{data}{data.frame object to plot using ggplot2 functions}
@@ -36,6 +36,12 @@ order the bars}
 
 \item{legend.position}{the position of legends ("none", "left", "right",
 "bottom", "top", or two-element numeric vector)}
+
+\item{display.values}{logical; where or not to display the rounded values
+next to the bars on the chart}
+
+\item{dps}{number; number of decimal places to be displayed when
+display.values = TRUE. The default is 1.}
 }
 \value{
 a ggplot of a compare areas chart

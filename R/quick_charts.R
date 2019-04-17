@@ -18,6 +18,10 @@
 #' @param ylab string; y-axis title
 #' @param legend.position the position of legends ("none", "left", "right",
 #'   "bottom", "top", or two-element numeric vector)
+#' @param display.values logical; where or not to display the rounded values
+#'   next to the bars on the chart
+#' @param dps number; number of decimal places to be displayed when
+#'   display.values = TRUE. The default is 1.
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr
@@ -53,7 +57,9 @@ compare_areas <- function(data, area, value,
                           lowerci, upperci,
                           fill, order = "desc", top_areas,
                           title = "", xlab = "", ylab = "",
-                          legend.position = "bottom") {
+                          legend.position = "bottom",
+                          display.values = FALSE,
+                          dps = 1) {
         area <- enquo(area)
         value <- enquo(value)
         if (order == "desc") {
@@ -115,6 +121,10 @@ compare_areas <- function(data, area, value,
                 }
 
         }
+        if (display.values) data <- data %>%
+                mutate(label = round2(!!value, dps),
+                       label = formatC(label, format = "f", digits = dps, big.mark = ","))
+
 
         compare_areas <- ggplot(data,
                                 aes_string(x = quo_text(area),
@@ -142,6 +152,27 @@ compare_areas <- function(data, area, value,
                         geom_errorbar(aes_string(ymin = quo_text(lowerci),
                                                  ymax = quo_text(upperci)),
                                       width=.2, show.legend = FALSE)
+        }
+        if (display.values) {
+                if (!missing(upperci)) {
+                        upperci <- enquo(upperci)
+                        label_position <- data %>%
+                                filter((!!upperci) == max((!!upperci), na.rm = TRUE)) %>%
+                                pull(!!upperci)
+                } else {
+                        label_position <- data %>%
+                                filter((!!value) == max((!!value), na.rm = TRUE)) %>%
+                                pull(!!value)
+                }
+                adjust_factor <- 25
+                label_position <- label_position / -adjust_factor
+                scale_adjust <- 1.05 * (label_position * -adjust_factor) - (label_position * -adjust_factor)
+                compare_areas <- compare_areas +
+                        geom_text(aes(label = label),
+                                  hjust = 1,
+                                  y = label_position / 2) +
+                        scale_y_continuous(limits = c(label_position - scale_adjust,
+                                                      (label_position * -adjust_factor) + scale_adjust))
         }
         compare_areas <- compare_areas +
                 theme_phe("fingertips") +

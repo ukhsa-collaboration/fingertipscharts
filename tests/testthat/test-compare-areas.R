@@ -49,6 +49,15 @@ desc_p_no_fill <- compare_areas(df_ca, AreaCode, Value,
                         top_areas = top_names,
                         title = "Compare the local areas")
 
+desc_p_no_fill_disp_vals <- compare_areas(df_ca, AreaCode, Value,
+                                          lowerci = LCI,
+                                          upperci = UCI,
+                                          order = "desc",
+                                          top_areas = top_names,
+                                          title = "Compare the local areas",
+                                          display.values = TRUE,
+                                          dps = 2)
+
 # Visual tests ------------------------------------------------------------
 
 test_that("desc compare areas draws correctly", {
@@ -79,4 +88,12 @@ test_that("desc compare areas no fill draws correctly", {
         vdiffr::expect_doppelganger("desc no fill compare areas",
                                     desc_p_no_fill
         )
+})
+
+
+test_that("desc compare areas no fill draws correctly while displaying values to 2 dps", {
+        vdiffr::expect_doppelganger("desc no fill compare areas displaying values",
+                                    desc_p_no_fill_disp_vals
+        )
+        desc_p_no_fill_disp_vals
 })
