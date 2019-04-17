@@ -1,4 +1,7 @@
-# fingertipscharts 0.0.5
+# fingertipscharts 0.0.5.9000
+
+
+# fingertipscharts 0.0.5 (2019-04-08)
 
 * `area_profiles()` - users have control on number of decimal places to display non-count values at (including different decimal places for different indicators)
 
