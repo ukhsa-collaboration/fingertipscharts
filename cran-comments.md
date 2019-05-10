@@ -1,9 +1,9 @@
-Package has been modified because tests were failing.
+Package has been modified because of imminent updates to ggplot2 that were going to have knock on effects on the package
 
 ## Test
 
-* local Windows 10 install, R 3.5.3
-* used Travis to check on Linux (2019-04-08)
+* local Windows 10 install, R 3.6.0
+* used Travis to check on Linux (2019-05-10)
 
 ## R CMD check results
 
