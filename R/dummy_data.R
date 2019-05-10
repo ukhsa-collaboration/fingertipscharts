@@ -7,7 +7,13 @@
 #' df <- create_test_data()
 #' @export
 create_test_data <- function() {
-        set.seed(42)
+
+        if (R.Version()$major >= 3 & R.Version()$minor >= 6.0) {
+                suppressWarnings(set.seed(42, sample.kind = "Rounding"))
+        } else {
+                set.seed(42)
+        }
+
         df_local <- data.frame(AreaCode = rep(paste0("AC", 100:199), 6),
                                ParentAreaCode = rep(rep(paste0("PAC", 10:19), 6), each = 10),
                                IndicatorName = rep(paste("Indicator", 1:6), each = 100),
