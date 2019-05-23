@@ -1,3 +1,7 @@
+# fingertipscharts 0.0.7
+
+* No updates from a user perspective
+
 # fingertipscharts 0.0.6
 
 * `display.values` argument added to `compare_areas()` function - allowing users to display the values alongside the bars in the chart
