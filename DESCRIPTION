@@ -30,7 +30,6 @@ Suggests:
     rmarkdown,
     testthat,
     vdiffr
-Remotes: tidyverse/ggplot2 
 License: GPL-3
 VignetteBuilder: knitr
 Encoding: UTF-8
