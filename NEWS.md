@@ -1,3 +1,6 @@
+# fingertipscharts 0.0.7.9000
+
+
 # fingertipscharts 0.0.7
 
 * No updates from a user perspective

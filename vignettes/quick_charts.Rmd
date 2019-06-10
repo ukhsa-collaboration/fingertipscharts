@@ -79,7 +79,7 @@ p <- compare_indicators(data = df,
                         y = x90366,
                         xlab = "Healthy life expectancy at birth",
                         ylab = "Life expectancy at birth",
-                        highlight = c("England", "Dorset"),
+                        highlight = c("England", "Dorset (Cty)"),
                         area = AreaName,
                         add_R2 = TRUE)
 p
