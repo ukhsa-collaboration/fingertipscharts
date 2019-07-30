@@ -941,8 +941,9 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #' @param relative_point_size numeric value; control the size of the points on
 #'   the spine chart
 #' @param header_positions numeric vector; used to adjust columns of data table
-#'   if they are overlapping. Must have a length of 7. Defaults to c(-1.43,
-#'   -.53, -.35, -.25, -.15, -0.05, 1.05)
+#'   if they are overlapping. The final value shouldn't be less than 1. Must
+#'   have a length of 7. Defaults to c(-1.43, -.53, -.35, -.25, -.15, -0.05,
+#'   1.05)
 #' @param header_labels character vector; labels used for the titles of the
 #'   columns for a data table. Must have a length of 7. Defaults to
 #'   c("Indicator", "Time period", "Local count","Local value", "England value",
@@ -1329,16 +1330,11 @@ area_profiles <- function(data,
                                    size = 0.2)
         } else if (show_dividers == "outer") {
                 p <- p +
-                        # geom_vline(xintercept = 0.54,
-                        #            colour="black",
-                        #            size = 0.2) +
-                        # scale_x_discrete(expand = c(0.05, 0.05))
-                        # scale_y_continuous() +
                         theme(axis.line.x = element_line())
         }
-        p + theme(axis.text.y = element_blank(),
-                  axis.title.y = element_blank(),
-                  axis.ticks.length = unit(0, "mm"))
+        if (header_positions[length(header_positions)] < 1) {
+                warning("Some bars may not display if the final value of the header_positions argument is less than 1")
+        }
         return(p)
 
 }

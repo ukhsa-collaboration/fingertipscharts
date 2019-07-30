@@ -89,8 +89,9 @@ the spine chart}
 accompanying table}
 
 \item{header_positions}{numeric vector; used to adjust columns of data table
-if they are overlapping. Must have a length of 7. Defaults to c(-1.43,
--.53, -.35, -.25, -.15, -0.05, 1.05)}
+if they are overlapping. The final value shouldn't be less than 1. Must
+have a length of 7. Defaults to c(-1.43, -.53, -.35, -.25, -.15, -0.05,
+1.05)}
 
 \item{header_labels}{character vector; labels used for the titles of the
 columns for a data table. Must have a length of 7. Defaults to
