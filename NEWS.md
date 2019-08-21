@@ -1,5 +1,6 @@
 # fingertipscharts 0.0.8.9000
 
+* added example to `area_profiles()` to show how to specify the order of indicators and how to show domains
 
 
 # fingertipscharts 0.0.8 (2019-07-18)
