@@ -35,7 +35,7 @@ library(fingertipsR)
 library(dplyr)
 df <- fingertips_data(90366) \%>\%
       filter(Sex == "Male",
-      AreaType == "County & UA",
+      AreaType == "County & UA (pre 4/19)",
       Age == "All ages")
 p <- box_plots(df,
                timeperiod = Timeperiod,

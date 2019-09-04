@@ -10,7 +10,7 @@ if(curl::has_internet()) {
                 group_by(IndicatorID) %>%
                 filter(Timeperiod == "2014 - 16",
                        Sex == "Female",
-                       AreaType %in% c("County & UA", "England"),
+                       AreaType %in% c("County & UA (pre 4/19)", "England"),
                        Age == "All ages") %>%
                 ungroup() %>%
                 select(IndicatorID, AreaName, Value) %>%
@@ -91,7 +91,7 @@ if(curl::has_internet()) {
         context("box-plots-example")
         df_ex <- fingertips_data(90366) %>%
               filter(Sex == "Male",
-                     AreaType == "County & UA",
+                     AreaType == "County & UA (pre 4/19)",
                      Age == "All ages")
         p <- box_plots(df_ex,
                        timeperiod = Timeperiod,
@@ -109,7 +109,7 @@ if(curl::has_internet()) {
         context("map-example")
         df_ex <- fingertips_data(90366) %>%
                 filter(Sex == "Male",
-                       AreaType == "County & UA",
+                       AreaType == "County & UA (pre 4/19)",
                        Timeperiod == "2014 - 16",
                        Age == "All ages")
         ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"

@@ -94,7 +94,7 @@ The shape files need to be sources from the ONS Geography Portal. To do this, cl
 ```{r map get data}
 df <- fingertips_data(90366) %>%
         filter(Sex == "Male" &
-                       AreaType == "County & UA" &
+                       AreaType == "County & UA (pre 4/19)" &
                        TimeperiodSortable == max(TimeperiodSortable))
 
 ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
@@ -296,7 +296,7 @@ Box plots can be found on some profiles. First the data is extracted using the `
 ```{r boxplots data}
 df <- fingertips_data(90366) %>%
         filter(Sex == "Male",
-               AreaType == "County & UA",
+               AreaType == "County & UA (pre 4/19)",
                Age == "All ages")
 ```
 
