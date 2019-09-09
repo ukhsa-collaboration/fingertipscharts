@@ -15,7 +15,3 @@ ensure_ons_api_available(ons_api)
 \description{
 Check if the given ONS json is available
 }
-\examples{
-ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
-ensure_ons_api_available(ons_api)
-}
