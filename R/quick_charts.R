@@ -776,108 +776,112 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                 title = "", subtitle = "", copyright_size = 4, copyright_year = Sys.Date()) {
         area_code <- enquo(area_code)
         fill <- enquo(fill)
-        shp <- geojson_read(ons_api, what = "sp") %>%
-                st_as_sf()
-        all_area_codes <- data %>%
-                pull(!!area_code) %>%
-                unique()
-        join_field <- vapply(shp, function(x) sum(x %in% all_area_codes),
-                             numeric(1))
-        join_field <- names(join_field[join_field == max(join_field)])
-        if (length(join_field) != 1) stop("There is no clear field in the shape file that contains the area codes in the field you have identified")
-        shp <- shp %>%
-                filter(grepl("^E", !! quo(!! sym(join_field))))
-        if (type == "static") {
-                data <- data %>%
-                        mutate(!!quo_name(area_code) :=
-                                       as.character(!!area_code))
+        if (missing(ons_api)) stop("ons_api must contain a string to a geojson url on the ONS geography portal")
+        if (ensure_ons_api_available(ons_api)) {
+                shp <- geojson_read(ons_api, what = "sp") %>%
+                        st_as_sf()
+                all_area_codes <- data %>%
+                        pull(!!area_code) %>%
+                        unique()
+                join_field <- vapply(shp, function(x) sum(x %in% all_area_codes),
+                                     numeric(1))
+                join_field <- names(join_field[join_field == max(join_field)])
+                if (length(join_field) != 1) stop("There is no clear field in the shape file that contains the area codes in the field you have identified")
                 shp <- shp %>%
-                        mutate(AreaCode = as.character(!! quo(!! sym(join_field)))) %>%
-                        merge(data,
-                              by.x = "AreaCode",
-                              by.y = quo_text(area_code),
-                              all.x = TRUE)
-                if (is.numeric(copyright_year) & nchar(copyright_year) == 4) {
-                        copyright_year <- as.character(copyright_year)
-                } else if (inherits(copyright_year, 'Date')) {
-                        copyright_year <- format(copyright_year, "%Y")
-                } else {
-                        stop("copyright_year must be either a 4 digit numeric class or Date class")
-                }
-                copyright <- data.frame(val = paste0("Contains Ordnance Survey data\n",
-                                                     paste0("\uA9 Crown copyright and database right ",
-                                                            copyright_year),
-                                                            "\n",
-                                                     "Contains National Statistics data\n",
-                                                     paste0("\uA9 Crown copyright and database right ",
-                                                            copyright_year)),
-                                        x = max(shp$long),
-                                        y = min(shp$lat))
-                map <- ggplot(shp) +
-                        geom_sf(aes_string(fill = quo_text(fill))) +
-                        coord_sf(datum = NA) +
-                        scale_fill_phe(name = "",
-                                       "fingertips") +
-                        theme_void() +
-                        geom_text(data = copyright,
-                                  aes(x = x,
-                                      y = y,
-                                      label = val),
-                                  colour = "black",
-                                  hjust = 1,
-                                  vjust = 0,
-                                  size = copyright_size) +
-                        labs(title = title,
-                             subtitle = subtitle)
+                        filter(grepl("^E", !! quo(!! sym(join_field))))
+                if (type == "static") {
+                        data <- data %>%
+                                mutate(!!quo_name(area_code) :=
+                                               as.character(!!area_code))
+                        shp <- shp %>%
+                                mutate(AreaCode = as.character(!! quo(!! sym(join_field)))) %>%
+                                merge(data,
+                                      by.x = "AreaCode",
+                                      by.y = quo_text(area_code),
+                                      all.x = TRUE)
+                        if (is.numeric(copyright_year) & nchar(copyright_year) == 4) {
+                                copyright_year <- as.character(copyright_year)
+                        } else if (inherits(copyright_year, 'Date')) {
+                                copyright_year <- format(copyright_year, "%Y")
+                        } else {
+                                stop("copyright_year must be either a 4 digit numeric class or Date class")
+                        }
+                        copyright <- data.frame(val = paste0("Contains Ordnance Survey data\n",
+                                                             paste0("\uA9 Crown copyright and database right ",
+                                                                    copyright_year),
+                                                             "\n",
+                                                             "Contains National Statistics data\n",
+                                                             paste0("\uA9 Crown copyright and database right ",
+                                                                    copyright_year)),
+                                                x = max(shp$long),
+                                                y = min(shp$lat))
+                        map <- ggplot(shp) +
+                                geom_sf(aes_string(fill = quo_text(fill))) +
+                                coord_sf(datum = NA) +
+                                scale_fill_phe(name = "",
+                                               "fingertips") +
+                                theme_void() +
+                                geom_text(data = copyright,
+                                          aes(x = x,
+                                              y = y,
+                                              label = val),
+                                          colour = "black",
+                                          hjust = 1,
+                                          vjust = 0,
+                                          size = copyright_size) +
+                                labs(title = title,
+                                     subtitle = subtitle)
 
-        } else if (type == "interactive") { # nocov start
-                ftipspal <- scale_fill_phe("fingertips")
-                ftipspal <- ftipspal$palette(1)
-                data <- data %>%
-                        mutate(!!quo_name(fill) :=
-                                       factor(!!fill,
-                                              levels = names(ftipspal)))
-                factpal <- colorFactor(ftipspal,
-                                       domain = pull(data, !!fill),
-                                       ordered = TRUE)
-                data <- data %>%
-                        mutate(!!quo_name(area_code) :=
-                                       as.character(!!area_code))
-                shp <- shp %>%
-                        mutate(AreaCode = as.character(!! quo(!! sym(join_field)))) %>%
-                        merge(data,
-                              by.x = "AreaCode",
-                              by.y = quo_text(area_code),
-                              all.x = TRUE)
-                value <- enquo(value)
-                if (!missing(name_for_label)) {
-                        name_for_label <- enquo(name_for_label)
-                        labels <- sprintf("<strong>%s</strong><br/>Value: %g",
-                                          pull(shp, !!name_for_label),
-                                          pull(shp, !!value))
-                } else {
-                        labels <- sprintf("<strong>%s</strong><br/>Value: %g",
-                                          pull(shp, !!join_field),
-                                          pull(shp, !!value))
-                }
+                } else if (type == "interactive") { # nocov start
+                        ftipspal <- scale_fill_phe("fingertips")
+                        ftipspal <- ftipspal$palette(1)
+                        data <- data %>%
+                                mutate(!!quo_name(fill) :=
+                                               factor(!!fill,
+                                                      levels = names(ftipspal)))
+                        factpal <- colorFactor(ftipspal,
+                                               domain = pull(data, !!fill),
+                                               ordered = TRUE)
+                        data <- data %>%
+                                mutate(!!quo_name(area_code) :=
+                                               as.character(!!area_code))
+                        shp <- shp %>%
+                                mutate(AreaCode = as.character(!! quo(!! sym(join_field)))) %>%
+                                merge(data,
+                                      by.x = "AreaCode",
+                                      by.y = quo_text(area_code),
+                                      all.x = TRUE)
+                        value <- enquo(value)
+                        if (!missing(name_for_label)) {
+                                name_for_label <- enquo(name_for_label)
+                                labels <- sprintf("<strong>%s</strong><br/>Value: %g",
+                                                  pull(shp, !!name_for_label),
+                                                  pull(shp, !!value))
+                        } else {
+                                labels <- sprintf("<strong>%s</strong><br/>Value: %g",
+                                                  pull(shp, !!join_field),
+                                                  pull(shp, !!value))
+                        }
 
-                map <- leaflet(shp)  %>%
-                        addTiles() %>%
-                        addPolygons(fillColor =
-                                            ~factpal(pull(shp, !!fill)),
-                                    weight = 2,
-                                    opacity = 1,
-                                    color = "white",
-                                    dashArray = "3",
-                                    fillOpacity = 0.7,
-                                    popup = labels) %>%
-                        addLegend("topright",
-                                  pal = factpal,
-                                  values = fill,
-                                  title = title,
-                                  opacity = 1)
-        } # nocov end
-        return(map)
+                        map <- leaflet(shp)  %>%
+                                addTiles() %>%
+                                addPolygons(fillColor =
+                                                    ~factpal(pull(shp, !!fill)),
+                                            weight = 2,
+                                            opacity = 1,
+                                            color = "white",
+                                            dashArray = "3",
+                                            fillOpacity = 0.7,
+                                            popup = labels) %>%
+                                addLegend("topright",
+                                          pal = factpal,
+                                          values = fill,
+                                          title = title,
+                                          opacity = 1)
+                } # nocov end
+                return(map)
+        }
+
 
 }
 

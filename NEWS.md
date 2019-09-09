@@ -1,4 +1,4 @@
-# fingertipscharts 0.0.8.9000
+# fingertipscharts 0.0.9
 
 * added example to `area_profiles()` to show how to specify the order of indicators and how to show domains
 

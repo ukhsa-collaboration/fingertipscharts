@@ -51,6 +51,19 @@ if (curl::has_internet()){
                                  title = "Life expectancy at birth",
                                  subtitle = "Males in Upper Tier Local Authorities England"),
                              "There is no clear field in the shape file that contains the area codes in the field you have identified")
+                expect_error(map(df,
+                                 ons_api = "httpstat.us/500",
+                                 area_code = AreaCode,
+                                 fill = ComparedtoEnglandvalueorpercentiles,
+                                 title = "Life expectancy at birth",
+                                 subtitle = "Males in Upper Tier Local Authorities England"),
+                             "The API at httpstat\\.us/500 is currently unavailable \\(HTTP code 500\\)")
+                expect_error(map(df,
+                                 area_code = AreaCode,
+                                 fill = ComparedtoEnglandvalueorpercentiles,
+                                 title = "Life expectancy at birth",
+                                 subtitle = "Males in Upper Tier Local Authorities England"),
+                             "ons_api must contain a string to a geojson url on the ONS geography portal")
         })
 }
 
