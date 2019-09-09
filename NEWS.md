@@ -1,6 +1,7 @@
 # fingertipscharts 0.0.9
 
 * added example to `area_profiles()` to show how to specify the order of indicators and how to show domains
+* graceful fail if ons_api provided to map() function isn't responding
 
 
 # fingertipscharts 0.0.8 (2019-07-18)
