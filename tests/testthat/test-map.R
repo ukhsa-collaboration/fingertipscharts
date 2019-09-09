@@ -57,7 +57,7 @@ if (curl::has_internet()){
                                  fill = ComparedtoEnglandvalueorpercentiles,
                                  title = "Life expectancy at birth",
                                  subtitle = "Males in Upper Tier Local Authorities England"),
-                             "The ons_api provided is currently unavailable: HTTP code 500")
+                             "The ons_api provided is currently unavailable")
                 expect_error(map(df,
                                  area_code = AreaCode,
                                  fill = ComparedtoEnglandvalueorpercentiles,
