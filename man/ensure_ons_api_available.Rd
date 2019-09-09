@@ -7,11 +7,15 @@
 ensure_ons_api_available(ons_api)
 }
 \arguments{
-\item{endpoint}{string, the json to check}
+\item{ons_api}{string; GeoJSON address provided from the ONS geography portal}
 }
 \value{
 \code{TRUE} if the API is available, otherwise \code{stop()} is called.
 }
 \description{
 Check if the given ONS json is available
+}
+\examples{
+ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
+ensure_ons_api_available(ons_api)
 }

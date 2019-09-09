@@ -1,5 +1,8 @@
 #' Check if the given ONS json is available
-#' @param endpoint string, the json to check
+#' @inheritParams map
+#' @examples
+#' ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
+#' ensure_ons_api_available(ons_api)
 #' @return \code{TRUE} if the API is available, otherwise \code{stop()} is called.
 ensure_ons_api_available <- function(ons_api) {
         code <- FALSE
