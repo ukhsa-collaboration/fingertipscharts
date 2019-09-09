@@ -9,8 +9,8 @@ ensure_ons_api_available <- function(ons_api) {
 
         if (code == 200) return(TRUE)
 
-        errtext <- paste('The API at', ons_api, 'is currently unavailable')
-        if (code != FALSE) errtext <- paste(errtext, ' (HTTP code ', code, ')',
+        errtext <- paste('The ons_api provided is currently unavailable:')
+        if (code != FALSE) errtext <- paste(errtext, ' HTTP code ', code,
                                             sep = "")
         stop(paste(errtext, collapse='\n  '), call. = FALSE)
 }
