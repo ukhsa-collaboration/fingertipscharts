@@ -51,7 +51,7 @@ agelevels <- c("0-4", "5-9","10-14","15-19",
                "65-69","70-74","75-79",
                "80-84","85-89","90+")
 pops <- fingertips_data(92708) \%>\%
-        filter(Timeperiod == "2015" &
+        filter(Timeperiod == "2018" &
                        Sex \%in\% c("Male", "Female") &
                        Age != "All ages") \%>\%
         mutate(Age = gsub(" yrs","", Age),

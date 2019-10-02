@@ -1,9 +1,9 @@
-This release fixes the package that was breaking due the vignette not compiling properly. I have also added graceful failures with useful messages where the package requires the internet but it is unavailable.
+This release fixes a test and an example that were failing due to the underlying data from an API changing.
 
 ## Test
 
 * local Windows 10 install, R 3.6.1
-* used Travis to check on Linux (2019-09-09)
+* used Travis to check on Linux (2019-10-02)
 
 ## R CMD check results
 
