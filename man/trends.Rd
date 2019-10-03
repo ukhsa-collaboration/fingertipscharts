@@ -48,25 +48,27 @@ a ggplot of trends for an indicator alongside a comparator
 Plot trend chart
 }
 \examples{
-\donttest{
-# This example is untested because of the time required to retrieve the data
-library(fingertipsR)
 library(dplyr)
-df <- fingertips_data(90366) \%>\%
-            filter(Sex == "Male",
-                   Age == "All ages")
-p <- trends(df,
+df <- create_test_data()
+
+df_trend <- df \%>\%
+        arrange(IndicatorName) \%>\%
+        mutate(Timeperiod = rep(c("2011", "2012", "2013", "2014", "2015", "2016"),
+                                each = 111))
+p <- trends(df_trend,
             timeperiod = Timeperiod,
             value = Value,
-            area = AreaName,
-            comparator = "England",
-            area_name = "Cambridgeshire",
-            fill = ComparedtoEnglandvalueorpercentiles,
-            title = "Life expectancy at birth",
-            subtitle = "Cambridgeshire compared to England",
+            area = AreaCode,
+            comparator = "C001",
+            area_name = "AC142",
+            fill = Significance,
+            lowerci = LCI,
+            upperci = UCI,
+            title = "Trend compared to country",
+            subtitle = "For area AC142",
             xlab = "Year",
-            ylab = "Age (years)")
-p}
+            ylab = "Value (\%)")
+p
 }
 \seealso{
 Other quick charts: \code{\link{box_plots}},

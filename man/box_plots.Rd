@@ -29,21 +29,20 @@ a ggplot of boxplots for many areas over time
 Plot a series of boxplots
 }
 \examples{
-\donttest{
-# This example is untested because of the time required to retrieve the data
-library(fingertipsR)
 library(dplyr)
-df <- fingertips_data(90366) \%>\%
-      filter(Sex == "Male",
-      AreaType == "County & UA (pre 4/19)",
-      Age == "All ages")
-p <- box_plots(df,
+df <- create_test_data()
+
+df_box <- df \%>\%
+        filter(AreaType == "Local") \%>\%
+        arrange(IndicatorName) \%>\%
+        mutate(Timeperiod = rep(c("2011", "2012", "2013", "2014", "2015", "2016"),
+                                each = 100))
+p <- box_plots(df_box,
                timeperiod = Timeperiod,
                value = Value,
-               title = "Life expectancy at birth",
-               subtitle = "Males in Uper Tier Local Authorities England",
-               ylab = "Age (years)")
-p}
+               title = "Title of chart",
+               subtitle = "Boxplot over time",
+               ylab = "Proportion (\%)")
 }
 \seealso{
 Other quick charts: \code{\link{compare_areas}},

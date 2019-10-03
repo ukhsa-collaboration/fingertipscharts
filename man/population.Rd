@@ -40,9 +40,6 @@ a ggplot of a population pyramid against 2 optional comparators
 Plot population pyramid
 }
 \examples{
-\donttest{
-# This example is untested because of the time required to retrieve the data
-library(fingertipsR)
 library(dplyr)
 agelevels <- c("0-4", "5-9","10-14","15-19",
                "20-24","25-29","30-34",
@@ -50,26 +47,24 @@ agelevels <- c("0-4", "5-9","10-14","15-19",
                "50-54","55-59","60-64",
                "65-69","70-74","75-79",
                "80-84","85-89","90+")
-pops <- fingertips_data(92708) \%>\%
-        filter(Timeperiod == "2018" &
-                       Sex \%in\% c("Male", "Female") &
-                       Age != "All ages") \%>\%
-        mutate(Age = gsub(" yrs","", Age),
-               Age = factor(Age,
-                            levels = agelevels)) \%>\%
-        droplevels()
+areas <- c("Area 1", "Area 2", "Area 3")
+pops <- data.frame(Age = factor(rep(agelevels, length(areas) * 2), levels = agelevels),
+                   Value = rep(sample(1000:3000, length(agelevels), replace = TRUE), length(areas) * 2),
+                   Sex = rep(rep(c("Male", "Female"), each = length(agelevels)), length(areas)),
+                   AreaName = rep(areas, each = length(agelevels) * 2))
+
 p <- population(pops,
                 value = Value,
                 sex = Sex,
                 age = Age,
                 area = AreaName,
-                area_name = "Nottingham",
-                comparator_1 = "England",
-                comparator_2 = "East Midlands region",
+                area_name = "Area 1",
+                comparator_1 = "Area 3",
+                comparator_2 = "Area 2",
                 title = "Age Profile",
-                subtitle = paste(unique(pops$IndicatorName), unique(pops$Timeperiod)),
+                subtitle = "2015/16",
                 xlab = "\% of total population")
-p}
+p
 }
 \seealso{
 Other quick charts: \code{\link{box_plots}},

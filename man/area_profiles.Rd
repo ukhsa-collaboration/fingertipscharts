@@ -148,33 +148,7 @@ This function filters for the area type that is the same as your
   are removed before the spine is produced.
 }
 \examples{
-\donttest{
-# This example is untested because of the time required to retrieve the data
-library(fingertipsR)
-library(dplyr)
-df <- fingertips_data(DomainID = 1938133222, rank = TRUE) \%>\%
-           filter(Timeperiod == "2016")
-p <- area_profiles(df,
-                   value = Value,
-                   count = Count,
-                   area_code = AreaCode,
-                   local_area_code = "E06000020",
-                   indicator = IndicatorName,
-                   timeperiod = Timeperiod,
-                   polarity = Polarity,
-                   significance = ComparedtoEnglandvalueorpercentiles,
-                   area_type = AreaType,
-                   cols = "fingertips",
-                   median_line_area_code = "E92000001",
-                   comparator_area_code = "E12000005",
-                   datatable = TRUE,
-                   relative_domain_text_size = 0.75,
-                   relative_text_size = 1.2,
-                   bar_width = 0.68,
-                   indicator_label_nudgex = -0.5)
-p}
-
-## or an example with differing decimal places for individual indicators
+## An example with differing decimal places for individual indicators
 
 library(dplyr)
 df <- create_test_data() \%>\%
@@ -204,7 +178,7 @@ full_p <- area_profiles(df,
                         dps = NA)
 full_p
 
-## or an example with domains and non-default indicator ordering
+## An example with domains and non-default indicator ordering
 
 df <- create_test_data()
 label_order <- c(1, 2, 4, 3, 6, 5)

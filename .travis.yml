@@ -5,6 +5,11 @@ dist: trusty
 sudo: required
 cache: packages
 
+script:
+  - |
+    R CMD build .
+    travis_wait 30 R CMD check fingertipsR*tar.gz
+
 apt_packages:
   - libudunits2-dev
   - libv8-dev

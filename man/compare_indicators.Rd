@@ -34,28 +34,27 @@ a ggplot of compare indicators for 2 indicators
 Plot compare indicators plot
 }
 \examples{
-\donttest{
-# This example is untested because of the time required to retrieve the data
-library(fingertipsR)
-library(dplyr)
 library(tidyr)
-df <- fingertips_data(c(90362, 90366)) \%>\%
-        group_by(IndicatorID) \%>\%
-        filter(Timeperiod == "2014 - 16" &
-                       Sex == "Female",
-                       Age == "All ages") \%>\%
-        ungroup() \%>\%
-        select(IndicatorID, AreaName, Value) \%>\%
-        mutate(IndicatorID = paste0("x", IndicatorID)) \%>\%
-        spread(IndicatorID, Value)
-p <- compare_indicators(df,
-                        x = x90362,
-                        y = x90366,
-                        xlab = "Healthy life expectancy at birth",
-                        ylab = "Life expectancy at birth",
-                        highlight_area = c("England", "Dorset (Cty)"),
-                        area = AreaName)
-p}
+library(dplyr)
+df <- create_test_data()
+
+df_ci <- df \%>\%
+        filter(IndicatorName \%in\% c("Indicator 1", "Indicator 3")) \%>\%
+        select(IndicatorName, AreaCode, Value) \%>\%
+        pivot_wider(names_from = IndicatorName,
+                    values_from = Value) \%>\%
+        rename(Ind1 = `Indicator 1`,
+               Ind3 = `Indicator 3`) \%>\%
+        mutate(Ind2 = runif(nrow(.), min = Ind1 * 0.5, max = Ind1 * 1.5))
+p <- compare_indicators(df_ci,
+                        x = Ind1,
+                        y = Ind3,
+                        xlab = "Indicator 1 label",
+                        ylab = "Indicator 3 label",
+                        highlight_area = c("C001", "AC172"),
+                        area = AreaCode,
+                        add_R2 = TRUE)
+p
 }
 \seealso{
 Other quick charts: \code{\link{box_plots}},

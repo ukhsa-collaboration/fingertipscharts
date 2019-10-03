@@ -50,31 +50,27 @@ a ggplot of a compare areas chart
 Returns ggplot of compare areas chart
 }
 \examples{
-library(fingertipsR)
 library(dplyr)
-region <- "South East region"
-top_names <- c("England", region)
+df <- create_test_data()
+parent <- "PAC11"
+top_names <- c("C001", parent)
 ordered_levels <- c("Better",
                     "Similar",
                     "Worse",
                     "Not compared")
-df <- fingertips_data(90316) \%>\%
-        filter(is.na(CategoryType) &
-                       Timeperiod == "2016/17" &
-                       (AreaName \%in\% top_names |
-                                ParentName == region) &
-                       Sex == "Persons") \%>\%
-        mutate(ComparedtoEnglandvalueorpercentiles =
-                       factor(ComparedtoEnglandvalueorpercentiles,
-                              levels = ordered_levels))
-p <- compare_areas(df, AreaName, Value,
-                   fill = ComparedtoEnglandvalueorpercentiles,
-                   lowerci = LowerCI95.0limit,
-                   upperci = UpperCI95.0limit,
+df_ca <- df \%>\%
+        filter(IndicatorName == "Indicator 3",
+               (AreaCode \%in\% top_names |
+                        ParentAreaCode == parent))
+p <- compare_areas(df_ca, AreaCode, Value,
+                   fill = Significance,
+                   lowerci = LCI,
+                   upperci = UCI,
                    order = "desc",
                    top_areas = top_names,
-                   title = unique(df$IndicatorName))
+                   title = "Compare the local areas")
 p
+
 }
 \seealso{
 Other quick charts: \code{\link{box_plots}},

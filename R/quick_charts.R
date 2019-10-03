@@ -27,31 +27,27 @@
 #' @import dplyr
 #' @importFrom rlang quo_text
 #' @examples
-#' library(fingertipsR)
 #' library(dplyr)
-#' region <- "South East region"
-#' top_names <- c("England", region)
+#' df <- create_test_data()
+#' parent <- "PAC11"
+#' top_names <- c("C001", parent)
 #' ordered_levels <- c("Better",
 #'                     "Similar",
 #'                     "Worse",
 #'                     "Not compared")
-#' df <- fingertips_data(90316) %>%
-#'         filter(is.na(CategoryType) &
-#'                        Timeperiod == "2016/17" &
-#'                        (AreaName %in% top_names |
-#'                                 ParentName == region) &
-#'                        Sex == "Persons") %>%
-#'         mutate(ComparedtoEnglandvalueorpercentiles =
-#'                        factor(ComparedtoEnglandvalueorpercentiles,
-#'                               levels = ordered_levels))
-#' p <- compare_areas(df, AreaName, Value,
-#'                    fill = ComparedtoEnglandvalueorpercentiles,
-#'                    lowerci = LowerCI95.0limit,
-#'                    upperci = UpperCI95.0limit,
+#' df_ca <- df %>%
+#'         filter(IndicatorName == "Indicator 3",
+#'                (AreaCode %in% top_names |
+#'                         ParentAreaCode == parent))
+#' p <- compare_areas(df_ca, AreaCode, Value,
+#'                    fill = Significance,
+#'                    lowerci = LCI,
+#'                    upperci = UCI,
 #'                    order = "desc",
 #'                    top_areas = top_names,
-#'                    title = unique(df$IndicatorName))
+#'                    title = "Compare the local areas")
 #' p
+#'
 #' @export
 compare_areas <- function(data, area, value,
                           lowerci, upperci,
@@ -138,7 +134,7 @@ compare_areas <- function(data, area, value,
                 fill <- enquo(fill)
                 compare_areas <- compare_areas +
                         geom_col(aes_string(fill = quo_text(fill))) +
-                        scale_fill_phe(name = "Area compared to England",
+                        scale_fill_phe(name = "Area compared to Benchmark",
                                        theme = "fingertips")
 
         } else {
@@ -312,28 +308,27 @@ overview <- function(data, area, indicator, value,
 #' @importFrom rlang quo_text
 #' @importFrom stats lm as.formula
 #' @examples
-#' \donttest{
-#' # This example is untested because of the time required to retrieve the data
-#' library(fingertipsR)
-#' library(dplyr)
 #' library(tidyr)
-#' df <- fingertips_data(c(90362, 90366)) %>%
-#'         group_by(IndicatorID) %>%
-#'         filter(Timeperiod == "2014 - 16" &
-#'                        Sex == "Female",
-#'                        Age == "All ages") %>%
-#'         ungroup() %>%
-#'         select(IndicatorID, AreaName, Value) %>%
-#'         mutate(IndicatorID = paste0("x", IndicatorID)) %>%
-#'         spread(IndicatorID, Value)
-#' p <- compare_indicators(df,
-#'                         x = x90362,
-#'                         y = x90366,
-#'                         xlab = "Healthy life expectancy at birth",
-#'                         ylab = "Life expectancy at birth",
-#'                         highlight_area = c("England", "Dorset (Cty)"),
-#'                         area = AreaName)
-#' p}
+#' library(dplyr)
+#' df <- create_test_data()
+#'
+#' df_ci <- df %>%
+#'         filter(IndicatorName %in% c("Indicator 1", "Indicator 3")) %>%
+#'         select(IndicatorName, AreaCode, Value) %>%
+#'         pivot_wider(names_from = IndicatorName,
+#'                     values_from = Value) %>%
+#'         rename(Ind1 = `Indicator 1`,
+#'                Ind3 = `Indicator 3`) %>%
+#'         mutate(Ind2 = runif(nrow(.), min = Ind1 * 0.5, max = Ind1 * 1.5))
+#' p <- compare_indicators(df_ci,
+#'                         x = Ind1,
+#'                         y = Ind3,
+#'                         xlab = "Indicator 1 label",
+#'                         ylab = "Indicator 3 label",
+#'                         highlight_area = c("C001", "AC172"),
+#'                         area = AreaCode,
+#'                         add_R2 = TRUE)
+#' p
 #' @export
 compare_indicators <- function(data, x, y,
                                xlab = "", ylab = "",
@@ -421,25 +416,27 @@ compare_indicators <- function(data, x, y,
 #' @import dplyr
 #' @importFrom rlang quo_text
 #' @examples
-#' \donttest{
-#' # This example is untested because of the time required to retrieve the data
-#' library(fingertipsR)
 #' library(dplyr)
-#' df <- fingertips_data(90366) %>%
-#'             filter(Sex == "Male",
-#'                    Age == "All ages")
-#' p <- trends(df,
+#' df <- create_test_data()
+#'
+#' df_trend <- df %>%
+#'         arrange(IndicatorName) %>%
+#'         mutate(Timeperiod = rep(c("2011", "2012", "2013", "2014", "2015", "2016"),
+#'                                 each = 111))
+#' p <- trends(df_trend,
 #'             timeperiod = Timeperiod,
 #'             value = Value,
-#'             area = AreaName,
-#'             comparator = "England",
-#'             area_name = "Cambridgeshire",
-#'             fill = ComparedtoEnglandvalueorpercentiles,
-#'             title = "Life expectancy at birth",
-#'             subtitle = "Cambridgeshire compared to England",
+#'             area = AreaCode,
+#'             comparator = "C001",
+#'             area_name = "AC142",
+#'             fill = Significance,
+#'             lowerci = LCI,
+#'             upperci = UCI,
+#'             title = "Trend compared to country",
+#'             subtitle = "For area AC142",
 #'             xlab = "Year",
-#'             ylab = "Age (years)")
-#' p}
+#'             ylab = "Value (%)")
+#' p
 #' @export
 trends <- function(data, timeperiod, value,
                    area, comparator, area_name, fill,
@@ -521,9 +518,6 @@ trends <- function(data, timeperiod, value,
 #' @importFrom rlang quo_text
 #' @importFrom scales pretty_breaks
 #' @examples
-#' \donttest{
-#' # This example is untested because of the time required to retrieve the data
-#' library(fingertipsR)
 #' library(dplyr)
 #' agelevels <- c("0-4", "5-9","10-14","15-19",
 #'                "20-24","25-29","30-34",
@@ -531,26 +525,24 @@ trends <- function(data, timeperiod, value,
 #'                "50-54","55-59","60-64",
 #'                "65-69","70-74","75-79",
 #'                "80-84","85-89","90+")
-#' pops <- fingertips_data(92708) %>%
-#'         filter(Timeperiod == "2018" &
-#'                        Sex %in% c("Male", "Female") &
-#'                        Age != "All ages") %>%
-#'         mutate(Age = gsub(" yrs","", Age),
-#'                Age = factor(Age,
-#'                             levels = agelevels)) %>%
-#'         droplevels()
+#' areas <- c("Area 1", "Area 2", "Area 3")
+#' pops <- data.frame(Age = factor(rep(agelevels, length(areas) * 2), levels = agelevels),
+#'                    Value = rep(sample(1000:3000, length(agelevels), replace = TRUE), length(areas) * 2),
+#'                    Sex = rep(rep(c("Male", "Female"), each = length(agelevels)), length(areas)),
+#'                    AreaName = rep(areas, each = length(agelevels) * 2))
+#'
 #' p <- population(pops,
 #'                 value = Value,
 #'                 sex = Sex,
 #'                 age = Age,
 #'                 area = AreaName,
-#'                 area_name = "Nottingham",
-#'                 comparator_1 = "England",
-#'                 comparator_2 = "East Midlands region",
+#'                 area_name = "Area 1",
+#'                 comparator_1 = "Area 3",
+#'                 comparator_2 = "Area 2",
 #'                 title = "Age Profile",
-#'                 subtitle = paste(unique(pops$IndicatorName), unique(pops$Timeperiod)),
+#'                 subtitle = "2015/16",
 #'                 xlab = "% of total population")
-#' p}
+#' p
 #' @export
 population <- function(data, value, sex, age,
                        area, area_name, comparator_1, comparator_2,
@@ -659,21 +651,20 @@ population <- function(data, value, sex, age,
 #' @importFrom rlang quo_text
 #' @importFrom stats median quantile
 #' @examples
-#' \donttest{
-#' # This example is untested because of the time required to retrieve the data
-#' library(fingertipsR)
 #' library(dplyr)
-#' df <- fingertips_data(90366) %>%
-#'       filter(Sex == "Male",
-#'       AreaType == "County & UA (pre 4/19)",
-#'       Age == "All ages")
-#' p <- box_plots(df,
+#' df <- create_test_data()
+#'
+#' df_box <- df %>%
+#'         filter(AreaType == "Local") %>%
+#'         arrange(IndicatorName) %>%
+#'         mutate(Timeperiod = rep(c("2011", "2012", "2013", "2014", "2015", "2016"),
+#'                                 each = 100))
+#' p <- box_plots(df_box,
 #'                timeperiod = Timeperiod,
 #'                value = Value,
-#'                title = "Life expectancy at birth",
-#'                subtitle = "Males in Uper Tier Local Authorities England",
-#'                ylab = "Age (years)")
-#' p}
+#'                title = "Title of chart",
+#'                subtitle = "Boxplot over time",
+#'                ylab = "Proportion (%)")
 #' @export
 box_plots <- function(data, timeperiod, value,
                       title = "", subtitle = "",
@@ -990,33 +981,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #' @importFrom stringr str_trim
 #' @importFrom lemon facet_rep_grid
 #' @examples
-#' \donttest{
-#' # This example is untested because of the time required to retrieve the data
-#' library(fingertipsR)
-#' library(dplyr)
-#' df <- fingertips_data(DomainID = 1938133222, rank = TRUE) %>%
-#'            filter(Timeperiod == "2016")
-#' p <- area_profiles(df,
-#'                    value = Value,
-#'                    count = Count,
-#'                    area_code = AreaCode,
-#'                    local_area_code = "E06000020",
-#'                    indicator = IndicatorName,
-#'                    timeperiod = Timeperiod,
-#'                    polarity = Polarity,
-#'                    significance = ComparedtoEnglandvalueorpercentiles,
-#'                    area_type = AreaType,
-#'                    cols = "fingertips",
-#'                    median_line_area_code = "E92000001",
-#'                    comparator_area_code = "E12000005",
-#'                    datatable = TRUE,
-#'                    relative_domain_text_size = 0.75,
-#'                    relative_text_size = 1.2,
-#'                    bar_width = 0.68,
-#'                    indicator_label_nudgex = -0.5)
-#' p}
-#'
-#' ## or an example with differing decimal places for individual indicators
+#' ## An example with differing decimal places for individual indicators
 #'
 #' library(dplyr)
 #' df <- create_test_data() %>%
@@ -1046,7 +1011,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'                         dps = NA)
 #' full_p
 #'
-#' ## or an example with domains and non-default indicator ordering
+#' ## An example with domains and non-default indicator ordering
 #'
 #' df <- create_test_data()
 #' label_order <- c(1, 2, 4, 3, 6, 5)

@@ -7,7 +7,8 @@ set.seed(42)
 df_ci <- df %>%
         filter(IndicatorName %in% c("Indicator 1", "Indicator 3")) %>%
         select(IndicatorName, AreaCode, Value) %>%
-        spread(IndicatorName, Value) %>%
+        pivot_wider(names_from = IndicatorName,
+                    values_from = Value) %>%
         rename(Ind1 = `Indicator 1`,
                Ind3 = `Indicator 3`) %>%
         mutate(Ind2 = runif(nrow(.), min = Ind1 * 0.5, max = Ind1 * 1.5))
