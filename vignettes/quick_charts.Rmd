@@ -31,19 +31,17 @@ This function plots the **Overview** view (also known as the Tartan Rug). First,
 ```{r overview data, message=FALSE}
 region <- "North East region"
 top_names <- c("England", region)
-dfdom <- fingertips_data(DomainID = 8000037) %>%
-        group_by(IndicatorID) %>%
-        filter(TimeperiodSortable == max(TimeperiodSortable) &
-                       Sex == "Persons" &
-                       (AreaName %in% top_names |
+dfdom <- fingertips_data(DomainID = 1938132983) %>%
+        filter(Timeperiod == "2015",
+               Sex == "Persons",
+               (AreaName %in% top_names |
                                 ParentName == region)) %>%
-        ungroup() %>%
         mutate(Value = round(Value, 1))
 ```
 
 This is how the `overview()` function works:
 
-```{r overview, out.width='100%', fig.width=12, fig.height=6, fig.align='center'}
+```{r overview, out.width='100%', fig.width=12, fig.height=4, fig.align='center', warning=FALSE}
 p <- overview(data = dfdom, 
               area = AreaName, 
               indicator = IndicatorName, 
@@ -223,12 +221,13 @@ p
 The area profiles image is created using the `area_profiles()` function. The argument `rank = TRUE` needs to be included as this returns a polarity field, which is needed for the spine chart:
 
 ```{r area profiles data, cache=TRUE}
-dfspine <- fingertips_data(DomainID = 1938133222, rank = TRUE) %>%
-        filter(Timeperiod == "2016")
+dfspine <- fingertips_data(DomainID = 1938132983, rank = TRUE) %>%
+        filter(Timeperiod == "2015",
+               Sex == "Persons")
 ```
 
 
-```{r area profiles, warning=FALSE, out.width='100%', fig.width=10, fig.height=4.5}
+```{r area profiles, warning=FALSE, out.width='100%', fig.width=10, fig.height=2.5}
 p <- area_profiles(dfspine,
                    value = Value,
                    count = Count,
@@ -243,11 +242,12 @@ p <- area_profiles(dfspine,
                    median_line_area_code = "E92000001",
                    comparator_area_code = "E12000005",
                    datatable = TRUE,
-                   header_positions = c(-1.43, -0.63, -0.43, -0.31, -0.19, -0.05, 1.08),
+                   header_positions = c(-1.6, -0.63, -0.48, -0.36, -0.21, -0.05, 1.08),
                    relative_domain_text_size = 0.75,
                    relative_text_size = 1.2,
                    bar_width = 0.68)
 p
+
 ```
 
 ## Population
