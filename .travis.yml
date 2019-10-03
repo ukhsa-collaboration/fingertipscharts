@@ -25,6 +25,9 @@ before_install:
 compiler:
   - clang
 
+# do not build vignettes...takes too long and times out on travis
+r_build_args: --no-build-vignettes --no-manual
+r_check_args: --no-build-vignettes --no-manual --timings
 
 r_github_packages:
   - r-lib/vdiffr # Install manually because dev vdiffr is not compatible with Appveyor yet
