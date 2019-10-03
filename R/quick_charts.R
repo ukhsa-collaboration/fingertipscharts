@@ -526,9 +526,12 @@ trends <- function(data, timeperiod, value,
 #'                "65-69","70-74","75-79",
 #'                "80-84","85-89","90+")
 #' areas <- c("Area 1", "Area 2", "Area 3")
-#' pops <- data.frame(Age = factor(rep(agelevels, length(areas) * 2), levels = agelevels),
-#'                    Value = rep(sample(1000:3000, length(agelevels), replace = TRUE), length(areas) * 2),
-#'                    Sex = rep(rep(c("Male", "Female"), each = length(agelevels)), length(areas)),
+#' pops <- data.frame(Age = factor(rep(agelevels, length(areas) * 2),
+#'                                 levels = agelevels),
+#'                    Value = rep(sample(1000:3000, length(agelevels), replace = TRUE),
+#'                                length(areas) * 2),
+#'                    Sex = rep(rep(c("Male", "Female"),
+#'                                  each = length(agelevels)), length(areas)),
 #'                    AreaName = rep(areas, each = length(agelevels) * 2))
 #'
 #' p <- population(pops,
