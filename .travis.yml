@@ -27,7 +27,7 @@ compiler:
 
 
 r_github_packages:
-  - r-lionel-/vdiffr # Install manually because dev vdiffr is not compatible with Appveyor yet
+  - r-lib/vdiffr # Install manually because dev vdiffr is not compatible with Appveyor yet
   - r-lib/covr
 
 after_success:
