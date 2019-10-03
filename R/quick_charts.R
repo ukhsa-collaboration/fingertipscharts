@@ -178,6 +178,7 @@ compare_areas <- function(data, area, value,
                 theme_phe("fingertips") +
                 theme(legend.position = legend.position,
                       panel.grid.major.y = element_blank())
+        return(compare_areas)
 }
 
 #' Plot an overview (tartan rug) of multiple indicators
@@ -198,21 +199,23 @@ compare_areas <- function(data, area, value,
 #' @importFrom rlang quo_text
 #' @importFrom stringr str_wrap
 #' @examples
-#' library(fingertipsR)
 #' library(dplyr)
-#' region <- "North East region"
-#' top_names <- c("England", region)
-#' dfdom <- fingertips_data(DomainID = 1938133060) %>%
-#'         filter(Timeperiod == "2016",
-#'                Age == "All ages",
-#'                (AreaName %in% top_names | ParentName == region)) %>%
+#' df <- create_test_data()
+#'
+#' parent <- "PAC14"
+#' top_names <- c("C001", parent)
+#' df_over <- df %>%
+#'         filter((AreaCode %in% top_names |
+#'                         ParentAreaCode == parent)) %>%
 #'         mutate(Value = round(Value, 1))
-#' p <- overview(dfdom,
-#'               area = AreaName,
+#' p <- overview(df_over,
+#'               area = AreaCode,
 #'               indicator = IndicatorName,
 #'               value = Value,
-#'               fill = ComparedtoEnglandvalueorpercentiles,
-#'               top_areas = top_names, wrap_length = 40,
+#'               timeperiod = Timeperiod,
+#'               fill = Significance,
+#'               top_areas = top_names,
+#'               wrap_length = 40,
 #'               value_label_size = 0.8)
 #' p
 #' @export
@@ -289,6 +292,7 @@ overview <- function(data, area, indicator, value,
                       axis.title = element_blank(),
                       line = element_blank(),
                       rect = element_blank())
+        return(overview)
 }
 
 #' Plot compare indicators plot
@@ -713,6 +717,7 @@ box_plots <- function(data, timeperiod, value,
                                  y = middle,
                                  yend = middle),
                              colour="red", size = 1)
+        return(boxplots)
 
 }
 

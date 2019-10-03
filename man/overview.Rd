@@ -34,21 +34,23 @@ a ggplot of the overview/tartan rug plot
 Plot an overview (tartan rug) of multiple indicators
 }
 \examples{
-library(fingertipsR)
 library(dplyr)
-region <- "North East region"
-top_names <- c("England", region)
-dfdom <- fingertips_data(DomainID = 1938133060) \%>\%
-        filter(Timeperiod == "2016",
-               Age == "All ages",
-               (AreaName \%in\% top_names | ParentName == region)) \%>\%
+df <- create_test_data()
+
+parent <- "PAC14"
+top_names <- c("C001", parent)
+df_over <- df \%>\%
+        filter((AreaCode \%in\% top_names |
+                        ParentAreaCode == parent)) \%>\%
         mutate(Value = round(Value, 1))
-p <- overview(dfdom,
-              area = AreaName,
+p <- overview(df_over,
+              area = AreaCode,
               indicator = IndicatorName,
               value = Value,
-              fill = ComparedtoEnglandvalueorpercentiles,
-              top_areas = top_names, wrap_length = 40,
+              timeperiod = Timeperiod,
+              fill = Significance,
+              top_areas = top_names,
+              wrap_length = 40,
               value_label_size = 0.8)
 p
 }
