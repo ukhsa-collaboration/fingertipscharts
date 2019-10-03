@@ -25,10 +25,9 @@ before_install:
 compiler:
   - clang
 
-# Install manually because dev vdiffr is not compatible with Appveyor yet
-r_github_packages: lionel-/vdiffr
 
 r_github_packages:
+  - r-lionel-/vdiffr # Install manually because dev vdiffr is not compatible with Appveyor yet
   - r-lib/covr
 
 after_success:
