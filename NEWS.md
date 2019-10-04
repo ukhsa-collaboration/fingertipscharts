@@ -1,6 +1,6 @@
 # fingertipscharts 0.0.10
 
-* No changes for the user
+* Unnecessary warning messages for area_profiles() removed
 
 # fingertipscharts 0.0.9 (2019-09-09)
 
