@@ -132,25 +132,24 @@ if(curl::has_internet()) {
         context("area-profiles-example")
         df_ex <- fingertips_data(DomainID = 1938133222, rank = TRUE) %>%
                 filter(Timeperiod == "2016")
-        p <- suppressWarnings(
-                area_profiles(df_ex,
-                              value = Value,
-                              count = Count,
-                              area_code = AreaCode,
-                              local_area_code = "E06000020",
-                              indicator = IndicatorName,
-                              timeperiod = Timeperiod,
-                              polarity = Polarity,
-                              significance = ComparedtoEnglandvalueorpercentiles,
-                              area_type = AreaType,
-                              cols = "fingertips",
-                              median_line_area_code = "E92000001",
-                              comparator_area_code = "E12000005",
-                              datatable = TRUE,
-                              relative_domain_text_size = 0.75,
-                              relative_text_size = 1.2,
-                              bar_width = 0.68,
-                              indicator_label_nudgex = -0.5))
+        p <- area_profiles(df_ex,
+                           value = Value,
+                           count = Count,
+                           area_code = AreaCode,
+                           local_area_code = "E06000020",
+                           indicator = IndicatorName,
+                           timeperiod = Timeperiod,
+                           polarity = Polarity,
+                           significance = ComparedtoEnglandvalueorpercentiles,
+                           area_type = AreaType,
+                           cols = "fingertips",
+                           median_line_area_code = "E92000001",
+                           comparator_area_code = "E12000005",
+                           datatable = TRUE,
+                           relative_domain_text_size = 0.75,
+                           relative_text_size = 1.2,
+                           bar_width = 0.68,
+                           indicator_label_nudgex = -0.5)
         test_that("area profiles example draws correctly", {
                 vdiffr::expect_doppelganger("area profiles example",
                                             p
