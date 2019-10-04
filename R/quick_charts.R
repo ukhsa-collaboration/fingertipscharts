@@ -370,7 +370,7 @@ compare_indicators <- function(data, x, y,
         }
 
         if (add_R2 == TRUE) {
-                form <- as.formula(paste(y, " ~ ", x)[2])
+                form <- as.formula(paste(as_label(y), " ~ ", as_label(x)))
                 r2 <- summary(lm(form, data = data))
                 r2frame <- data.frame(val = ifelse(r2$r.squared > 0.15,
                                                    paste("R^2:",round2(r2$r.squared, 2)),
