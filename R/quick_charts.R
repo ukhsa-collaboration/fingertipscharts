@@ -1257,7 +1257,8 @@ area_profiles <- function(data,
                                            limits = lims,
                                            labels = header_labels,
                                            expand = c(0, 0)) +
-                        geom_text(data = dfrescaled$bars[!is.na(dfrescaled$bars$Q75), ],
+                        geom_text(data = dfrescaled$bars[!dfrescaled$bars$GraphPoint %in%
+                                                                 c("Q75", "Q25"), ],
                                   aes(label = label, y = y),
                                   col = "black",
                                   size = 2.5 * relative_text_size,
