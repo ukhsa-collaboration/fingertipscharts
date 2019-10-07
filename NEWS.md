@@ -1,6 +1,7 @@
 # fingertipscharts 0.0.10
 
 * Unnecessary warning messages for area_profiles() removed
+* Fixed bug around ordering of factors filling the interactive maps
 
 # fingertipscharts 0.0.9 (2019-09-09)
 
