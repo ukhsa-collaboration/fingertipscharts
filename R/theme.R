@@ -126,10 +126,11 @@ theme_phe <- function(theme = "fingertips",
 #' @title Fingertips scale fill for ggplot2
 scale_fill_phe <- function(theme="fingertips", ...) {
         phe_key <- list(
-                fingertips = c('Better' = '#92D050', 'Same' = '#FFC000',
-                               'Worse' = '#C00000', 'Not compared' = '#C9C9C9',
-                               'None' = '#A6A6A6', 'Higher' = '#BED2FF',
-                               'Similar' = '#FFC000', 'Lower'='#5555E6')
+                fingertips = c('Better' = '#92D050', 'Higher' = '#BED2FF',
+                               'Similar' = '#FFC000',
+                               'Lower'='#5555E6', 'Worse' = '#C00000',
+                               'Not compared' = '#C9C9C9',
+                               'None' = '#A6A6A6')
         )
         scale_fill_manual(values=phe_key[[theme]], ...)
 }

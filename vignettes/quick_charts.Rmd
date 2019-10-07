@@ -18,7 +18,6 @@ The charts produced, generally, order the data alphabetically. In the [static ma
 ## Libraries
 
 ```{r libraries, message=FALSE}
-library(fingertipsR)
 library(fingertipscharts)
 library(dplyr)
 library(tidyr)
@@ -29,24 +28,22 @@ library(tidyr)
 This function plots the **Overview** view (also known as the Tartan Rug). First, let's get some data:
 
 ```{r overview data, message=FALSE}
-region <- "North East region"
-top_names <- c("England", region)
-dfdom <- fingertips_data(DomainID = 1938132983) %>%
-        filter(Timeperiod == "2015",
-               Sex == "Persons",
-               (AreaName %in% top_names |
-                                ParentName == region)) %>%
+region <- "PAC19"
+top_names <- c("C001", region)
+dfdom <- create_test_data() %>%
+        filter((AreaCode %in% top_names |
+                                ParentAreaCode == region)) %>%
         mutate(Value = round(Value, 1))
 ```
 
 This is how the `overview()` function works:
 
-```{r overview, out.width='100%', fig.width=12, fig.height=4, fig.align='center', warning=FALSE}
+```{r overview, out.width='100%', fig.width=12, fig.height=5, fig.align='center', warning=FALSE}
 p <- overview(data = dfdom, 
-              area = AreaName, 
+              area = AreaCode, 
               indicator = IndicatorName, 
               value = Value,
-              fill = ComparedtoEnglandvalueorpercentiles,
+              fill = Significance,
               timeperiod = Timeperiod,
               top_areas = top_names, wrap_length = 40,
               value_label_size = 0.7)
@@ -58,27 +55,24 @@ p
 Here is a function that helps produce a scatter plot as displayed on Fingertips. First the data needs to be changed to the correct format. The two variables that will be plotted need to be in separate fields. The `spread()` function from the `tidyr` package demonstrates how to do this below:
 
 ```{r compare indicators data}
-df <- fingertips_data(c(90362, 90366)) %>%
-        group_by(IndicatorID) %>%
-        filter(TimeperiodSortable == max(TimeperiodSortable),
-               Sex == "Male",
-               Age == "All ages") %>%
-        ungroup() %>%
-        select(IndicatorID, AreaName, Value) %>%
-        mutate(IndicatorID = paste0("x", IndicatorID)) %>%
-        spread(IndicatorID, Value)
+df <- create_test_data() %>%
+  filter(IndicatorName %in% c("Indicator 1", "Indicator 2")) %>%
+  select(IndicatorName, AreaCode, Value) %>%
+  mutate(IndicatorName = gsub(" ", "", IndicatorName)) %>%
+  pivot_wider(names_from = IndicatorName, 
+                    values_from = Value)
 ```
 
 This is how the `compare_indicators()` function works:
 
 ```{r compare indicators, out.width='80%', fig.width=9, fig.height=5, fig.align='center',warning=FALSE}
 p <- compare_indicators(data = df,
-                        x = x90362,
-                        y = x90366,
-                        xlab = "Healthy life expectancy at birth",
-                        ylab = "Life expectancy at birth",
-                        highlight = c("England", "Dorset (Cty)"),
-                        area = AreaName,
+                        x = Indicator1,
+                        y = Indicator2,
+                        xlab = "This is indicator 1",
+                        ylab = "This is indicator 2",
+                        highlight = c("C001", "AC101"),
+                        area = AreaCode,
                         add_R2 = TRUE)
 p
 ```
@@ -90,11 +84,6 @@ Here the package provides both interactive and static maps.
 The shape files need to be sources from the ONS Geography Portal. To do this, click on the API button [here](http://geoportal.statistics.gov.uk/datasets/counties-and-unitary-authorities-december-2016-ultra-generalised-clipped-boundaries-in-england-and-wales), using Counties and Unitary Authorities as an example, and then use the GeoJSON address as the string input to the `ons_api` parameter.
 
 ```{r map get data}
-df <- fingertips_data(90366) %>%
-        filter(Sex == "Male" &
-                       AreaType == "County & UA (pre 4/19)" &
-                       TimeperiodSortable == max(TimeperiodSortable))
-
 ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
 
 ```
@@ -109,9 +98,9 @@ ordered_levels <- c("Better",
                     "Similar", 
                     "Worse",
                     "Not compared")
-df <- df %>%
-        mutate(ComparedtoEnglandvalueorpercentiles = 
-                       factor(ComparedtoEnglandvalueorpercentiles,
+df <- mapdata %>%
+        mutate(Significance = 
+                       factor(Significance,
                               levels = ordered_levels))
 ```
 
@@ -121,9 +110,9 @@ The default map type is static:
 p <- fingertipscharts::map(data = df,
                     ons_api = ons_api,
                     area_code = AreaCode,
-                    fill = ComparedtoEnglandvalueorpercentiles,
-                    title = "Life expectancy at birth",
-                    subtitle = "Males in Upper Tier Local Authorities England",
+                    fill = Significance,
+                    title = "Map title",
+                    subtitle = "Map subtitle",
                     copyright_size = 3)
 p
 ```
@@ -136,11 +125,11 @@ It is also possible to have interactive maps. Note, for this to work the value p
 p <- map(df,
          ons_api = ons_api,
          area_code = AreaCode,
-         fill = ComparedtoEnglandvalueorpercentiles,
+         fill = Significance,
          type = "interactive",
          value = Value,
          name_for_label = AreaName,
-         title = "Life expectancy at birth<br>Males within UTLAs in England")
+         title = "Map title<br>with a line break")
 p
 ```
 
@@ -149,9 +138,22 @@ p
 This function allows users to plot the trends graph. First, the data for life expectancy at birth for males is extracted:
 
 ```{r trends get data}
-df <- fingertips_data(90366) %>%
-        filter(Sex == "Male",
-               Age == "All ages")
+df <- create_test_data() %>%
+        arrange(IndicatorName) %>%
+        mutate(Timeperiod = rep(c("2011", "2012", "2013", "2014", "2015", "2016"),
+                                each = 111))
+country_val <- df %>%
+  filter(AreaCode == "C001") %>%
+  select(Timeperiod, Country_val = Value)
+
+df <- df %>%
+  left_join(country_val, by = "Timeperiod") %>%
+  mutate(Significance = case_when(
+    LCI > Country_val ~ "Higher",
+    UCI < Country_val ~ "Lower",
+    TRUE ~ "Similar"
+  ))
+
 ```
 
 Here is an example of how to use the `trends()` function:
@@ -160,16 +162,16 @@ Here is an example of how to use the `trends()` function:
 p <- trends(df,
             timeperiod = Timeperiod,
             value = Value,
-            area = AreaName,
-            comparator = "England",
-            area_name = "Cambridgeshire",
-            fill = ComparedtoEnglandvalueorpercentiles,
-            lowerci = LowerCI95.0limit,
-            upperci = UpperCI95.0limit,
-            title = "Life expectancy at birth",
-            subtitle = "Cambridgeshire compared to England",
+            area = AreaCode,
+            comparator = "C001",
+            area_name = "AC103",
+            fill = Significance,
+            lowerci = LCI,
+            upperci = UCI,
+            title = "Title of graph",
+            subtitle = "AC103 compared to C001",
             xlab = "Year",
-            ylab = "Age (years)")
+            ylab = "Unit of measurement")
 p
 ```
 
@@ -178,15 +180,12 @@ p
 This code gets the latest year of data for IndicatorID 90316 filtered for local authorities whose parent is South East region and also the areas England and South East region:
 
 ```{r get fingertips data}
-region <- "South East region"
-top_names <- c("England", region)
-df <- fingertips_data(90316) %>%
-        group_by(IndicatorID) %>%
-        filter(is.na(CategoryType) &
-                       TimeperiodSortable == max(TimeperiodSortable) &
-                       (AreaName %in% top_names |
-                                ParentName == region)) %>%
-        ungroup()
+region <- "PAC10"
+top_names <- c("C001", region)
+df <- create_test_data() %>%
+  filter(IndicatorName == "Indicator 3",
+         (ParentAreaCode == region |
+            AreaCode %in% top_names))
 ```
 
 **Note,** before plotting the chart, the levels of the field that is determining the fill of the polygons need to be reordered, as if they aren't, they will be ordered alphabetically in the legend:
@@ -197,19 +196,20 @@ ordered_levels <- c("Better",
                     "Worse",
                     "Not compared")
 df <- df %>%
-        mutate(ComparedtoEnglandvalueorpercentiles = 
-                       factor(ComparedtoEnglandvalueorpercentiles,
-                              levels = ordered_levels)) %>%
-        filter(Sex == "Persons")
+        mutate(Significance = 
+                       factor(Significance,
+                              levels = ordered_levels))
 ```
 
 The `compare_areas` function makes plotting the compare areas chart straight forward. 
 
 ```{r compare areas, out.width='80%', fig.width=9, fig.height=6, fig.align='center'}
-p <- compare_areas(df, AreaName, Value,
-                      fill = ComparedtoEnglandvalueorpercentiles,
-                      lowerci = LowerCI95.0limit,
-                      upperci = UpperCI95.0limit,
+p <- compare_areas(df,
+                   AreaCode, 
+                   Value,
+                      fill = Significance,
+                      lowerci = LCI,
+                      upperci = UCI,
                       order = "desc",
                       top_areas = top_names,
                       title = unique(df$IndicatorName))
@@ -221,9 +221,7 @@ p
 The area profiles image is created using the `area_profiles()` function. The argument `rank = TRUE` needs to be included as this returns a polarity field, which is needed for the spine chart:
 
 ```{r area profiles data, cache=TRUE}
-dfspine <- fingertips_data(DomainID = 1938132983, rank = TRUE) %>%
-        filter(Timeperiod == "2015",
-               Sex == "Persons")
+dfspine <- create_test_data()
 ```
 
 
@@ -232,17 +230,17 @@ p <- area_profiles(dfspine,
                    value = Value,
                    count = Count,
                    area_code = AreaCode,
-                   local_area_code = "E06000020",
+                   local_area_code = "AC110",
                    indicator = IndicatorName,
                    timeperiod = Timeperiod,
                    polarity = Polarity,
-                   significance = ComparedtoEnglandvalueorpercentiles,
+                   significance = Significance,
                    area_type = AreaType,
                    cols = "fingertips",
-                   median_line_area_code = "E92000001",
-                   comparator_area_code = "E12000005",
+                   median_line_area_code = "C001",
+                   comparator_area_code = "PAC11",
                    datatable = TRUE,
-                   header_positions = c(-1.6, -0.63, -0.48, -0.36, -0.21, -0.05, 1.08),
+                   header_positions = c(-1, -0.63, -0.48, -0.36, -0.21, -0.05, 1.08),
                    relative_domain_text_size = 0.75,
                    relative_text_size = 1.2,
                    bar_width = 0.68)
@@ -255,20 +253,37 @@ p
 This function provides the ability to draw the traditional population pyramid. First, the population data is extracted using `fingertipsR` package. Also, note that the ordering of the age bands are defined prior to the data being provided to the `population()` function:
 
 ```{r population data}
+set.seed(1234)
 agelevels <- c("0-4", "5-9","10-14","15-19",
                "20-24","25-29","30-34",
                "35-39","40-44","45-49",
                "50-54","55-59","60-64",
                "65-69","70-74","75-79",
                "80-84","85-89","90+")
-pops <- fingertips_data(92708) %>%
-        filter(TimeperiodSortable == max(TimeperiodSortable) &
-                       Sex %in% c("Male", "Female") &
-                       Age != "All ages") %>%
-        mutate(Age = gsub(" yrs","", Age),
-               Age = factor(Age,
-                            levels = agelevels)) %>%
-        droplevels()
+local_males <- dnorm(seq(1, 19), mean = 5, sd = 5) * 1e5
+local_females <- dnorm(seq(1, 19), mean = 4, sd = 5) * 1e5
+region_males <- dnorm(seq(1, 19), mean = 5, sd = 7) * 1e5
+region_females <- dnorm(seq(1, 19), mean = 4.5, sd = 6.5) * 1e5
+country_males <- dnorm(seq(1, 19), mean = 4, sd = 3) * 1e5
+country_females <- dnorm(seq(1, 19), mean = 5, sd = 3) * 1e5
+
+pops <- data.frame(Value = c(local_males,
+                             local_females,
+                             region_males,
+                             region_females,
+                             country_males,
+                             country_females),
+                   AreaName = c(rep("Local", 38),
+                                rep("Region", 38),
+                                rep("Country", 38)),
+                   Sex = rep(c(rep("Male", 19),
+                              rep("Female", 19)),
+                             times = 3),
+                   stringsAsFactors = FALSE) %>%
+  mutate(Age = factor(rep(agelevels, 6),
+                          levels = agelevels))
+
+
 ```
 
 This is how the function works:
@@ -279,12 +294,11 @@ p <- population(pops,
                 sex = Sex,
                 age = Age,
                 area = AreaName,
-                area_name = "Nottingham",
-                comparator_1 = "England",
-                comparator_2 = "East Midlands region",
+                area_name = "Local",
+                comparator_1 = "Country",
+                comparator_2 = "Region",
                 title = "Age Profile",
-                subtitle = paste(unique(pops$IndicatorName),
-                                 unique(pops$Timeperiod)),
+                subtitle = "Area population for this time period",
                 xlab = "% of total population")
 p
 ```
@@ -294,10 +308,10 @@ p
 Box plots can be found on some profiles. First the data is extracted using the `fingertipsR` package:
 
 ```{r boxplots data}
-df <- fingertips_data(90366) %>%
-        filter(Sex == "Male",
-               AreaType == "County & UA (pre 4/19)",
-               Age == "All ages")
+df <- create_test_data() %>%
+        arrange(IndicatorName) %>%
+        mutate(Timeperiod = rep(c("2011", "2012", "2013", "2014", "2015", "2016"),
+                                each = 111))
 ```
 
 This is how the function works. Note, the levels of the factor for the `timeperiod` parameter may need to be reordered, as this determines the order along the x-axis:
@@ -306,8 +320,8 @@ This is how the function works. Note, the levels of the factor for the `timeperi
 p <- box_plots(df,
                timeperiod = Timeperiod,
                value = Value,
-               title = "Life expectancy at birth",
-               subtitle = "Males in Upper Tier Local Authorities within England",
-               ylab = "Age (years)")
+               title = "Box plot for indicator",
+               subtitle = "Add a subtitle here",
+               ylab = "Unit of measurement")
 p
 ```

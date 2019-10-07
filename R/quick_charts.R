@@ -724,8 +724,8 @@ box_plots <- function(data, timeperiod, value,
 #'   from ONS API
 #' @param type string; the output map required. Can be "static" or "interactive"
 #' @param ons_api string; GeoJSON address provided from the ONS geography portal
-#' @param copyright_size number; determine size of the copyright text
-#' @param copyright_year number (length 4) or Date class; the copyright year
+#' @param copyright_size number; fix the size of the copyright text
+#' @param copyright_year number (length 4 characters) or Date class; the copyright year
 #'   displayed at bottom of the map. Applies to static maps only
 #' @param name_for_label if interactive map, name of field containing area names
 #'   to be used for label (unquoted) - optional
@@ -738,38 +738,30 @@ box_plots <- function(data, timeperiod, value,
 #' @importFrom geojsonio geojson_read
 #' @importFrom leaflet colorFactor leaflet addTiles addPolygons addLegend
 #' @importFrom stats setNames
-#' @importFrom fingertipsR fingertips_data
 #' @importFrom sf st_as_sf
 #' @examples
-#' \donttest{
-#' # This example is untested because of the time required to retrieve the data
-#' library(fingertipsR)
-#' library(dplyr)
-#' df <- fingertips_data(90366) %>%
-#'         filter(Sex == "Male" ,
-#'                AreaType == "County & UA (pre 4/19)",
-#'                Timeperiod == "2014 - 16",
-#'                Age == "All ages")
 #' ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
 #'
-#' p <- map(df,
+#' p <- map(mapdata,
 #'          ons_api = ons_api,
 #'          area_code = AreaCode,
-#'          fill = ComparedtoEnglandvalueorpercentiles,
-#'          title = "Life expectancy at birth",
-#'          subtitle = "Males in Upper Tier Local Authorities England",
-#'          copyright_year = 2018)
+#'          fill = Significance,
+#'          title = "Map example",
+#'          subtitle = "An indicator for Upper Tier Local Authorities England",
+#'          copyright_year = 2019)
+#'
+#' p
 #'
 #' ## For an interactive (leaflet) map
-#' p <- map(df,
+#' p <- map(mapdata,
 #'          ons_api = ons_api,
 #'          area_code = AreaCode,
-#'          fill = ComparedtoEnglandvalueorpercentiles,
+#'          fill = Significance,
 #'          type = "interactive",
 #'          value = Value,
 #'          name_for_label = AreaName,
-#'          title = "Life expectancy at birth<br>Males within UTLAs in England")
-#' p}
+#'          title = "An indicator for Upper Tier<br>Local Authorities England")
+#' p
 #' @export
 map <- function(data, ons_api, area_code, fill, type = "static", value, name_for_label,
                 title = "", subtitle = "", copyright_size = 4, copyright_year = Sys.Date()) {
@@ -837,8 +829,8 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                         data <- data %>%
                                 mutate(!!quo_name(fill) :=
                                                factor(!!fill,
-                                                      levels = names(ftipspal)))
-                        factpal <- colorFactor(ftipspal,
+                                                      levels = levels(!!fill)))
+                        factpal <- colorFactor(ftipspal[levels(pull(data, !!fill))],
                                                domain = pull(data, !!fill),
                                                ordered = TRUE)
                         data <- data %>%
