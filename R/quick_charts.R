@@ -903,6 +903,9 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'   labels. Take care as errors will occur where indicator labels are the same
 #'   but data exist for multiple sub-categories (for example, sex or age)
 #' @param timeperiod unquoted field name of the time period field
+#' @param trend unquoted field name of the trend field; if the user doesn't want
+#'   to display trend information then leave this incomplete and amend the
+#'   header_labels argument to remove the Trend header
 #' @param polarity unquoted field name containing the polarity information
 #'   (currently only handles polarity returned by fingertipsR package)
 #' @param significance unquoted field name describing the statistical
@@ -970,7 +973,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #' @import ggplot2
 #' @import dplyr
 #' @importFrom grDevices rgb
-#' @importFrom rlang quo_text
+#' @importFrom rlang quo_text .data
 #' @importFrom utils tail
 #' @importFrom stats reformulate
 #' @importFrom stringr str_trim
@@ -990,6 +993,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'                         local_area_code = "AC122",
 #'                         indicator = IndicatorName,
 #'                         timeperiod = Timeperiod,
+#'                         trend = Trend,
 #'                         polarity = Polarity,
 #'                         significance = Significance,
 #'                         area_type = AreaType,
@@ -1001,7 +1005,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'                         bar_width = 0.68,
 #'                         indicator_label_nudgex = -0.1,
 #'                         show_dividers = "outer",
-#'                         header_positions = c(-0.7, -0.44, -0.35, -0.25,
+#'                         header_positions = c(-1, -0.7, -0.44, -0.35, -0.25,
 #'                                              -0.15, -0.05, 1.08),
 #'                         dps = NA)
 #' full_p
@@ -1021,6 +1025,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'                    local_area_code = "AC122",
 #'                    indicator = IndicatorName,
 #'                    timeperiod = Timeperiod,
+#'                    trend = Trend,
 #'                    polarity = Polarity,
 #'                    significance = Significance,
 #'                    area_type = AreaType,
@@ -1032,7 +1037,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'                    bar_width = 0.68,
 #'                    indicator_label_nudgex = -0.1,
 #'                    show_dividers = "outer",
-#'                    header_positions = c(-0.7, -0.53, -0.35, -0.25,
+#'                    header_positions = c(-1, -0.7, -0.53, -0.35, -0.25,
 #'                                         -0.15, -0.05, 1.05),
 #'                    domain = Domain
 #' )
@@ -1046,6 +1051,7 @@ area_profiles <- function(data,
                           local_area_code,
                           indicator,
                           timeperiod,
+                          trend = NA,
                           polarity,
                           significance,
                           area_type,
@@ -1060,8 +1066,9 @@ area_profiles <- function(data,
                           comparator_point_fill = "gray30",
                           relative_point_size = 1,
                           relative_text_size = 1,
-                          header_positions  = c(-1.43, -.53, -.35, -.25, -.15, -0.05, 1.05),
-                          header_labels = c("Indicator", "Time\nperiod",
+                          header_positions  = c(-1.83, -1.13, -.53, -.35, -.25, -.15, -0.05, 1.05),
+                          header_labels = c("Indicator", "Trend",
+                                            "Time\nperiod",
                                             "Local\ncount","Local\nvalue",
                                             "England\nvalue",
                                             "Worst/\nLowest","Best/\nHighest"),
@@ -1084,6 +1091,10 @@ area_profiles <- function(data,
         if (!is.na(comparator_area_code) &
             sum(comparator_area_code %in% pull(data, !!test_area_code)) < 1)
                 stop(paste0(comparator_area_code, " not in area_code field provided"))
+        if (length(header_labels) != 8)
+                stop("header_labels argument must have a length of 8")
+        if (length(header_positions) != 8)
+                stop("header_positions argument must have a length of 8")
 
         data <- data %>%
                 mutate(!!quo_name(dummy_polarity) :=
@@ -1111,10 +1122,12 @@ area_profiles <- function(data,
 
         if (datatable == TRUE) {
                 if (!is.na(dps) & !is.integer(dps) & !is.numeric(dps)) stop("The dps argument must be a number or NA")
+                trend <- enquo(trend)
                 dftable <- create_datatable(data,
                                             indicator,
                                             area_code,
                                             timeperiod,
+                                            trend,
                                             count, value,
                                             local_area_code,
                                             median_line_area_code,
@@ -1224,6 +1237,7 @@ area_profiles <- function(data,
                 geom_hline(yintercept = 0.5, col = "darkred") +
                 coord_flip() +
                 scale_fill_manual(values = cols) +
+                scale_colour_manual(values = cols) +
                 theme_minimal() +
                 theme(panel.grid.major = element_blank(),
                       axis.text = element_text(colour = "black")) +
@@ -1260,7 +1274,7 @@ area_profiles <- function(data,
                         geom_text(data = dftable,
                                   aes_string(label = dt_median_field,
                                              x = "ind"),
-                                  y = header_positions[5],
+                                  y = header_positions[6],
                                   col = "black",
                                   size = 2.5 * relative_text_size,
                                   parse = TRUE,
@@ -1270,7 +1284,7 @@ area_profiles <- function(data,
                         geom_text(data = dftable,
                                   aes_string(label = dt_area_field,
                                              x = "ind"),
-                                  y = header_positions[4],
+                                  y = header_positions[5],
                                   col = "black",
                                   size = 2.5 * relative_text_size,
                                   parse = TRUE,
@@ -1279,7 +1293,7 @@ area_profiles <- function(data,
                         ) +
                         geom_text(data = dftable,
                                   aes(label = count, x = ind),
-                                  y = header_positions[3],
+                                  y = header_positions[4],
                                   col = "black",
                                   size = 2.5 * relative_text_size,
                                   parse = TRUE,
@@ -1288,11 +1302,20 @@ area_profiles <- function(data,
                         ) +
                         geom_text(data = dftable,
                                   aes(label = tp, x = ind),
-                                  y = header_positions[2],
+                                  y = header_positions[3],
                                   col = "black",
                                   size = 2.5 * relative_text_size,
                                   lineheight = datatable_line_height,
                                   hjust = 1
+                        ) +
+                        geom_text(data = dftable,
+                                  aes(x = ind, label = .data$direction,
+                                      colour = .data$trend_sig),
+                                  y = header_positions[2],
+                                  size = 2.5 * relative_text_size,
+                                  lineheight = datatable_line_height,
+                                  hjust = 1,
+                                  fontface = "bold"
                         ) +
                         geom_text(data = dftable,
                                   aes(label = ind,

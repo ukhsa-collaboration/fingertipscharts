@@ -88,14 +88,22 @@ create_test_data <- function() {
                                                                   "Similar"))))) %>%
                 select(-EngVal)
 
+        trend_categories <- c("Increasing and getting better",
+                              "Increasing and getting worse",
+                              "Decreasing and getting better",
+                              "Decreasing and getting worse",
+                              "No significant change",
+                              "Could not be calculated",
+                              "Increasing",
+                              "Decreasing")
         df <- bind_rows(df_local,
                         df_parent,
                         df_country) %>%
                 mutate(Domain = case_when(
                         grepl("1$", IndicatorName) ~ "Dom 1",
                         grepl("2$", IndicatorName) ~ "Dom 2",
-                        TRUE ~ "Dom 3"
-                ))
+                        TRUE ~ "Dom 3"),
+                       Trend = sample(trend_categories, n(), replace = TRUE))
         return(df)
 
 }
