@@ -1,3 +1,7 @@
+# fingertipscharts 0.0.10.9000
+
+* trend argument added to area_profiles()
+
 # fingertipscharts 0.0.10
 
 * Unnecessary warning messages for area_profiles() removed
