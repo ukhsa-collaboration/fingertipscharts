@@ -26,7 +26,14 @@ should all exist in this field)}
 
 \item{trend}{unquoted field name of the trend field; if the user doesn't want
 to display trend information then leave this incomplete and amend the
-header_labels argument to remove the Trend header}
+header_labels argument to remove the Trend header. Text within this field
+should contain one of the following words to control the arrows that are
+displayed; "decreasing", "increasing", "no significant change", "could not
+be calculated". The text within this field should contain one of the
+following words to control the colour; "better", "worse", "no significant
+change". If none of these words appear in the string, the words
+"increasing" or "decreasing" will be used to colour the arrows in different
+shades of blue"}
 
 \item{count}{unquoted field name where the count (numerator) is stored}
 
