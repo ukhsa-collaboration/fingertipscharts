@@ -53,13 +53,14 @@ spine_data_check <- function(data, indicator, area_code) {
 #' @inheritParams area_profiles
 #' @param dps number of decimal places to use in the data table
 #' @import dplyr
-#' @importFrom tidyr spread
-#' @importFrom rlang quo_text
+#' @importFrom tidyr pivot_wider
+#' @importFrom rlang quo_text .data eval_tidy
 #' @importFrom scales comma
 #' @return A data frame containing the information that sits alongside the spine
 #'   chart
 create_datatable <- function(data, indicator,
                              area_code, timeperiod,
+                             trend,
                              count, value,
                              local_area_code,
                              median_line_area_code,
@@ -94,7 +95,8 @@ create_datatable <- function(data, indicator,
                                               "\'")
                                        )))) %>%
                 select(!!indicator, !!area_code, !!timeperiod, !!value) %>%
-                tidyr::spread(!!area_code, !!value)
+                tidyr::pivot_wider(names_from = !!area_code,
+                                   values_from = !!value)
         data_count <- data %>%
                 filter((!!area_code) == local_area_code) %>%
                 select(!!indicator, !!count) %>%
@@ -105,10 +107,42 @@ create_datatable <- function(data, indicator,
                                                               scales::comma(round2(as.numeric(!!count), 0),
                                                                             accuracy = 1),
                                                               "'"))))
+        if (is.character(rlang::eval_tidy(trend, data)) |
+            is.factor(rlang::eval_tidy(trend, data))) {
+
+                data_trend <- data %>%
+                        filter(({{ area_code }}) == local_area_code) %>%
+                        select({{ indicator }}, {{ trend }}) %>%
+                        mutate(direction = case_when(
+                                grepl("decreasing", tolower({{ trend }})) ~ '\u2193', #"\u21E9",
+                                grepl("increasing", tolower({{ trend }})) ~ '\u2191', #"\u21E7",
+                                grepl("no significant change", tolower({{ trend }})) ~ "\u2192", #"\u21E8",
+                                grepl("could not be calculated", tolower({{ trend }})) ~ "-",
+                                TRUE ~ " "),
+                               trend_sig = case_when(
+                                       grepl("better", tolower({{ trend }})) ~ "Better",
+                                       grepl("worse", tolower({{ trend }})) ~ "Worse",
+                                       grepl("no significant change", tolower({{ trend }})) ~ "Similar",
+                                       grepl("increasing", tolower({{ trend }})) ~ "Higher",
+                                       grepl("decreasing", tolower({{ trend }})) ~ "Lower",
+                                       TRUE ~ "Not compared")) %>%
+                        select(-{{ trend }})
+        } else {
+                data_trend <- data %>%
+                        select({{ indicator }}) %>%
+                        unique() %>%
+                        mutate(direction = "",
+                               trend_sig = "")
+
+        }
         data_temp <- merge(data_temp, data_count,
                            by = rlang::quo_text(indicator),
                            all.x = TRUE) %>%
-                select(!!indicator, !!timeperiod, !!count, everything())
+                merge(data_trend,
+                      by = rlang::quo_text(indicator),
+                      all.x = TRUE) %>%
+                select({{ indicator }}, .data$direction, .data$trend_sig, {{ timeperiod }}, {{ count }}, everything())
+
 
         return(data_temp)
 }

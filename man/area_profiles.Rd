@@ -5,19 +5,20 @@
 \title{Plot spine chart}
 \usage{
 area_profiles(data, value, count, area_code, local_area_code, indicator,
-  timeperiod, polarity, significance, area_type, cols = "fingertips",
-  median_line_area_code = "E92000001", comparator_area_code = NA,
-  bar_width = 0.75, local_point_shape = 21,
-  local_point_outline = "black", comparator_point_shape = 23,
-  comparator_point_outline = "gray30",
+  timeperiod, trend = NA, polarity, significance, area_type,
+  cols = "fingertips", median_line_area_code = "E92000001",
+  comparator_area_code = NA, bar_width = 0.75,
+  local_point_shape = 21, local_point_outline = "black",
+  comparator_point_shape = 23, comparator_point_outline = "gray30",
   comparator_point_fill = "gray30", relative_point_size = 1,
-  relative_text_size = 1, header_positions = c(-1.43, -0.53, -0.35,
-  -0.25, -0.15, -0.05, 1.05), header_labels = c("Indicator",
-  "Time\\nperiod", "Local\\ncount", "Local\\nvalue", "England\\nvalue",
-  "Worst/\\nLowest", "Best/\\nHighest"), indicator_label_nudgex = -0.075,
-  domain = no_domains, relative_domain_text_size = 1,
-  show_dividers = "none", datatable = TRUE,
-  datatable_line_height = 0.6, dps = 1, percent_display = 0.25)
+  relative_text_size = 1, header_positions = c(-1.83, -1.13, -0.53,
+  -0.35, -0.25, -0.15, -0.05, 1.05), header_labels = c("Indicator",
+  "Trend", "Time\\nperiod", "Local\\ncount", "Local\\nvalue",
+  "England\\nvalue", "Worst/\\nLowest", "Best/\\nHighest"),
+  indicator_label_nudgex = -0.075, domain = no_domains,
+  relative_domain_text_size = 1, show_dividers = "none",
+  datatable = TRUE, datatable_line_height = 0.6, dps = 1,
+  percent_display = 0.25)
 }
 \arguments{
 \item{data}{a data frame to create the spine chart from. the data frame
@@ -41,6 +42,10 @@ labels. Take care as errors will occur where indicator labels are the same
 but data exist for multiple sub-categories (for example, sex or age)}
 
 \item{timeperiod}{unquoted field name of the time period field}
+
+\item{trend}{unquoted field name of the trend field; if the user doesn't want
+to display trend information then leave this incomplete and amend the
+header_labels argument to remove the Trend header}
 
 \item{polarity}{unquoted field name containing the polarity information
 (currently only handles polarity returned by fingertipsR package)}
@@ -162,6 +167,7 @@ full_p <- area_profiles(df,
                         local_area_code = "AC122",
                         indicator = IndicatorName,
                         timeperiod = Timeperiod,
+                        trend = Trend,
                         polarity = Polarity,
                         significance = Significance,
                         area_type = AreaType,
@@ -173,7 +179,7 @@ full_p <- area_profiles(df,
                         bar_width = 0.68,
                         indicator_label_nudgex = -0.1,
                         show_dividers = "outer",
-                        header_positions = c(-0.7, -0.44, -0.35, -0.25,
+                        header_positions = c(-1, -0.7, -0.44, -0.35, -0.25,
                                              -0.15, -0.05, 1.08),
                         dps = NA)
 full_p
@@ -193,6 +199,7 @@ p <- area_profiles(df,
                    local_area_code = "AC122",
                    indicator = IndicatorName,
                    timeperiod = Timeperiod,
+                   trend = Trend,
                    polarity = Polarity,
                    significance = Significance,
                    area_type = AreaType,
@@ -204,7 +211,7 @@ p <- area_profiles(df,
                    bar_width = 0.68,
                    indicator_label_nudgex = -0.1,
                    show_dividers = "outer",
-                   header_positions = c(-0.7, -0.53, -0.35, -0.25,
+                   header_positions = c(-1, -0.7, -0.53, -0.35, -0.25,
                                         -0.15, -0.05, 1.05),
                    domain = Domain
 )

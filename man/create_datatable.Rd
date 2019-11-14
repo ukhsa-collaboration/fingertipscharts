@@ -4,8 +4,9 @@
 \alias{create_datatable}
 \title{Data table supporting information}
 \usage{
-create_datatable(data, indicator, area_code, timeperiod, count, value,
-  local_area_code, median_line_area_code, comparator_area_code, dps = 1)
+create_datatable(data, indicator, area_code, timeperiod, trend, count,
+  value, local_area_code, median_line_area_code, comparator_area_code,
+  dps = 1)
 }
 \arguments{
 \item{data}{a data frame to create the spine chart from. the data frame
@@ -22,6 +23,10 @@ but data exist for multiple sub-categories (for example, sex or age)}
 should all exist in this field)}
 
 \item{timeperiod}{unquoted field name of the time period field}
+
+\item{trend}{unquoted field name of the trend field; if the user doesn't want
+to display trend information then leave this incomplete and amend the
+header_labels argument to remove the Trend header}
 
 \item{count}{unquoted field name where the count (numerator) is stored}
 
