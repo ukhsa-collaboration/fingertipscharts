@@ -414,7 +414,6 @@ compare_indicators <- function(data, x, y,
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr
-#' @importFrom rlang quo_text
 #' @examples
 #' library(dplyr)
 #' df <- create_test_data()
