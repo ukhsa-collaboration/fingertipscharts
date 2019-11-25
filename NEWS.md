@@ -1,6 +1,7 @@
 # fingertipscharts 0.0.10.9000
 
 * trend argument added to area_profiles()
+* `trends()` function now displays the area and comparator in the key for the chart
 
 # fingertipscharts 0.0.10
 

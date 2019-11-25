@@ -447,25 +447,28 @@ trends <- function(data, timeperiod, value,
         value <- enquo(value)
         area <- enquo(area)
 
+        data <- data %>%
+                filter((!!area) %in% c(area_name, comparator))
+        line_colours <- c("black", "#7CB5EC")
+        names(line_colours) <- c(comparator, area_name)
         trends <- ggplot(data,
-                         aes_string(x = quo_text(timeperiod),
-                                    y = quo_text(value),
-                                    group = quo_text(area))) +
-                geom_line(data = filter(data, (!!area) == comparator),
-                          colour = "black",
-                          aes_string(linetype = quo_text(area))) +
+                         aes(x = !!timeperiod,
+                             y = !!value,
+                             group = !!area)) +
+                geom_line(aes(linetype = !!area,
+                              colour = !!area)) +
                 geom_point(data = filter(data, (!!area) == comparator),
                            fill = "black",
-                           aes_string(shape = quo_text(area)),
+                           aes(shape = !!area),
                            size = point_size) +
-                geom_line(data = filter(data, (!!area) == area_name),
-                          colour = "#7CB5EC") +
                 scale_linetype_manual(name = "",
-                                      values = "solid",
+                                      values = rep("solid", 2),
                                       labels = comparator) +
                 scale_shape_manual(name = "",
                                    values = 21,
                                    labels = comparator) +
+                scale_colour_manual(name = "",
+                                    values = line_colours) +
                 labs(title = title,
                      subtitle = subtitle,
                      x = xlab,
@@ -476,7 +479,7 @@ trends <- function(data, timeperiod, value,
                 fill <- enquo(fill)
                 trends <- trends +
                         geom_point(data = filter(data, (!!area) == area_name),
-                                   aes_string(fill = quo_text(fill)),
+                                   aes(fill = !!fill),
                                    shape = 21,
                                    size = point_size, show.legend = F) +
                         scale_fill_phe("fingertips")
@@ -492,11 +495,14 @@ trends <- function(data, timeperiod, value,
                 upperci <- enquo(upperci)
                 trends <- trends +
                         geom_errorbar(data = filter(data, (!!area) == area_name),
-                                      aes_string(ymin= quo_text(lowerci),
-                                          ymax = quo_text(upperci)),
+                                      aes(ymin= !!lowerci,
+                                          ymax = !!upperci),
                                       width=.2)
 
         }
+        trends <- trends +
+                guides(shape = FALSE,
+                       linetype = FALSE)
         return(trends)
 }
 
