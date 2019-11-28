@@ -2,8 +2,9 @@
 
 * trend argument added to area_profiles()
 * `trends()` function now displays the area and comparator in the key for the chart
+* slight amendment to `compare_areas()` and `map()` functions giving users flexibility to provide their own legend titles using `+ labs(fill = "Blah")` after function (see [issue 16](https://github.com/PublicHealthEngland/fingertipscharts/issues/16))
 
-# fingertipscharts 0.0.10
+# fingertipscharts 0.0.10 (2019-10-07)
 
 * Unnecessary warning messages for area_profiles() removed
 * Fixed bug around ordering of factors filling the interactive maps

@@ -134,8 +134,8 @@ compare_areas <- function(data, area, value,
                 fill <- enquo(fill)
                 compare_areas <- compare_areas +
                         geom_col(aes_string(fill = quo_text(fill))) +
-                        scale_fill_phe(name = "Area compared to Benchmark",
-                                       theme = "fingertips")
+                        scale_fill_phe(theme = "fingertips") +
+                        labs(fill = "Area compared to Benchmark")
 
         } else {
                 compare_areas <- compare_areas +
@@ -814,8 +814,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                         map <- ggplot(shp) +
                                 geom_sf(aes_string(fill = quo_text(fill))) +
                                 coord_sf(datum = NA) +
-                                scale_fill_phe(name = "",
-                                               "fingertips") +
+                                scale_fill_phe(theme = "fingertips") +
                                 theme_void() +
                                 geom_text(data = copyright,
                                           aes(x = x,
@@ -826,7 +825,8 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                                           vjust = 0,
                                           size = copyright_size) +
                                 labs(title = title,
-                                     subtitle = subtitle)
+                                     subtitle = subtitle,
+                                     fill = "")
 
                 } else if (type == "interactive") { # nocov start
                         ftipspal <- scale_fill_phe("fingertips")
