@@ -4,21 +4,41 @@
 \alias{area_profiles}
 \title{Plot spine chart}
 \usage{
-area_profiles(data, value, count, area_code, local_area_code, indicator,
-  timeperiod, trend = NA, polarity, significance, area_type,
-  cols = "fingertips", median_line_area_code = "E92000001",
-  comparator_area_code = NA, bar_width = 0.75,
-  local_point_shape = 21, local_point_outline = "black",
-  comparator_point_shape = 23, comparator_point_outline = "gray30",
-  comparator_point_fill = "gray30", relative_point_size = 1,
-  relative_text_size = 1, header_positions = c(-1.83, -1.13, -0.53,
-  -0.35, -0.25, -0.15, -0.05, 1.05), header_labels = c("Indicator",
-  "Trend", "Time\\nperiod", "Local\\ncount", "Local\\nvalue",
-  "England\\nvalue", "Worst/\\nLowest", "Best/\\nHighest"),
-  indicator_label_nudgex = -0.075, domain = no_domains,
-  relative_domain_text_size = 1, show_dividers = "none",
-  datatable = TRUE, datatable_line_height = 0.6, dps = 1,
-  percent_display = 0.25)
+area_profiles(
+  data,
+  value,
+  count,
+  area_code,
+  local_area_code,
+  indicator,
+  timeperiod,
+  trend = NA,
+  polarity,
+  significance,
+  area_type,
+  cols = "fingertips",
+  median_line_area_code = "E92000001",
+  comparator_area_code = NA,
+  bar_width = 0.75,
+  local_point_shape = 21,
+  local_point_outline = "black",
+  comparator_point_shape = 23,
+  comparator_point_outline = "gray30",
+  comparator_point_fill = "gray30",
+  relative_point_size = 1,
+  relative_text_size = 1,
+  header_positions = c(-1.83, -1.13, -0.53, -0.35, -0.25, -0.15, -0.05, 1.05),
+  header_labels = c("Indicator", "Trend", "Time\\nperiod", "Local\\ncount",
+    "Local\\nvalue", "England\\nvalue", "Worst/\\nLowest", "Best/\\nHighest"),
+  indicator_label_nudgex = -0.075,
+  domain = no_domains,
+  relative_domain_text_size = 1,
+  show_dividers = "none",
+  datatable = TRUE,
+  datatable_line_height = 0.6,
+  dps = 1,
+  percent_display = 0.25
+)
 }
 \arguments{
 \item{data}{a data frame to create the spine chart from. the data frame

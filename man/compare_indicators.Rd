@@ -4,8 +4,17 @@
 \alias{compare_indicators}
 \title{Plot compare indicators plot}
 \usage{
-compare_indicators(data, x, y, xlab = "", ylab = "", point_size = 4,
-  highlight_area, area, add_R2 = FALSE)
+compare_indicators(
+  data,
+  x,
+  y,
+  xlab = "",
+  ylab = "",
+  point_size = 4,
+  highlight_area,
+  area,
+  add_R2 = FALSE
+)
 }
 \arguments{
 \item{data}{data.frame object to plot using ggplot2 functions}
@@ -57,9 +66,12 @@ p <- compare_indicators(df_ci,
 p
 }
 \seealso{
-Other quick charts: \code{\link{box_plots}},
-  \code{\link{compare_areas}}, \code{\link{map}},
-  \code{\link{overview}}, \code{\link{population}},
-  \code{\link{trends}}
+Other quick charts: 
+\code{\link{box_plots}()},
+\code{\link{compare_areas}()},
+\code{\link{map}()},
+\code{\link{overview}()},
+\code{\link{population}()},
+\code{\link{trends}()}
 }
 \concept{quick charts}

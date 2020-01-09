@@ -4,8 +4,19 @@
 \alias{population}
 \title{Plot population pyramid}
 \usage{
-population(data, value, sex, age, area, area_name, comparator_1,
-  comparator_2, title, subtitle, xlab)
+population(
+  data,
+  value,
+  sex,
+  age,
+  area,
+  area_name,
+  comparator_1,
+  comparator_2,
+  title,
+  subtitle,
+  xlab
+)
 }
 \arguments{
 \item{data}{data.frame object to plot using ggplot2 functions}
@@ -70,9 +81,12 @@ p <- population(pops,
 p
 }
 \seealso{
-Other quick charts: \code{\link{box_plots}},
-  \code{\link{compare_areas}},
-  \code{\link{compare_indicators}}, \code{\link{map}},
-  \code{\link{overview}}, \code{\link{trends}}
+Other quick charts: 
+\code{\link{box_plots}()},
+\code{\link{compare_areas}()},
+\code{\link{compare_indicators}()},
+\code{\link{map}()},
+\code{\link{overview}()},
+\code{\link{trends}()}
 }
 \concept{quick charts}

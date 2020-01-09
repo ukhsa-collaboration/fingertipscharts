@@ -4,9 +4,19 @@
 \alias{map}
 \title{Plot a choropleth map for an indicator}
 \usage{
-map(data, ons_api, area_code, fill, type = "static", value,
-  name_for_label, title = "", subtitle = "", copyright_size = 4,
-  copyright_year = Sys.Date())
+map(
+  data,
+  ons_api,
+  area_code,
+  fill,
+  type = "static",
+  value,
+  name_for_label,
+  title = "",
+  subtitle = "",
+  copyright_size = 4,
+  copyright_year = Sys.Date()
+)
 }
 \arguments{
 \item{data}{data.frame object to plot using ggplot2 functions}
@@ -66,9 +76,12 @@ p <- map(mapdata,
 p
 }
 \seealso{
-Other quick charts: \code{\link{box_plots}},
-  \code{\link{compare_areas}},
-  \code{\link{compare_indicators}}, \code{\link{overview}},
-  \code{\link{population}}, \code{\link{trends}}
+Other quick charts: 
+\code{\link{box_plots}()},
+\code{\link{compare_areas}()},
+\code{\link{compare_indicators}()},
+\code{\link{overview}()},
+\code{\link{population}()},
+\code{\link{trends}()}
 }
 \concept{quick charts}

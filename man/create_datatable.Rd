@@ -4,9 +4,19 @@
 \alias{create_datatable}
 \title{Data table supporting information}
 \usage{
-create_datatable(data, indicator, area_code, timeperiod, trend, count,
-  value, local_area_code, median_line_area_code, comparator_area_code,
-  dps = 1)
+create_datatable(
+  data,
+  indicator,
+  area_code,
+  timeperiod,
+  trend,
+  count,
+  value,
+  local_area_code,
+  median_line_area_code,
+  comparator_area_code,
+  dps = 1
+)
 }
 \arguments{
 \item{data}{a data frame to create the spine chart from. the data frame

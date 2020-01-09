@@ -4,8 +4,17 @@
 \alias{overview}
 \title{Plot an overview (tartan rug) of multiple indicators}
 \usage{
-overview(data, area, indicator, value, fill, timeperiod, top_areas,
-  wrap_length = 50, value_label_size = 1)
+overview(
+  data,
+  area,
+  indicator,
+  value,
+  fill,
+  timeperiod,
+  top_areas,
+  wrap_length = 50,
+  value_label_size = 1
+)
 }
 \arguments{
 \item{data}{data.frame object to plot using ggplot2 functions}
@@ -55,9 +64,12 @@ p <- overview(df_over,
 p
 }
 \seealso{
-Other quick charts: \code{\link{box_plots}},
-  \code{\link{compare_areas}},
-  \code{\link{compare_indicators}}, \code{\link{map}},
-  \code{\link{population}}, \code{\link{trends}}
+Other quick charts: 
+\code{\link{box_plots}()},
+\code{\link{compare_areas}()},
+\code{\link{compare_indicators}()},
+\code{\link{map}()},
+\code{\link{population}()},
+\code{\link{trends}()}
 }
 \concept{quick charts}

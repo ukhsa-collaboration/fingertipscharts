@@ -4,9 +4,22 @@
 \alias{compare_areas}
 \title{Plot compare areas chart}
 \usage{
-compare_areas(data, area, value, lowerci, upperci, fill, order = "desc",
-  top_areas, title = "", xlab = "", ylab = "",
-  legend.position = "bottom", display.values = FALSE, dps = 1)
+compare_areas(
+  data,
+  area,
+  value,
+  lowerci,
+  upperci,
+  fill,
+  order = "desc",
+  top_areas,
+  title = "",
+  xlab = "",
+  ylab = "",
+  legend.position = "bottom",
+  display.values = FALSE,
+  dps = 1
+)
 }
 \arguments{
 \item{data}{data.frame object to plot using ggplot2 functions}
@@ -73,9 +86,12 @@ p
 
 }
 \seealso{
-Other quick charts: \code{\link{box_plots}},
-  \code{\link{compare_indicators}}, \code{\link{map}},
-  \code{\link{overview}}, \code{\link{population}},
-  \code{\link{trends}}
+Other quick charts: 
+\code{\link{box_plots}()},
+\code{\link{compare_indicators}()},
+\code{\link{map}()},
+\code{\link{overview}()},
+\code{\link{population}()},
+\code{\link{trends}()}
 }
 \concept{quick charts}

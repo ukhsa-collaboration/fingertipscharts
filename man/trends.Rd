@@ -4,9 +4,22 @@
 \alias{trends}
 \title{Plot trend chart}
 \usage{
-trends(data, timeperiod, value, area, comparator, area_name, fill, lowerci,
-  upperci, title = "", subtitle = "", xlab = "", ylab = "",
-  point_size = 4)
+trends(
+  data,
+  timeperiod,
+  value,
+  area,
+  comparator,
+  area_name,
+  fill,
+  lowerci,
+  upperci,
+  title = "",
+  subtitle = "",
+  xlab = "",
+  ylab = "",
+  point_size = 4
+)
 }
 \arguments{
 \item{data}{data.frame object to plot using ggplot2 functions}
@@ -71,9 +84,12 @@ p <- trends(df_trend,
 p
 }
 \seealso{
-Other quick charts: \code{\link{box_plots}},
-  \code{\link{compare_areas}},
-  \code{\link{compare_indicators}}, \code{\link{map}},
-  \code{\link{overview}}, \code{\link{population}}
+Other quick charts: 
+\code{\link{box_plots}()},
+\code{\link{compare_areas}()},
+\code{\link{compare_indicators}()},
+\code{\link{map}()},
+\code{\link{overview}()},
+\code{\link{population}()}
 }
 \concept{quick charts}

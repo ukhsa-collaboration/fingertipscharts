@@ -4,8 +4,13 @@
 \alias{theme_phe}
 \title{Fingertips theme for ggplot2}
 \usage{
-theme_phe(theme = "fingertips", base_size = 11, base_family = "",
-  base_line_size = base_size/22, base_rect_size = base_size/22)
+theme_phe(
+  theme = "fingertips",
+  base_size = 11,
+  base_family = "",
+  base_line_size = base_size/22,
+  base_rect_size = base_size/22
+)
 }
 \arguments{
 \item{theme}{string; theme of chart, current are fingertips only}

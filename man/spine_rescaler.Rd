@@ -4,9 +4,21 @@
 \alias{spine_rescaler}
 \title{Rescale spine data}
 \usage{
-spine_rescaler(data, area_code, indicator, significance, polarity,
-  area_type, value, timeperiod, local_area_code, median_line_area_code,
-  comparator_area_code = NA, percent_display, dps = 1)
+spine_rescaler(
+  data,
+  area_code,
+  indicator,
+  significance,
+  polarity,
+  area_type,
+  value,
+  timeperiod,
+  local_area_code,
+  median_line_area_code,
+  comparator_area_code = NA,
+  percent_display,
+  dps = 1
+)
 }
 \arguments{
 \item{data}{a data frame to create the spine chart from. the data frame

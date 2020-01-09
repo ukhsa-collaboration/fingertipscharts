@@ -1364,8 +1364,8 @@ area_profiles <- function(data,
         }
         if (show_dividers == "all") {
                 p <- p +
-                        geom_vline(xintercept=seq(-0.5, vline_length + 0.5),
-                                   colour="black",
+                        geom_vline(xintercept = seq(-0.5, vline_length + 0.5),
+                                   colour = "black",
                                    size = 0.2)
         } else if (show_dividers == "outer") {
                 p <- p +

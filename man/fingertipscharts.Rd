@@ -3,7 +3,6 @@
 \docType{package}
 \name{fingertipscharts}
 \alias{fingertipscharts}
-\alias{fingertipscharts-package}
 \title{fingertipscharts: A package for creating the visualisations displayed in Fingertips}
 \description{
 The fingertipscharts package provides one type of function
