@@ -31,39 +31,16 @@ Get the latest released, stable version from CRAN:
 install.packages("fingertipscharts")
 ```
 
-### With devtools
+### With remotes
 
 You can install the latest development version from github using
-[devtools](https://github.com/hadley/devtools):
+[remotes](https://github.com/r-lib/remotes):
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("PublicHealthEngland/fingertipscharts",
-                         build_vignettes = TRUE)
+# install.packages("remotes")
+remotes::install_github("PublicHealthEngland/fingertipscharts",
+                        build_vignettes = TRUE)
 ```
-
-### From zip
-
-Download this repository from GitHub and either build from source or do
-the following, that also requires
-[devtools](https://github.com/hadley/devtools):
-
-``` r
-source <- devtools:::source_pkg("C:/path/to/fingertipscharts-master")
-install(source)
-```
-
-### Base R instructions
-
-To install the package without the use of CRAN or
-[devtools](https://github.com/hadley/devtools), download the `.tar.gz`
-file and then run:
-
-``` r
-install.packages(path_to_file, repos = NULL, type="source")
-```
-
-Where `path_to_file` would represent the full path and file name.
 
 ## Example of some visualisations
 
@@ -76,7 +53,7 @@ the vignettes for a more comprehensive overview.
 library(fingertipsR)
 library(fingertipscharts)
 library(dplyr)
-df <- fingertips_data(90366) %>%
+df <- fingertips_data(90366, AreaTypeID = 202) %>%
           filter(Sex == "Male")
 p <- trends(df,
             timeperiod = Timeperiod,
@@ -100,7 +77,7 @@ p
 
 ``` r
 library(tidyr)
-df <- fingertips_data(c(90362, 90366)) %>%
+df <- fingertips_data(c(90362, 90366), AreaTypeID = 202) %>%
         group_by(IndicatorID) %>%
         filter(Timeperiod == "2014 - 16" &
                        Sex == "Male") %>%
