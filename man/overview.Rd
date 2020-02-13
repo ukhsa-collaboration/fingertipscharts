@@ -13,7 +13,8 @@ overview(
   timeperiod,
   top_areas,
   wrap_length = 50,
-  value_label_size = 1
+  value_label_size = 1,
+  legend_position = "none"
 )
 }
 \arguments{
@@ -35,6 +36,9 @@ overview(
 wrapping it}
 
 \item{value_label_size}{number; amount to scale the size of the value label}
+
+\item{legend_position}{the position of legends ("none", "left", "right",
+"bottom", "top", or two-element numeric vector)}
 }
 \value{
 a ggplot of the overview/tartan rug plot

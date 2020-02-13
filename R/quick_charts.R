@@ -189,6 +189,8 @@ compare_areas <- function(data, area, value,
 #' @param wrap_length number; maximum number of characters in indicator before
 #'   wrapping it
 #' @param value_label_size number; amount to scale the size of the value label
+#' @param legend_position the position of legends ("none", "left", "right",
+#'   "bottom", "top", or two-element numeric vector)
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr
@@ -217,71 +219,71 @@ compare_areas <- function(data, area, value,
 #' @export
 overview <- function(data, area, indicator, value,
                      fill, timeperiod, top_areas, wrap_length = 50,
-                     value_label_size = 1) {
-        area <- enquo(area)
-        value <- enquo(value)
-        indicator <- enquo(indicator)
-        fill <- enquo(fill)
-        value <- enquo(value)
-        timeperiod <- enquo(timeperiod)
+                     value_label_size = 1, legend_position = "none") {
+
 
         if (!missing(top_areas)) {
                 levels <- data %>%
-                        filter(!((!!area) %in% top_areas)) %>%
+                        filter(!(({{ area }}) %in% top_areas)) %>%
                         droplevels() %>%
-                        arrange((!!area)) %>%
-                        select(!!area) %>%
+                        arrange(({{ area }})) %>%
+                        select({{ area }}) %>%
                         pull() %>%
                         as.character() %>%
                         unique()
                 levels <- c("Period", top_areas, levels)
                 data <- data %>%
-                        mutate(!!quo_name(area) :=
-                                       factor((!!area),
+                        mutate(!!quo_name(enquo(area)) :=
+                                       factor(({{ area }}),
                                               levels = levels))
         } else {
                 levels <- data %>%
                         droplevels() %>%
-                        arrange(!!area) %>%
-                        select(!!area) %>%
+                        arrange({{ area }}) %>%
+                        select({{ area }}) %>%
                         pull() %>%
                         as.character() %>%
                         unique()
                 data <- data %>%
-                        mutate(!!quo_name(area) :=
-                                       factor((!!area),
+                        mutate(!!quo_name(enquo(area)) :=
+                                       factor(({{ area }}),
                                               levels = c("Period", levels)))
         }
         tp <- data %>%
-                filter((!!area) == levels[2]) %>%
-                mutate(!!quo_name(area) := "Period",
-                       !!quo_name(fill) := NA,
-                       !!quo_name(value) :=
-                               as.character(str_wrap((!!timeperiod), 9)))
+                filter(({{ area }}) == levels[2]) %>%
+                mutate(!!quo_name(enquo(area)) := "Period",
+                       !!quo_name(enquo(fill)) := NA,
+                       !!quo_name(enquo(value)) :=
+                               as.character(str_wrap(({{ timeperiod }}), 9)))
+
+
         data <- rbind(data, tp)
         levels <- data %>%
                 droplevels() %>%
-                arrange(!!indicator) %>%
-                select(!!indicator) %>%
+                arrange({{ indicator }}) %>%
+                select({{ indicator }}) %>%
                 pull() %>%
                 as.character() %>%
                 rev() %>%
                 unique() %>%
                 str_wrap(wrap_length)
         data <- data %>%
-                mutate(!!quo_name(indicator) :=
-                               factor(str_wrap((!!indicator), wrap_length),
-                                      levels = levels))
+                mutate(!!quo_name(enquo(indicator)) :=
+                               factor(str_wrap(({{ indicator }}), wrap_length),
+                                      levels = levels)) %>%
+                droplevels()
 
-        overview <- ggplot(data, aes_string(x = quo_text(area),
-                                            y = quo_text(indicator))) +
-                geom_tile(aes_string(fill = quo_text(fill)),
+        overview <- ggplot(data, aes(x = {{ area }},
+                                     y = {{ indicator }})) +
+                geom_tile(aes(fill = {{ fill }}),
                           colour = "white") +
-                geom_text(aes_string(label = quo_text(value)),
+                geom_text(aes(label = {{ value }}),
                           size = value_label_size * 4) +
-                scale_fill_phe("fingertips") +
+                scale_fill_phe("fingertips",
+                               na.translate = FALSE,
+                               guide = guide_legend(byrow = TRUE)) +
                 scale_x_discrete(position = "top") +
-                theme(legend.position = "none",
+                theme(legend.position = legend_position,
                       axis.text.x = element_text(angle = 90,
                                                  hjust = 0),
                       axis.text.y = element_text(size = rel(1)),
