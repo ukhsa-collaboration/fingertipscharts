@@ -1196,14 +1196,21 @@ area_profiles <- function(data,
                               all.x =TRUE)
         }
 
-        if (cols == "fingertips") {
-                cols <-  c('Better' = '#92D050', 'Same' = '#FFC000',
-                           'Worse' = '#C00000', 'Not compared' = '#C9C9C9',
-                           'None' = '#A6A6A6', 'Higher' = '#BED2FF',
-                           'Similar' = '#FFC000', 'Lower'='#5555E6',
-                           'Worst' = '#FFFFFF','Q25' = '#C9C9C9',
-                           'Q75' = '#8B8B8B','Best' = '#C9C9C9')
+        fingertips_cols <- c('Better' = '#92D050', 'Same' = '#FFC000',
+                             'Worse' = '#C00000', 'Not compared' = '#C9C9C9',
+                             'None' = '#A6A6A6', 'Higher' = '#BED2FF',
+                             'Similar' = '#FFC000', 'Lower'='#5555E6',
+                             'Worst' = '#FFFFFF','Q25' = '#C9C9C9',
+                             'Q75' = '#8B8B8B','Best' = '#C9C9C9')
+        if (length(cols) == 1) {
+                if (cols == "fingertips") {
+                        cols <- fingertips_cols
+                }
         }
+
+        missing_cols <- setdiff(names(fingertips_cols),
+                                names(cols))
+        if (length(missing_cols) > 0) cols <- c(cols, fingertips_cols[missing_cols])
 
         vline_length <- dfrescaled$bars %>%
                 pull(!!indicator) %>%

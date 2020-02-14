@@ -112,6 +112,23 @@ full_no_dt_p <- area_profiles(df,
                               bar_width = 0.68,
                               datatable = FALSE)
 
+full_no_dt_p_modified_colours <- area_profiles(df,
+                                               value = Value,
+                                               count = Count,
+                                               area_code = AreaCode,
+                                               local_area_code = "AC122",
+                                               indicator = IndicatorName,
+                                               timeperiod = Timeperiod,
+                                               trend = Trend,
+                                               polarity = Polarity,
+                                               significance = Significance,
+                                               area_type = AreaType,
+                                               cols = c("Worse" = "purple"),
+                                               median_line_area_code = "C001",
+                                               comparator_area_code = "PAC12",
+                                               bar_width = 0.68,
+                                               datatable = FALSE)
+
 full_with_domains_p <- area_profiles(df,
                                      value = Value,
                                      count = Count,
@@ -227,7 +244,11 @@ test_that("area profiles with no dt draws correctly", {
         )
 })
 
-
+test_that("area profiles with colour modification draws correctly", {
+        vdiffr::expect_doppelganger("modified colours area profiles",
+                                    full_no_dt_p_modified_colours
+        )
+})
 
 test_that("area profiles with domains draws correctly", {
         vdiffr::expect_doppelganger("domains included area profiles",
