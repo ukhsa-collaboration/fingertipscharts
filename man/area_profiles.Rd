@@ -37,7 +37,10 @@ area_profiles(
   datatable = TRUE,
   datatable_line_height = 0.6,
   dps = 1,
-  percent_display = 0.25
+  percent_display = 0.25,
+  arrow_length = 1,
+  arrow_thickness = 2,
+  arrow_head_angle = 25
 )
 }
 \arguments{
@@ -155,6 +158,12 @@ data}
 
 \item{percent_display}{number between 0 and 1; the percentage of values that
 needs to exist for a spine to display. Default is 0.25}
+
+\item{arrow_length}{number to control the length of the trend arrow}
+
+\item{arrow_thickness}{number to control the thickness of the trend arrow}
+
+\item{arrow_head_angle}{number to control the angle of the arrow head}
 }
 \value{
 a ggplot object containing a spine chart

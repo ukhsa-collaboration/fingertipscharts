@@ -52,6 +52,8 @@ spine_data_check <- function(data, indicator, area_code) {
 #' Returns a data frame containing the data that sits next to the spine chart
 #' @inheritParams area_profiles
 #' @param dps number of decimal places to use in the data table
+#' @param header_width x dimension of chart to be used for normalising the arrow
+#'   length when horizonal
 #' @import dplyr
 #' @importFrom tidyr pivot_wider
 #' @importFrom rlang quo_text .data eval_tidy
@@ -65,7 +67,8 @@ create_datatable <- function(data, indicator,
                              local_area_code,
                              median_line_area_code,
                              comparator_area_code,
-                             dps = 1) {
+                             dps = 1,
+                             header_width) {
         if (is.na(comparator_area_code)) {
                 area_codes <- c(local_area_code, median_line_area_code)
         } else {
@@ -114,25 +117,30 @@ create_datatable <- function(data, indicator,
                         filter(({{ area_code }}) == local_area_code) %>%
                         select({{ indicator }}, {{ trend }}) %>%
                         mutate(direction = case_when(
-                                grepl("decreasing", tolower({{ trend }})) ~ '\u2193', #"\u21E9",
-                                grepl("increasing", tolower({{ trend }})) ~ '\u2191', #"\u21E7",
-                                grepl("no significant change", tolower({{ trend }})) ~ "\u2192", #"\u21E8",
-                                grepl("could not be calculated", tolower({{ trend }})) ~ "-",
-                                TRUE ~ " "),
+                                grepl("decreasing", tolower({{ trend }})) ~ pi,
+                                grepl("increasing", tolower({{ trend }})) ~ 0,
+                                grepl("no significant change", tolower({{ trend }})) ~ pi / 2,
+                                TRUE ~ NA_real_),
                                trend_sig = case_when(
                                        grepl("better", tolower({{ trend }})) ~ "Better",
                                        grepl("worse", tolower({{ trend }})) ~ "Worse",
                                        grepl("no significant change", tolower({{ trend }})) ~ "Similar",
                                        grepl("increasing", tolower({{ trend }})) ~ "Higher",
                                        grepl("decreasing", tolower({{ trend }})) ~ "Lower",
-                                       TRUE ~ "Not compared")) %>%
+                                       TRUE ~ "Not compared"),
+                               radius = case_when(
+                                       grepl("no significant change", tolower({{ trend }})) ~ 0.1 * header_width / (n() * 1.5),
+                                       grepl("increasing|decreasing", tolower({{ trend }})) ~ 0.1,
+                                       TRUE ~ NA_real_
+                                       )) %>%
                         select(-{{ trend }})
         } else {
                 data_trend <- data %>%
                         select({{ indicator }}) %>%
                         unique() %>%
-                        mutate(direction = "",
-                               trend_sig = "")
+                        mutate(direction = NA,
+                               trend_sig = "",
+                               radius = NA)
 
         }
         data_temp <- merge(data_temp, data_count,

@@ -978,6 +978,9 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'   table
 #' @param percent_display number between 0 and 1; the percentage of values that
 #'   needs to exist for a spine to display. Default is 0.25
+#' @param arrow_length number to control the length of the trend arrow
+#' @param arrow_thickness number to control the thickness of the trend arrow
+#' @param arrow_head_angle number to control the angle of the arrow head
 #' @details This function filters for the area type that is the same as your
 #'   local area type and then calculates the "vertebra" from those data.
 #'   Therefore, if you are comparing outputs with those seen on the Fingertips
@@ -1093,7 +1096,10 @@ area_profiles <- function(data,
                           datatable = TRUE,
                           datatable_line_height = 0.6,
                           dps = 1,
-                          percent_display = 0.25) {
+                          percent_display = 0.25,
+                          arrow_length = 1,
+                          arrow_thickness = 2,
+                          arrow_head_angle = 25) {
 
         test_area_code <- enquo(area_code)
         dummy_polarity <- enquo(polarity)
@@ -1146,7 +1152,8 @@ area_profiles <- function(data,
                                             local_area_code,
                                             median_line_area_code,
                                             comparator_area_code,
-                                            dps = dps)
+                                            dps = dps,
+                                            header_width = diff(range(header_positions)))
                 dftable <- dftable %>%
                         mutate(!!quo_name(indicator) :=
                                                   factor(!!indicator,
@@ -1329,14 +1336,24 @@ area_profiles <- function(data,
                                   lineheight = datatable_line_height,
                                   hjust = 1
                         ) +
-                        geom_text(data = dftable,
-                                  aes(x = ind, label = .data$direction,
-                                      colour = .data$trend_sig),
-                                  y = header_positions[2],
-                                  size = 2.5 * relative_text_size,
-                                  lineheight = datatable_line_height,
-                                  hjust = 1,
-                                  fontface = "bold"
+                        geom_spoke(data = dftable,
+                                   aes(x = ind,
+                                       y = header_positions[2],
+                                       angle = .data$direction,
+                                       colour = .data$trend_sig,
+                                       radius = .data$radius * arrow_length),
+                                   size = arrow_thickness,
+                                   arrow = arrow(length = unit(arrow_length / 50, "npc"),
+                                           type = "open",
+                                           angle = arrow_head_angle)
+                        ) +
+                        geom_spoke(data = dftable,
+                                   aes(x = ind,
+                                       y = header_positions[2],
+                                       angle = .data$direction + pi,
+                                       colour = .data$trend_sig,
+                                       radius = .data$radius * arrow_length),
+                                   size = arrow_thickness
                         ) +
                         geom_text(data = dftable,
                                   aes(label = ind,

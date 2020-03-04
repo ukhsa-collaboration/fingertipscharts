@@ -15,7 +15,8 @@ create_datatable(
   local_area_code,
   median_line_area_code,
   comparator_area_code,
-  dps = 1
+  dps = 1,
+  header_width
 )
 }
 \arguments{
@@ -59,6 +60,9 @@ to "E92000001" (England)}
 Defaults to NA}
 
 \item{dps}{number of decimal places to use in the data table}
+
+\item{header_width}{x dimension of chart to be used for normalising the arrow
+length when horizonal}
 }
 \value{
 A data frame containing the information that sits alongside the spine
