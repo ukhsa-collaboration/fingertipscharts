@@ -117,12 +117,12 @@ df <- df %>%
 p <- compare_areas(df,
                    AreaCode, 
                    Value,
-                      fill = Significance,
-                      lowerci = LCI,
-                      upperci = UCI,
-                      order = "desc",
-                      top_areas = top_names,
-                      title = unique(df$IndicatorName))
+                   fill = Significance,
+                   lowerci = LCI,
+                   upperci = UCI,
+                   order = "desc",
+                   top_areas = top_names,
+                   title = unique(df$IndicatorName))
 p
 ```
 
@@ -156,4 +156,4 @@ p <- area_profiles(dfspine,
 p
 ```
 
-![](tools/README-area_profiles-1.png)<!-- -->
+<img src="tools/README-area_profiles-1.png" width="100%" />

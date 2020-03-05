@@ -1290,7 +1290,7 @@ area_profiles <- function(data,
                 lims[1] <- lims[1] + indicator_label_nudgex
                 lims <- lims * 1.06
                 p <- p +
-                        scale_y_continuous(position = "bottom",
+                        scale_y_continuous(position = "right",
                                            breaks = header_positions,
                                            limits = lims,
                                            labels = header_labels,
