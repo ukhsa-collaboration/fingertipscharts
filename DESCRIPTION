@@ -8,14 +8,12 @@ Depends: R (>= 3.4.0)
 Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")))
 BugReports: https://github.com/PublicHealthEngland/fingertipscharts/issues
 Imports:
-    curl,
     dplyr,
     geojsonio,
     ggplot2 (>= 3.0),
     httr,
     leaflet,
     lemon,
-    mapproj,
     purrr,
     rlang,
     scales,

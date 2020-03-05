@@ -16,7 +16,8 @@ create_datatable(
   median_line_area_code,
   comparator_area_code,
   dps = 1,
-  header_width
+  header_width,
+  horizonal_arrow_multiplier
 )
 }
 \arguments{
@@ -63,6 +64,9 @@ Defaults to NA}
 
 \item{header_width}{x dimension of chart to be used for normalising the arrow
 length when horizonal}
+
+\item{horizonal_arrow_multiplier}{number to scale horizonal trend arrows. A
+value below 1 will shorten the arrows}
 }
 \value{
 A data frame containing the information that sits alongside the spine

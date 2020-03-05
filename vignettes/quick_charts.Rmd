@@ -25,7 +25,7 @@ library(tidyr)
 
 ## Overview {#overview}
 
-This function plots the **Overview** view (also known as the Tartan Rug). First, let's get some data:
+This function plots the **Overview** view (also known as the Tartan Rug). All of the charts in this vignette, starting with this one, use a function called `create_test_data()` from this packages to generate a dummy dataset. This data has the same structure as data exported from the `fingertips_data()` function in the `fingertipsR` package.
 
 ```{r overview data, message=FALSE}
 region <- "PAC19"
@@ -52,15 +52,15 @@ p
 
 ## Compare indicators
 
-Here is a function that helps produce a scatter plot as displayed on Fingertips. First the data needs to be changed to the correct format. The two variables that will be plotted need to be in separate fields. The `spread()` function from the `tidyr` package demonstrates how to do this below:
+Here is a function that helps produce a scatter plot as displayed on Fingertips. First the data needs to be changed to the correct format. The two variables that will be plotted need to be in separate fields. The `pivot_wider()` function from the `tidyr` package demonstrates how to do this below:
 
 ```{r compare indicators data}
 df <- create_test_data() %>%
   filter(IndicatorName %in% c("Indicator 1", "Indicator 2")) %>%
   select(IndicatorName, AreaCode, Value) %>%
   mutate(IndicatorName = gsub(" ", "", IndicatorName)) %>%
-  pivot_wider(names_from = IndicatorName, 
-                    values_from = Value)
+  pivot_wider(names_from = IndicatorName,
+              values_from = Value)
 ```
 
 This is how the `compare_indicators()` function works:
@@ -135,7 +135,7 @@ p
 
 ## Trends
 
-This function allows users to plot the trends graph. First, the data for life expectancy at birth for males is extracted:
+This function allows users to plot the trends graph. The dummy dataset is slightly manipulated here to extend over a few years. A significance is then prescribed based on whether the confidence intervals overlap the country value.
 
 ```{r trends get data}
 df <- create_test_data() %>%
@@ -177,7 +177,7 @@ p
 
 ## Compare areas {#compareareas}
 
-This code gets the latest year of data for IndicatorID 90316 filtered for local authorities whose parent is South East region and also the areas England and South East region:
+This code filters the dummy dataset for a single region and its parent, and all the child areas within that region.
 
 ```{r get fingertips data}
 region <- "PAC10"
@@ -188,7 +188,7 @@ df <- create_test_data() %>%
             AreaCode %in% top_names))
 ```
 
-**Note,** before plotting the chart, the levels of the field that is determining the fill of the polygons need to be reordered, as if they aren't, they will be ordered alphabetically in the legend:
+**Note,** before plotting the chart, the levels of the field that is determining the fill of the bars need to be reordered, as if they aren't, they will be ordered alphabetically in the legend:
 
 ```{r compare areas reorder}
 ordered_levels <- c("Better",
@@ -218,7 +218,7 @@ p
 
 ## Area profiles
 
-The area profiles image is created using the `area_profiles()` function. The argument `rank = TRUE` needs to be included as this returns a polarity field, which is needed for the spine chart:
+The area profiles image is created using the `area_profiles()` function.
 
 ```{r area profiles data, cache=TRUE}
 dfspine <- create_test_data()
@@ -246,14 +246,15 @@ p <- area_profiles(dfspine,
                                         -0.05, 1.08),
                    relative_domain_text_size = 0.75,
                    relative_text_size = 1.2,
-                   bar_width = 0.68)
+                   bar_width = 0.68,
+                   horizonal_arrow_multiplier = 0.7)
 p
 
 ```
 
 ## Population
 
-This function provides the ability to draw the traditional population pyramid. First, the population data is extracted using `fingertipsR` package. Also, note that the ordering of the age bands are defined prior to the data being provided to the `population()` function:
+This function provides the ability to draw the traditional population pyramid. Note that the ordering of the age bands are defined prior to the data being provided to the `population()` function:
 
 ```{r population data}
 set.seed(1234)
@@ -308,7 +309,7 @@ p
 
 ## Box plots
 
-Box plots can be found on some profiles. First the data is extracted using the `fingertipsR` package:
+Box plots can also be drawn.
 
 ```{r boxplots data}
 df <- create_test_data() %>%

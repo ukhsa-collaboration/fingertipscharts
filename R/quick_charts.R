@@ -981,6 +981,8 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #' @param arrow_length number to control the length of the trend arrow
 #' @param arrow_thickness number to control the thickness of the trend arrow
 #' @param arrow_head_angle number to control the angle of the arrow head
+#' @param horizonal_arrow_multiplier number to scale horizonal trend arrows. A
+#'   value below 1 will shorten the arrows
 #' @details This function filters for the area type that is the same as your
 #'   local area type and then calculates the "vertebra" from those data.
 #'   Therefore, if you are comparing outputs with those seen on the Fingertips
@@ -1099,7 +1101,8 @@ area_profiles <- function(data,
                           percent_display = 0.25,
                           arrow_length = 1,
                           arrow_thickness = 2,
-                          arrow_head_angle = 25) {
+                          arrow_head_angle = 25,
+                          horizonal_arrow_multiplier = 1) {
 
         test_area_code <- enquo(area_code)
         dummy_polarity <- enquo(polarity)
@@ -1153,7 +1156,8 @@ area_profiles <- function(data,
                                             median_line_area_code,
                                             comparator_area_code,
                                             dps = dps,
-                                            header_width = diff(range(header_positions)))
+                                            header_width = diff(range(header_positions)),
+                                            horizonal_arrow_multiplier = horizonal_arrow_multiplier)
                 dftable <- dftable %>%
                         mutate(!!quo_name(indicator) :=
                                                   factor(!!indicator,
