@@ -3,7 +3,7 @@ This release has a number of minor bug fixes and improvements. Tests that were p
 ## Test
 
 * local Windows 10 install, R 3.6.2
-* used Travis to check on Linux (202-03-03)
+* used Travis to check on Linux (202-05-03)
 
 ## R CMD check results
 
