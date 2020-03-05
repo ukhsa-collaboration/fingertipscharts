@@ -69,7 +69,7 @@ create_datatable <- function(data, indicator,
                              comparator_area_code,
                              dps = 1,
                              header_width,
-                             horizonal_arrow_multiplier) {
+                             horizontal_arrow_multiplier) {
         if (is.na(comparator_area_code)) {
                 area_codes <- c(local_area_code, median_line_area_code)
         } else {
@@ -130,7 +130,7 @@ create_datatable <- function(data, indicator,
                                        grepl("decreasing", tolower({{ trend }})) ~ "Lower",
                                        TRUE ~ "Not compared"),
                                radius = case_when(
-                                       grepl("no significant change", tolower({{ trend }})) ~ 0.1 * header_width * horizonal_arrow_multiplier / (n() * 1.5),
+                                       grepl("no significant change", tolower({{ trend }})) ~ 0.1 * header_width * horizontal_arrow_multiplier / (n() * 1.5),
                                        grepl("increasing|decreasing", tolower({{ trend }})) ~ 0.1,
                                        TRUE ~ NA_real_
                                        )) %>%
