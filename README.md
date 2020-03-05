@@ -45,7 +45,8 @@ remotes::install_github("PublicHealthEngland/fingertipscharts",
 ## Example of some visualisations
 
 Here are some examples of visualisations the package provides. See the
-vignette for a more comprehensive overview.
+[vignette](https://cran.r-project.org/package=fingertipscharts/vignettes/quick_charts.html)
+for a more comprehensive overview.
 
 ### Trends
 
