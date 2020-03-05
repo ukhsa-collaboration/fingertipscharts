@@ -17,7 +17,7 @@ create_datatable(
   comparator_area_code,
   dps = 1,
   header_width,
-  horizonal_arrow_multiplier
+  horizontal_arrow_multiplier
 )
 }
 \arguments{
@@ -65,7 +65,7 @@ Defaults to NA}
 \item{header_width}{x dimension of chart to be used for normalising the arrow
 length when horizonal}
 
-\item{horizonal_arrow_multiplier}{number to scale horizonal trend arrows. A
+\item{horizontal_arrow_multiplier}{number to scale horizontal trend arrows. A
 value below 1 will shorten the arrows}
 }
 \value{

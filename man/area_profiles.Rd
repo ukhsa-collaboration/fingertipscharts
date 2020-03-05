@@ -41,7 +41,7 @@ area_profiles(
   arrow_length = 1,
   arrow_thickness = 2,
   arrow_head_angle = 25,
-  horizonal_arrow_multiplier = 1
+  horizontal_arrow_multiplier = 1
 )
 }
 \arguments{
@@ -166,7 +166,7 @@ needs to exist for a spine to display. Default is 0.25}
 
 \item{arrow_head_angle}{number to control the angle of the arrow head}
 
-\item{horizonal_arrow_multiplier}{number to scale horizonal trend arrows. A
+\item{horizontal_arrow_multiplier}{number to scale horizontal trend arrows. A
 value below 1 will shorten the arrows}
 }
 \value{
