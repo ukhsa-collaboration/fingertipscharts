@@ -24,7 +24,6 @@ Imports:
     tidyr (>= 1.0.0),
     utils
 Suggests:
-    curl,
     gdtools,
     knitr,
     rmarkdown,

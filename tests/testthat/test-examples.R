@@ -113,9 +113,11 @@ test_that("box plot example draws correctly", {
         )
 })
 
-if(curl::has_internet()) {
+context("map-example")
 
-        context("map-example")
+
+test_that("map example draws correctly", {
+        skip_if_offline()
         ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
 
         p <- fingertipscharts::map(mapdata,
@@ -125,13 +127,10 @@ if(curl::has_internet()) {
                                    title = "Map example",
                                    subtitle = "An indicator for Upper Tier Local Authorities England",
                                    copyright_year = 2019)
-
-        test_that("map example draws correctly", {
-                vdiffr::expect_doppelganger("map example",
-                                            p
-                )
-        })
-}
+        vdiffr::expect_doppelganger("map example",
+                                    p
+        )
+})
 
 context("area-profiles-example")
 df <- create_test_data() %>%
