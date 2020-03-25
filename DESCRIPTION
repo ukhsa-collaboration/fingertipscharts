@@ -8,7 +8,7 @@ Depends: R (>= 3.4.0)
 Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")))
 BugReports: https://github.com/PublicHealthEngland/fingertipscharts/issues
 Imports:
-    dplyr,
+    dplyr (>= 0.8.99.9002),
     geojsonio,
     ggplot2 (>= 3.3),
     httr,

@@ -241,11 +241,10 @@ spine_rescaler <- function(data,
                 split(pull(data, !!indicator)) %>%
                 purrr::map(rlang::quo_text(value)) %>%
                 map_df(quantile, na.rm = TRUE) %>%
-                t %>%
-                data.frame
+                data.frame()
 
         names(quantiles) <- c(paste0("Q", 100 * seq(0, 1, by = 0.25)))
-        quantiles[,3] <- NULL
+        quantiles[, 3] <- NULL
         quantiles <- quantiles %>%
                 rownames_to_column(var = rlang::quo_text(indicator)) %>%
                 merge(mean,
