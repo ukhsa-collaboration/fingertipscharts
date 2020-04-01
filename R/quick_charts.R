@@ -996,7 +996,6 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #' @importFrom utils tail
 #' @importFrom stats reformulate
 #' @importFrom stringr str_trim
-#' @importFrom lemon facet_rep_grid
 #' @examples
 #' ## An example with differing decimal places for individual indicators
 #'
@@ -1381,7 +1380,7 @@ area_profiles <- function(data,
         }
         if (quo_text(domain) != "no_domains") {
                 p <- p +
-                        facet_rep_grid(reformulate(".", quo_text(domain)),
+                        facet_grid(reformulate(".", quo_text(domain)),
                                    space = "free_y",
                                    scales = "free_y",
                                    switch = "y") +
@@ -1399,6 +1398,7 @@ area_profiles <- function(data,
                                    size = 0.2)
         } else if (show_dividers == "outer") {
                 p <- p +
+                        annotate("segment", x=-Inf, xend=-Inf, y=-Inf, yend=Inf) +
                         theme(axis.line.x = element_line())
         }
         if (header_positions[length(header_positions)] < 1) {

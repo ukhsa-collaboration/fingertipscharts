@@ -4,13 +4,15 @@
 \name{mapdata}
 \alias{mapdata}
 \title{Dummy data for Upper Tier Local Authorities so dummy maps can be produced}
-\format{A data frame with 152 records and 4 fields:
+\format{
+A data frame with 152 records and 4 fields:
 \describe{
   \item{AreaCode}{Office for National Statistics area codes}
   \item{AreaName}{Office for National Statistics area names}
   \item{Significance}{The statistical significance of the area compared to a benchmark}
   \item{Value}{The indicator value for the data}
-}}
+}
+}
 \usage{
 mapdata
 }
