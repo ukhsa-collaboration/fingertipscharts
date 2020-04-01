@@ -13,7 +13,6 @@ Imports:
     ggplot2 (>= 3.3),
     httr,
     leaflet,
-    lemon,
     purrr,
     rlang,
     scales,
@@ -29,6 +28,7 @@ Suggests:
     rmarkdown,
     testthat,
     vdiffr
+Remotes: tidyverse/dplyr
 License: GPL-3
 VignetteBuilder: knitr
 Encoding: UTF-8
