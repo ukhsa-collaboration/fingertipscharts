@@ -1,9 +1,9 @@
-This release has a number of minor bug fixes and improvements. Tests that were previously failing are now passing.
+This release has a number of minor bug fixes and improvements. Also, updated to prepare for new dplyr version, and the archive of lemon, a package that was previously depended on. Tests that were previously failing are now passing.
 
 ## Test
 
-* local Windows 10 install, R 3.6.2
-* used Travis to check on Linux (202-05-03)
+* local Windows 10 install, R 3.6.3
+* used Travis to check on Linux (2020-04-04)
 
 ## R CMD check results
 

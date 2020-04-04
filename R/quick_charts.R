@@ -747,6 +747,7 @@ box_plots <- function(data, timeperiod, value,
 #' @importFrom stats setNames
 #' @importFrom sf st_as_sf
 #' @examples
+#' \dontrun{
 #' ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
 #'
 #' p <- map(mapdata,
@@ -768,7 +769,7 @@ box_plots <- function(data, timeperiod, value,
 #'          value = Value,
 #'          name_for_label = AreaName,
 #'          title = "An indicator for Upper Tier<br>Local Authorities England")
-#' p
+#' p}
 #' @export
 map <- function(data, ons_api, area_code, fill, type = "static", value, name_for_label,
                 title = "", subtitle = "", copyright_size = 4, copyright_year = Sys.Date()) {

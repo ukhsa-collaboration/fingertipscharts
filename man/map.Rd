@@ -52,6 +52,7 @@ a either a static or interactive ggplot choropleth map
 Plot a choropleth map for an indicator
 }
 \examples{
+\dontrun{
 ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
 
 p <- map(mapdata,
@@ -73,7 +74,7 @@ p <- map(mapdata,
          value = Value,
          name_for_label = AreaName,
          title = "An indicator for Upper Tier<br>Local Authorities England")
-p
+p}
 }
 \seealso{
 Other quick charts: 
