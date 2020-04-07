@@ -980,6 +980,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'   needs to exist for a spine to display. Default is 0.25
 #' @param arrow_length number to control the length of the trend arrow
 #' @param arrow_thickness number to control the thickness of the trend arrow
+#' @param arrow_head_length number to control the length of the arrow head
 #' @param arrow_head_angle number to control the angle of the arrow head
 #' @param horizontal_arrow_multiplier number to scale horizontal trend arrows. A
 #'   value below 1 will shorten the arrows
@@ -1100,6 +1101,7 @@ area_profiles <- function(data,
                           percent_display = 0.25,
                           arrow_length = 1,
                           arrow_thickness = 2,
+                          arrow_head_length = arrow_length / 3,
                           arrow_head_angle = 25,
                           horizontal_arrow_multiplier = 1) {
 
@@ -1346,7 +1348,7 @@ area_profiles <- function(data,
                                        colour = .data$trend_sig,
                                        radius = .data$radius * arrow_length),
                                    size = arrow_thickness,
-                                   arrow = arrow(length = unit(arrow_length / 50, "npc"),
+                                   arrow = arrow(length = unit(arrow_head_length, "cm"),
                                            type = "open",
                                            angle = arrow_head_angle)
                         ) +
@@ -1380,7 +1382,7 @@ area_profiles <- function(data,
         }
         if (quo_text(domain) != "no_domains") {
                 p <- p +
-                        facet_grid(reformulate(".", quo_text(domain)),
+                        facet_grid(rows = quo_text(domain),
                                    space = "free_y",
                                    scales = "free_y",
                                    switch = "y") +
