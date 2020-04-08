@@ -747,6 +747,7 @@ box_plots <- function(data, timeperiod, value,
 #' @importFrom stats setNames
 #' @importFrom sf st_as_sf
 #' @examples
+#' \dontrun{
 #' ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
 #'
 #' p <- map(mapdata,
@@ -768,7 +769,7 @@ box_plots <- function(data, timeperiod, value,
 #'          value = Value,
 #'          name_for_label = AreaName,
 #'          title = "An indicator for Upper Tier<br>Local Authorities England")
-#' p
+#' p}
 #' @export
 map <- function(data, ons_api, area_code, fill, type = "static", value, name_for_label,
                 title = "", subtitle = "", copyright_size = 4, copyright_year = Sys.Date()) {
@@ -980,6 +981,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'   needs to exist for a spine to display. Default is 0.25
 #' @param arrow_length number to control the length of the trend arrow
 #' @param arrow_thickness number to control the thickness of the trend arrow
+#' @param arrow_head_length number to control the length of the arrow head
 #' @param arrow_head_angle number to control the angle of the arrow head
 #' @param horizontal_arrow_multiplier number to scale horizontal trend arrows. A
 #'   value below 1 will shorten the arrows
@@ -1100,6 +1102,7 @@ area_profiles <- function(data,
                           percent_display = 0.25,
                           arrow_length = 1,
                           arrow_thickness = 2,
+                          arrow_head_length = arrow_length / 3,
                           arrow_head_angle = 25,
                           horizontal_arrow_multiplier = 1) {
 
@@ -1346,7 +1349,7 @@ area_profiles <- function(data,
                                        colour = .data$trend_sig,
                                        radius = .data$radius * arrow_length),
                                    size = arrow_thickness,
-                                   arrow = arrow(length = unit(arrow_length / 50, "npc"),
+                                   arrow = arrow(length = unit(arrow_head_length, "cm"),
                                            type = "open",
                                            angle = arrow_head_angle)
                         ) +
@@ -1380,7 +1383,7 @@ area_profiles <- function(data,
         }
         if (quo_text(domain) != "no_domains") {
                 p <- p +
-                        facet_grid(reformulate(".", quo_text(domain)),
+                        facet_grid(rows = quo_text(domain),
                                    space = "free_y",
                                    scales = "free_y",
                                    switch = "y") +
