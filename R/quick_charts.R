@@ -1342,24 +1342,9 @@ area_profiles <- function(data,
                                   lineheight = datatable_line_height,
                                   hjust = 1
                         ) +
-                        geom_spoke(data = dftable,
-                                   aes(x = ind,
-                                       y = header_positions[2],
-                                       angle = .data$direction,
-                                       colour = .data$trend_sig,
-                                       radius = .data$radius * arrow_length),
-                                   size = arrow_thickness,
-                                   arrow = arrow(length = unit(arrow_head_length, "cm"),
-                                           type = "open",
-                                           angle = arrow_head_angle)
-                        ) +
-                        geom_spoke(data = dftable,
-                                   aes(x = ind,
-                                       y = header_positions[2],
-                                       angle = .data$direction + pi,
-                                       colour = .data$trend_sig,
-                                       radius = .data$radius * arrow_length),
-                                   size = arrow_thickness
+                        geom_image(data=dftable,
+                                   aes(x=ind,y=header_positions[2],
+                                       image=.data$new_trend,size=I(width))
                         ) +
                         geom_text(data = dftable,
                                   aes(label = ind,
