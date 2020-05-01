@@ -523,7 +523,7 @@ trends <- function(data, timeperiod, value,
 #' @import ggplot2
 #' @import dplyr
 #' @importFrom rlang quo_text
-#' @importFrom scales pretty_breaks
+#' @importFrom scales breaks_pretty
 #' @examples
 #' library(dplyr)
 #' agelevels <- c("0-4", "5-9","10-14","15-19",
@@ -588,7 +588,7 @@ population <- function(data, value, sex, age,
                        !!quo_name(value) :=
                                ifelse((!!sex) == "Male",
                                       -(!!value), (!!value)))
-        extremex <- pretty_breaks(n = 3)(0:max(abs(pull(data, !!value)),
+        extremex <- breaks_pretty(n = 3)(0:max(abs(pull(data, !!value)),
                                                na.rm = T))
         population <- ggplot(filter(data, (!!area) == area_name),
                              aes_string(y = quo_text(value),
