@@ -1,9 +1,9 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-language: R
+language: r
 dist: trusty
-sudo: required
 cache: packages
+os: linux
 
 apt_packages:
   - libudunits2-dev
