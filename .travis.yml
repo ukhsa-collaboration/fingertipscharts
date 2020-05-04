@@ -22,6 +22,7 @@ compiler:
 
 
 r_github_packages:
+  - r-lib/vctrs # Install manually because dev vctrs
   - r-lib/covr
 
 after_success:
