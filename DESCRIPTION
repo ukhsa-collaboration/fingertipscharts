@@ -28,7 +28,6 @@ Suggests:
     rmarkdown,
     testthat,
     vdiffr
-Remotes: tidyverse/dplyr
 License: GPL-3
 VignetteBuilder: knitr
 Encoding: UTF-8
