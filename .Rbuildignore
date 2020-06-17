@@ -7,3 +7,6 @@ vignettes/quick_charts_cache/
 .covrignore
 ^\.travis\.yml$
 LOCAL_APPDATA_FONTCONFIG_CACHE
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
