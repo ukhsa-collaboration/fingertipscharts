@@ -913,14 +913,14 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #' @param timeperiod unquoted field name of the time period field
 #' @param trend unquoted field name of the trend field; if the user doesn't want
 #'   to display trend information then leave this incomplete and amend the
-#'   header_labels argument to remove the Trend header. Text within this field
-#'   should contain one of the following words to control the arrows that are
-#'   displayed; "decreasing", "increasing", "no significant change", "could not
-#'   be calculated". The text within this field should contain one of the
-#'   following words to control the colour; "better", "worse", "no significant
-#'   change". If none of these words appear in the string, the words
+#'   header_labels argument to replace the "Trend" header with "". Text within
+#'   this field should contain one of the following words to control the arrows
+#'   that are displayed; "decreasing", "increasing", "no significant change",
+#'   "could not be calculated". The text within this field should contain one of
+#'   the following words to control the colour; "better", "worse", "no
+#'   significant change". If none of these words appear in the string, the words
 #'   "increasing" or "decreasing" will be used to colour the arrows in different
-#'   shades of blue"
+#'   shades of blue
 #' @param polarity unquoted field name containing the polarity information
 #'   (currently only handles polarity returned by fingertipsR package)
 #' @param significance unquoted field name describing the statistical

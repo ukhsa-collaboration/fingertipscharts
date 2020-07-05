@@ -1,3 +1,7 @@
+# fingertipscharts 0.0.11.9000
+
+* Improved documentation for `area_profiles()`
+
 # fingertipscharts 0.0.11
 
 * trend argument added to `area_profiles()`
