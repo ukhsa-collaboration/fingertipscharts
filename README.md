@@ -90,7 +90,7 @@ p <- trends(df,
 p
 ```
 
-![](man/figures/README-trends-1.png)<!-- -->
+![](tools/figures/README-trends-1.png)<!-- -->
 
 ### Compare indicators
 
@@ -126,7 +126,7 @@ p <- compare_areas(df,
 p
 ```
 
-![](man/figures/README-compare-indicators-1.png)<!-- -->
+![](tools/figures/README-compare-indicators-1.png)<!-- -->
 
 # Area profiles
 
@@ -156,4 +156,4 @@ p <- area_profiles(dfspine,
 p
 ```
 
-<img src="man/figures/README-area_profiles-1.png" width="100%" />
+<img src="tools/figures/README-area_profiles-1.png" width="100%" />
