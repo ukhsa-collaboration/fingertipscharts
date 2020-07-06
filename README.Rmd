@@ -1,25 +1,31 @@
+---
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![Build
-Status](https://travis-ci.org/PublicHealthEngland/fingertipscharts.svg)](https://travis-ci.org/PublicHealthEngland/fingertipscharts)
-[![Coverage
-Status](https://coveralls.io/repos/github/PublicHealthEngland/fingertipscharts/badge.svg?branch=master)](https://coveralls.io/github/PublicHealthEngland/fingertipscharts?branch=master)
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-"
+)
+```
 
-[![CRAN Status
-Badge](http://www.r-pkg.org/badges/version/fingertipscharts)](https://cran.r-project.org/package=fingertipscharts)
-[![CRAN Total
-Downloads](http://cranlogs.r-pkg.org/badges/grand-total/fingertipscharts)](https://cran.r-project.org/package=fingertipscharts)
-[![CRAN Monthly
-Downloads](http://cranlogs.r-pkg.org/badges/fingertipscharts)](https://cran.r-project.org/package=fingertipscharts)
+[![Build Status](https://travis-ci.org/PublicHealthEngland/fingertipscharts.svg)](https://travis-ci.org/PublicHealthEngland/fingertipscharts)
+[![Coverage Status](https://coveralls.io/repos/github/PublicHealthEngland/fingertipscharts/badge.svg?branch=master)](https://coveralls.io/github/PublicHealthEngland/fingertipscharts?branch=master)
+
+[![CRAN Status Badge](http://www.r-pkg.org/badges/version/fingertipscharts)](https://cran.r-project.org/package=fingertipscharts)
+[![CRAN Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/fingertipscharts)](https://cran.r-project.org/package=fingertipscharts)
+[![CRAN Monthly Downloads](http://cranlogs.r-pkg.org/badges/fingertipscharts)](https://cran.r-project.org/package=fingertipscharts)
 
 # fingertipscharts
 
-This is an R package to help users to easily reproduce charts that are
-displayed on Public Health England’s
-[Fingertips](http://fingertips.phe.org.uk/) data tool. Along with the
-`fingertipsR` package, this package can be used to help users bring the
-data on the website into their own outputs.
+This is an R package to help users to easily reproduce charts that are displayed on Public Health England's [Fingertips](http://fingertips.phe.org.uk/) data tool. Along with the `fingertipsR` package, this package can be used to help users bring the data on the website into their own outputs.
 
 ## Installation
 
@@ -27,30 +33,28 @@ data on the website into their own outputs.
 
 Get the latest released, stable version from CRAN:
 
-``` r
+```{r cran install, eval=FALSE}
 install.packages("fingertipscharts")
 ```
 
 ### With remotes
 
-You can install the latest development version from github using
-[remotes](https://github.com/r-lib/remotes):
+You can install the latest development version from github using [remotes](https://github.com/r-lib/remotes):
 
-``` r
+```{r gh-installation, eval = FALSE}
 # install.packages("remotes")
 remotes::install_github("PublicHealthEngland/fingertipscharts",
                         build_vignettes = TRUE)
 ```
 
+
 ## Example of some visualisations
 
-Here are some examples of visualisations the package provides. See the
-[vignette](https://cran.r-project.org/package=fingertipscharts/vignettes/quick_charts.html)
-for a more comprehensive overview.
+Here are some examples of visualisations the package provides. See the [vignette](https://cran.r-project.org/package=fingertipscharts/vignettes/quick_charts.html) for a more comprehensive overview.
 
 ### Trends
 
-``` r
+```{r trends, message=FALSE}
 library(fingertipscharts)
 library(dplyr)
 
@@ -90,11 +94,9 @@ p <- trends(df,
 p
 ```
 
-![](man/figures/README-trends-1.png)<!-- -->
-
 ### Compare indicators
 
-``` r
+```{r compare-indicators, warning=FALSE}
 # Create the data to plot, filtering for areas within a single parent, and also the parent and the national area
 region <- "PAC10"
 top_names <- c("C001", region)
@@ -126,11 +128,9 @@ p <- compare_areas(df,
 p
 ```
 
-![](man/figures/README-compare-indicators-1.png)<!-- -->
-
 # Area profiles
 
-``` r
+```{r area_profiles, warning=FALSE, out.width='100%', fig.width=11, fig.height=4}
 dfspine <- create_test_data()
 p <- area_profiles(dfspine,
                    value = Value,
@@ -155,5 +155,3 @@ p <- area_profiles(dfspine,
                        -0.15, -0.05, 1.08))
 p
 ```
-
-<img src="man/figures/README-area_profiles-1.png" width="100%" />
