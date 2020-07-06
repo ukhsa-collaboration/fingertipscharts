@@ -1,8 +1,8 @@
 ---
-title: "Producing charts from Fingertips"
+title: "Producing charts available on Fingertips"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Creating the charts available on Fingertips}
+  %\VignetteIndexEntry{Producing charts available on Fingertips}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

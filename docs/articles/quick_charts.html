@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Producing charts from Fingertips • fingertipscharts</title>
+<title>Producing charts available on Fingertips • fingertipscharts</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Producing charts from Fingertips">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Producing charts available on Fingertips">
 <meta property="og:description" content="fingertipscharts">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">fingertipscharts</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.11.9000</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/quick_charts.html">Producing charts from Fingertips</a>
+      <a href="../articles/quick_charts.html">Producing charts available on Fingertips</a>
     </li>
   </ul>
 </li>
@@ -85,7 +85,7 @@
 <script src="quick_charts_files/leaflet-binding-2.0.3/leaflet.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Producing charts from Fingertips</h1>
+      <h1 data-toc-skip>Producing charts available on Fingertips</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/PublicHealthEngland/fingertipscharts/blob/master/vignettes/quick_charts.Rmd"><code>vignettes/quick_charts.Rmd</code></a></small>
@@ -111,19 +111,20 @@
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">fingertipscharts</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dplyr</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyr</span>)</pre></body></html></div>
+<pre><code>## Warning: package 'tidyr' was built under R version 4.0.2</code></pre>
 </div>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p>This function plots the <strong>Overview</strong> view (also known as the Tartan Rug). All of the charts in this vignette, starting with this one, use a function called <code><a href="../reference/create_test_data.html">create_test_data()</a></code> from this packages to generate a dummy dataset. This data has the same structure as data exported from the <code>fingertips_data()</code> function in the <code>fingertipsR</code> package.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">region</span> <span class="kw">&lt;-</span> <span class="st">"PAC19"</span>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">region</span> <span class="kw">&lt;-</span> <span class="st">"PAC19"</span>
 <span class="no">top_names</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"C001"</span>, <span class="no">region</span>)
 <span class="no">dfdom</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_test_data.html">create_test_data</a></span>() <span class="kw">%&gt;%</span>
         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>((<span class="no">AreaCode</span> <span class="kw">%in%</span> <span class="no">top_names</span> <span class="kw">|</span>
                                 <span class="no">ParentAreaCode</span> <span class="kw">==</span> <span class="no">region</span>)) <span class="kw">%&gt;%</span>
         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">Value</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">Value</span>, <span class="fl">1</span>))</pre></body></html></div>
 <p>This is how the <code><a href="../reference/overview.html">overview()</a></code> function works:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/overview.html">overview</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">dfdom</span>,
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/overview.html">overview</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">dfdom</span>,
               <span class="kw">area</span> <span class="kw">=</span> <span class="no">AreaCode</span>,
               <span class="kw">indicator</span> <span class="kw">=</span> <span class="no">IndicatorName</span>,
               <span class="kw">value</span> <span class="kw">=</span> <span class="no">Value</span>,
@@ -138,14 +139,14 @@
 <h2 class="hasAnchor">
 <a href="#compare-indicators" class="anchor"></a>Compare indicators</h2>
 <p>Here is a function that helps produce a scatter plot as displayed on Fingertips. First the data needs to be changed to the correct format. The two variables that will be plotted need to be in separate fields. The <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> function from the <code>tidyr</code> package demonstrates how to do this below:</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_test_data.html">create_test_data</a></span>() <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_test_data.html">create_test_data</a></span>() <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">IndicatorName</span> <span class="kw">%in%</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Indicator 1"</span>, <span class="st">"Indicator 2"</span>)) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(<span class="no">IndicatorName</span>, <span class="no">AreaCode</span>, <span class="no">Value</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">IndicatorName</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span>(<span class="st">" "</span>, <span class="st">""</span>, <span class="no">IndicatorName</span>)) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span>(<span class="kw">names_from</span> <span class="kw">=</span> <span class="no">IndicatorName</span>,
               <span class="kw">values_from</span> <span class="kw">=</span> <span class="no">Value</span>)</pre></body></html></div>
 <p>This is how the <code><a href="../reference/compare_indicators.html">compare_indicators()</a></code> function works:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/compare_indicators.html">compare_indicators</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">df</span>,
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/compare_indicators.html">compare_indicators</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">df</span>,
                         <span class="kw">x</span> <span class="kw">=</span> <span class="no">Indicator1</span>,
                         <span class="kw">y</span> <span class="kw">=</span> <span class="no">Indicator2</span>,
                         <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"This is indicator 1"</span>,
@@ -161,12 +162,12 @@
 <a href="#maps" class="anchor"></a>Maps</h2>
 <p>Here the package provides both interactive and static maps.</p>
 <p>The shape files need to be sources from the ONS Geography Portal. To do this, click on the API button <a href="http://geoportal.statistics.gov.uk/datasets/counties-and-unitary-authorities-december-2016-ultra-generalised-clipped-boundaries-in-england-and-wales">here</a>, using Counties and Unitary Authorities as an example, and then use the GeoJSON address as the string input to the <code>ons_api</code> parameter.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">ons_api</span> <span class="kw">&lt;-</span> <span class="st">"https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"</span></pre></body></html></div>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">ons_api</span> <span class="kw">&lt;-</span> <span class="st">"https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"</span></pre></body></html></div>
 <div id="static" class="section level3">
 <h3 class="hasAnchor">
 <a href="#static" class="anchor"></a>Static</h3>
 <p><strong>Note,</strong> before plotting the chart, the levels of the field that is determining the fill of the polygons need to be reordered, as if they aren’t, they will be ordered alphabetically in the legend:</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">ordered_levels</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Better"</span>,
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">ordered_levels</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Better"</span>,
                     <span class="st">"Similar"</span>,
                     <span class="st">"Worse"</span>,
                     <span class="st">"Not compared"</span>)
@@ -175,7 +176,7 @@
                        <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">Significance</span>,
                               <span class="kw">levels</span> <span class="kw">=</span> <span class="no">ordered_levels</span>))</pre></body></html></div>
 <p>The default map type is static:</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="kw pkg">fingertipscharts</span><span class="kw ns">::</span><span class="fu"><a href="../reference/map.html">map</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">df</span>,
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="kw pkg">fingertipscharts</span><span class="kw ns">::</span><span class="fu"><a href="../reference/map.html">map</a></span>(<span class="kw">data</span> <span class="kw">=</span> <span class="no">df</span>,
                     <span class="kw">ons_api</span> <span class="kw">=</span> <span class="no">ons_api</span>,
                     <span class="kw">area_code</span> <span class="kw">=</span> <span class="no">AreaCode</span>,
                     <span class="kw">fill</span> <span class="kw">=</span> <span class="no">Significance</span>,
@@ -189,7 +190,7 @@
 <h3 class="hasAnchor">
 <a href="#interactive" class="anchor"></a>Interactive</h3>
 <p>It is also possible to have interactive maps. Note, for this to work the value parameter must be included and subtitle doesn’t work.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/map.html">map</a></span>(<span class="no">df</span>,
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/map.html">map</a></span>(<span class="no">df</span>,
          <span class="kw">ons_api</span> <span class="kw">=</span> <span class="no">ons_api</span>,
          <span class="kw">area_code</span> <span class="kw">=</span> <span class="no">AreaCode</span>,
          <span class="kw">fill</span> <span class="kw">=</span> <span class="no">Significance</span>,
@@ -206,7 +207,7 @@
 <h2 class="hasAnchor">
 <a href="#trends" class="anchor"></a>Trends</h2>
 <p>This function allows users to plot the trends graph. The dummy dataset is slightly manipulated here to extend over a few years. A significance is then prescribed based on whether the confidence intervals overlap the country value.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_test_data.html">create_test_data</a></span>() <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_test_data.html">create_test_data</a></span>() <span class="kw">%&gt;%</span>
         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="no">IndicatorName</span>) <span class="kw">%&gt;%</span>
         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">Timeperiod</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"2011"</span>, <span class="st">"2012"</span>, <span class="st">"2013"</span>, <span class="st">"2014"</span>, <span class="st">"2015"</span>, <span class="st">"2016"</span>),
                                 <span class="kw">each</span> <span class="kw">=</span> <span class="fl">111</span>))
@@ -222,7 +223,7 @@
     <span class="fl">TRUE</span> ~ <span class="st">"Similar"</span>
   ))</pre></body></html></div>
 <p>Here is an example of how to use the <code><a href="../reference/trends.html">trends()</a></code> function:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/trends.html">trends</a></span>(<span class="no">df</span>,
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/trends.html">trends</a></span>(<span class="no">df</span>,
             <span class="kw">timeperiod</span> <span class="kw">=</span> <span class="no">Timeperiod</span>,
             <span class="kw">value</span> <span class="kw">=</span> <span class="no">Value</span>,
             <span class="kw">area</span> <span class="kw">=</span> <span class="no">AreaCode</span>,
@@ -242,14 +243,14 @@
 <h2 class="hasAnchor">
 <a href="#compareareas" class="anchor"></a>Compare areas</h2>
 <p>This code filters the dummy dataset for a single region and its parent, and all the child areas within that region.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">region</span> <span class="kw">&lt;-</span> <span class="st">"PAC10"</span>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">region</span> <span class="kw">&lt;-</span> <span class="st">"PAC10"</span>
 <span class="no">top_names</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"C001"</span>, <span class="no">region</span>)
 <span class="no">df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_test_data.html">create_test_data</a></span>() <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">IndicatorName</span> <span class="kw">==</span> <span class="st">"Indicator 3"</span>,
          (<span class="no">ParentAreaCode</span> <span class="kw">==</span> <span class="no">region</span> <span class="kw">|</span>
             <span class="no">AreaCode</span> <span class="kw">%in%</span> <span class="no">top_names</span>))</pre></body></html></div>
 <p><strong>Note,</strong> before plotting the chart, the levels of the field that is determining the fill of the bars need to be reordered, as if they aren’t, they will be ordered alphabetically in the legend:</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">ordered_levels</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Better"</span>,
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">ordered_levels</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Better"</span>,
                     <span class="st">"Similar"</span>,
                     <span class="st">"Worse"</span>,
                     <span class="st">"Not compared"</span>)
@@ -258,7 +259,7 @@
                        <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">Significance</span>,
                               <span class="kw">levels</span> <span class="kw">=</span> <span class="no">ordered_levels</span>))</pre></body></html></div>
 <p>The <code>compare_areas</code> function makes plotting the compare areas chart straight forward.</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/compare_areas.html">compare_areas</a></span>(<span class="no">df</span>,
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/compare_areas.html">compare_areas</a></span>(<span class="no">df</span>,
                    <span class="no">AreaCode</span>,
                    <span class="no">Value</span>,
                       <span class="kw">fill</span> <span class="kw">=</span> <span class="no">Significance</span>,
@@ -274,8 +275,8 @@
 <h2 class="hasAnchor">
 <a href="#area-profiles" class="anchor"></a>Area profiles</h2>
 <p>The area profiles image is created using the <code><a href="../reference/area_profiles.html">area_profiles()</a></code> function.</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">dfspine</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_test_data.html">create_test_data</a></span>()</pre></body></html></div>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/area_profiles.html">area_profiles</a></span>(<span class="no">dfspine</span>,
+<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">dfspine</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_test_data.html">create_test_data</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/area_profiles.html">area_profiles</a></span>(<span class="no">dfspine</span>,
                    <span class="kw">value</span> <span class="kw">=</span> <span class="no">Value</span>,
                    <span class="kw">count</span> <span class="kw">=</span> <span class="no">Count</span>,
                    <span class="kw">area_code</span> <span class="kw">=</span> <span class="no">AreaCode</span>,
@@ -304,7 +305,7 @@
 <h2 class="hasAnchor">
 <a href="#population" class="anchor"></a>Population</h2>
 <p>This function provides the ability to draw the traditional population pyramid. Note that the ordering of the age bands are defined prior to the data being provided to the <code><a href="../reference/population.html">population()</a></code> function:</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1234</span>)
+<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">1234</span>)
 <span class="no">agelevels</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"0-4"</span>, <span class="st">"5-9"</span>,<span class="st">"10-14"</span>,<span class="st">"15-19"</span>,
                <span class="st">"20-24"</span>,<span class="st">"25-29"</span>,<span class="st">"30-34"</span>,
                <span class="st">"35-39"</span>,<span class="st">"40-44"</span>,<span class="st">"45-49"</span>,
@@ -334,7 +335,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">Age</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="no">agelevels</span>, <span class="fl">6</span>),
                           <span class="kw">levels</span> <span class="kw">=</span> <span class="no">agelevels</span>))</pre></body></html></div>
 <p>This is how the function works:</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/population.html">population</a></span>(<span class="no">pops</span>,
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/population.html">population</a></span>(<span class="no">pops</span>,
                 <span class="kw">value</span> <span class="kw">=</span> <span class="no">Value</span>,
                 <span class="kw">sex</span> <span class="kw">=</span> <span class="no">Sex</span>,
                 <span class="kw">age</span> <span class="kw">=</span> <span class="no">Age</span>,
@@ -352,12 +353,12 @@
 <h2 class="hasAnchor">
 <a href="#box-plots" class="anchor"></a>Box plots</h2>
 <p>Box plots can also be drawn.</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_test_data.html">create_test_data</a></span>() <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/create_test_data.html">create_test_data</a></span>() <span class="kw">%&gt;%</span>
         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span>(<span class="no">IndicatorName</span>) <span class="kw">%&gt;%</span>
         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">Timeperiod</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"2011"</span>, <span class="st">"2012"</span>, <span class="st">"2013"</span>, <span class="st">"2014"</span>, <span class="st">"2015"</span>, <span class="st">"2016"</span>),
                                 <span class="kw">each</span> <span class="kw">=</span> <span class="fl">111</span>))</pre></body></html></div>
 <p>This is how the function works. Note, the levels of the factor for the <code>timeperiod</code> parameter may need to be reordered, as this determines the order along the x-axis:</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/box_plots.html">box_plots</a></span>(<span class="no">df</span>,
+<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/box_plots.html">box_plots</a></span>(<span class="no">df</span>,
                <span class="kw">timeperiod</span> <span class="kw">=</span> <span class="no">Timeperiod</span>,
                <span class="kw">value</span> <span class="kw">=</span> <span class="no">Value</span>,
                <span class="kw">title</span> <span class="kw">=</span> <span class="st">"Box plot for indicator"</span>,
