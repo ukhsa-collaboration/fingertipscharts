@@ -117,31 +117,21 @@ create_datatable <- function(data, indicator,
                 data_trend <- data %>%
                         filter(({{ area_code }}) == local_area_code) %>%
                         select({{ indicator }}, {{ trend }}) %>%
-                        mutate(direction = case_when(
-                                grepl("decreasing", tolower({{ trend }})) ~ pi,
-                                grepl("increasing", tolower({{ trend }})) ~ 0,
-                                grepl("no significant change", tolower({{ trend }})) ~ pi / 2,
-                                TRUE ~ NA_real_),
-                               trend_sig = case_when(
-                                       grepl("better", tolower({{ trend }})) ~ "Better",
-                                       grepl("worse", tolower({{ trend }})) ~ "Worse",
-                                       grepl("no significant change", tolower({{ trend }})) ~ "Similar",
-                                       grepl("increasing", tolower({{ trend }})) ~ "Higher",
-                                       grepl("decreasing", tolower({{ trend }})) ~ "Lower",
-                                       TRUE ~ "Not compared"),
-                               radius = case_when(
-                                       grepl("no significant change", tolower({{ trend }})) ~ 0.1 * header_width * horizontal_arrow_multiplier / (n() * 1.5),
-                                       grepl("increasing|decreasing", tolower({{ trend }})) ~ 0.1,
-                                       TRUE ~ NA_real_
-                                       )) %>%
+                        mutate(new_trend = case_when(
+                                (grepl("decreasing", tolower({{ trend }})) && grepl("better", tolower({{ trend }}))) ~ "https://fingertips.phe.org.uk/images/trends/down_green.png",
+                                (grepl("increasing", tolower({{ trend }})) && grepl("better", tolower({{ trend }})))  ~ "https://fingertips.phe.org.uk/images/trends/up_green.png",
+                                (grepl("decreasing", tolower({{ trend }})) && grepl("worse", tolower({{ trend }}))) ~ "https://fingertips.phe.org.uk/images/trends/down_red.png",
+                                (grepl("increasing", tolower({{ trend }})) && grepl("worse", tolower({{ trend }})))  ~ "https://fingertips.phe.org.uk/images/trends/up_red.png",
+                                grepl("no significant change", tolower({{ trend }})) ~ "https://fingertips.phe.org.uk/images/trends/no_change.png",
+                                TRUE ~ "https://fingertips.phe.org.uk/images/trends/no_calc.png"),
+                               width=0.02
+                        ) %>%
                         select(-{{ trend }})
         } else {
                 data_trend <- data %>%
                         select({{ indicator }}) %>%
                         unique() %>%
-                        mutate(direction = NA,
-                               trend_sig = "",
-                               radius = NA)
+                        mutate(new_trend = NA)
 
         }
         data_temp <- merge(data_temp, data_count,
@@ -150,7 +140,7 @@ create_datatable <- function(data, indicator,
                 merge(data_trend,
                       by = rlang::quo_text(indicator),
                       all.x = TRUE) %>%
-                select({{ indicator }}, .data$direction, .data$trend_sig, {{ timeperiod }}, {{ count }}, everything())
+                select({{ indicator }}, .data$new_trend, {{ timeperiod }}, {{ count }}, everything())
 
 
         return(data_temp)
