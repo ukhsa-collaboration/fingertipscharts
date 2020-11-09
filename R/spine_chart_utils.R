@@ -34,8 +34,8 @@ spine_data_check <- function(data, indicator, area_code) {
                 count() %>%
                 filter(n > 1)
         if (nrow(data) > 0) {
-                area <- data[1,2]
-                indicatorname <- data[1,1]
+                area <- data[[as_label(area_code)]][1]
+                indicatorname <- as.character(data[[as_label(indicator)]][1])
                 message <- paste("Some areas have multiple values for an indicator. An example is",
                                  area,
                                  "for the indicator",

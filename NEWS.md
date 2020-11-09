@@ -1,8 +1,10 @@
 # fingertipscharts 0.0.11.9000
 
 * Improved documentation for `area_profiles()`
+* Fixed interactive map where fill is not a factor
+* Improved messaging for area_profiles() data issues
 
-# fingertipscharts 0.0.11
+# fingertipscharts 0.0.11 (2020-06-05)
 
 * trend argument added to `area_profiles()`
 * `trends()` function now displays the area and comparator in the key for the chart

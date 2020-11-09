@@ -31,7 +31,8 @@ from ONS API}
 
 \item{type}{string; the output map required. Can be "static" or "interactive"}
 
-\item{value}{field containing variable to be plotted on x axis (unquoted)}
+\item{value}{if interactive map, name of field containing values
+to be used for label (unquoted)}
 
 \item{name_for_label}{if interactive map, name of field containing area names
 to be used for label (unquoted) - optional}
@@ -42,8 +43,8 @@ to be used for label (unquoted) - optional}
 
 \item{copyright_size}{number; fix the size of the copyright text}
 
-\item{copyright_year}{number (length 4 characters) or Date class; the copyright year
-displayed at bottom of the map. Applies to static maps only}
+\item{copyright_year}{number (length 4 characters) or Date class; the
+copyright year displayed at bottom of the map. Applies to static maps only}
 }
 \value{
 a either a static or interactive ggplot choropleth map

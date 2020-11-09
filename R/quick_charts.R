@@ -732,12 +732,14 @@ box_plots <- function(data, timeperiod, value,
 #' @param type string; the output map required. Can be "static" or "interactive"
 #' @param ons_api string; GeoJSON address provided from the ONS geography portal
 #' @param copyright_size number; fix the size of the copyright text
-#' @param copyright_year number (length 4 characters) or Date class; the copyright year
-#'   displayed at bottom of the map. Applies to static maps only
+#' @param copyright_year number (length 4 characters) or Date class; the
+#'   copyright year displayed at bottom of the map. Applies to static maps only
 #' @param name_for_label if interactive map, name of field containing area names
 #'   to be used for label (unquoted) - optional
 #' @param fill field to be used to determine the colouring of the areas
 #'   (unquoted)
+#' @param value if interactive map, name of field containing values
+#'   to be used for label (unquoted)
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr
@@ -834,13 +836,22 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                 } else if (type == "interactive") { # nocov start
                         ftipspal <- scale_fill_phe("fingertips")
                         ftipspal <- ftipspal$palette(1)
-                        data <- data %>%
-                                mutate(!!quo_name(fill) :=
-                                               factor(!!fill,
-                                                      levels = levels(!!fill)))
-                        factpal <- colorFactor(ftipspal[levels(pull(data, !!fill))],
-                                               domain = pull(data, !!fill),
-                                               ordered = TRUE)
+
+                        if (is.factor(pull(data, !!fill))) {
+                                # data <- data %>%
+                                #         mutate(!!quo_name(fill) :=
+                                #                        factor(!!fill,
+                                #                               levels = levels(!!fill)))
+                                factpal <- colorFactor(ftipspal[levels(pull(data, !!fill))],
+                                                       domain = pull(data, !!fill),
+                                                       ordered = TRUE)
+                        } else {
+                                factpal <- colorFactor(ftipspal[unique(pull(data, !!fill))],
+                                                       domain = pull(data, !!fill),
+                                                       ordered = TRUE)
+                        }
+
+
                         data <- data %>%
                                 mutate(!!quo_name(area_code) :=
                                                as.character(!!area_code))
