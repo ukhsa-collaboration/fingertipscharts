@@ -681,16 +681,16 @@ population <- function(data, value, sex, age,
 box_plots <- function(data, timeperiod, value,
                       title = "", subtitle = "",
                       xlab = "", ylab = "") {
-        timeperiod <- enquo(timeperiod)
-        value <- enquo(value)
+        # timeperiod <- enquo(timeperiod)
+        # value <- enquo(value)
         data <- data %>%
-                group_by(!!timeperiod) %>%
-                summarise(y5 = quantile((!!value), 0.05, na.rm = TRUE),
-                          y25 = quantile((!!value), 0.25, na.rm = TRUE),
-                          y50 = median((!!value), na.rm = TRUE),
-                          y75 = quantile((!!value), 0.75, na.rm = TRUE),
-                          y95 = quantile((!!value), 0.95, na.rm = TRUE))
-        boxplots <- ggplot(data, aes_string(x = quo_text(timeperiod))) +
+                group_by({{ timeperiod }}) %>%
+                summarise(y5 = quantile({{ value }}, 0.05, na.rm = TRUE),
+                          y25 = quantile({{ value }}, 0.25, na.rm = TRUE),
+                          y50 = median({{ value }}, na.rm = TRUE),
+                          y75 = quantile({{ value }}, 0.75, na.rm = TRUE),
+                          y95 = quantile({{ value }}, 0.95, na.rm = TRUE))
+        boxplots <- ggplot(data, aes(x = {{ timeperiod }})) +
                 geom_boxplot(aes(ymin = y5, lower = y25,
                                  middle = y50, upper = y75,
                                  ymax = y95),

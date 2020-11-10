@@ -54,8 +54,8 @@ test_that("full population pyramid draws correctly", {
                              xlab = "% of total population")
 
         vdiffr::expect_doppelganger("full pop pyramid",
-                                    full_p
-        )
+                                    full_p,
+                                    path = "")
 })
 
 test_that("one comparator population pyramid draws correctly", {
@@ -82,8 +82,8 @@ test_that("one comparator population pyramid draws correctly", {
                                        subtitle = "2015/16",
                                        xlab = "% of total population")
         vdiffr::expect_doppelganger("one comparator pop pyramid",
-                                    one_comparator_p
-        )
+                                    one_comparator_p,
+                                    path = "")
 })
 
 test_that("no comparator population pyramid draws correctly", {
@@ -109,6 +109,6 @@ test_that("no comparator population pyramid draws correctly", {
                                       subtitle = "2015/16",
                                       xlab = "% of total population")
         vdiffr::expect_doppelganger("no comparator pop pyramid",
-                                    no_comparator_p
-        )
+                                    no_comparator_p,
+                                    path = "")
 })
