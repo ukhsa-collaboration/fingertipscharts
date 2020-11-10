@@ -745,7 +745,7 @@ box_plots <- function(data, timeperiod, value,
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr
-#' @importFrom rlang quo_text quo sym
+#' @importFrom rlang quo_text quo sym as_name enquo
 #' @importFrom geojsonio geojson_read
 #' @importFrom leaflet colorFactor leaflet addTiles addPolygons addLegend
 #' @importFrom stats setNames
@@ -777,14 +777,14 @@ box_plots <- function(data, timeperiod, value,
 #' @export
 map <- function(data, ons_api, area_code, fill, type = "static", value, name_for_label,
                 title = "", subtitle = "", copyright_size = 4, copyright_year = Sys.Date()) {
-        area_code <- enquo(area_code)
-        fill <- enquo(fill)
+        # area_code <- enquo(area_code)
+        # fill <- enquo(fill)
         if (missing(ons_api)) stop("ons_api must contain a string to a geojson url on the ONS geography portal")
         if (ensure_ons_api_available(ons_api)) {
                 shp <- geojson_read(ons_api, what = "sp") %>%
                         st_as_sf()
                 all_area_codes <- data %>%
-                        pull(!!area_code) %>%
+                        pull({{ area_code }}) %>%
                         unique()
                 join_field <- vapply(shp, function(x) sum(x %in% all_area_codes),
                                      numeric(1))
@@ -794,14 +794,11 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                         filter(grepl("^E", !! quo(!! sym(join_field))))
                 if (type == "static") {
                         data <- data %>%
-                                mutate(!!quo_name(area_code) :=
-                                               as.character(!!area_code))
+                                mutate({{ area_code }} :=
+                                               as.character({{ area_code }}))
                         shp <- shp %>%
                                 mutate(AreaCode = as.character(!! quo(!! sym(join_field)))) %>%
-                                merge(data,
-                                      by.x = "AreaCode",
-                                      by.y = quo_text(area_code),
-                                      all.x = TRUE)
+                                left_join(data, setNames("AreaCode", rlang::as_name(rlang::enquo(area_code))))
                         if (is.numeric(copyright_year) & nchar(copyright_year) == 4) {
                                 copyright_year <- as.character(copyright_year)
                         } else if (inherits(copyright_year, 'Date')) {
@@ -819,7 +816,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                                                 x = max(shp$long),
                                                 y = min(shp$lat))
                         map <- ggplot(shp) +
-                                geom_sf(aes_string(fill = quo_text(fill))) +
+                                geom_sf(aes(fill = {{ fill }})) +
                                 coord_sf(datum = NA) +
                                 scale_fill_phe(theme = "fingertips") +
                                 theme_void() +
@@ -840,45 +837,41 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                         ftipspal <- ftipspal$palette(1)
 
                         if (is.factor(pull(data, !!fill))) {
-                                # data <- data %>%
-                                #         mutate(!!quo_name(fill) :=
-                                #                        factor(!!fill,
-                                #                               levels = levels(!!fill)))
-                                factpal <- colorFactor(ftipspal[levels(pull(data, !!fill))],
-                                                       domain = pull(data, !!fill),
+                                factpal <- colorFactor(ftipspal[levels(pull(data, {{ fill }}))],
+                                                       domain = pull(data, {{ fill }}),
                                                        ordered = TRUE)
                         } else {
-                                factpal <- colorFactor(ftipspal[unique(pull(data, !!fill))],
-                                                       domain = pull(data, !!fill),
+                                factpal <- colorFactor(ftipspal[unique(pull(data, {{ fill }}))],
+                                                       domain = pull(data, {{ fill }}),
                                                        ordered = TRUE)
                         }
 
 
                         data <- data %>%
-                                mutate(!!quo_name(area_code) :=
-                                               as.character(!!area_code))
+                                mutate({{ area_code }} :=
+                                               as.character({{ area_code }}))
                         shp <- shp %>%
                                 mutate(AreaCode = as.character(!! quo(!! sym(join_field)))) %>%
                                 merge(data,
                                       by.x = "AreaCode",
-                                      by.y = quo_text(area_code),
+                                      by.y = quo_text({{ area_code }}),
                                       all.x = TRUE)
                         value <- enquo(value)
                         if (!missing(name_for_label)) {
-                                name_for_label <- enquo(name_for_label)
+                                # name_for_label <- enquo(name_for_label)
                                 labels <- sprintf("<strong>%s</strong><br/>Value: %g",
-                                                  pull(shp, !!name_for_label),
-                                                  pull(shp, !!value))
+                                                  pull(shp, {{ name_for_label }}),
+                                                  pull(shp, {{ value }}))
                         } else {
                                 labels <- sprintf("<strong>%s</strong><br/>Value: %g",
-                                                  pull(shp, !!join_field),
-                                                  pull(shp, !!value))
+                                                  pull(shp, {{ join_field }}),
+                                                  pull(shp, {{ value }}))
                         }
 
                         map <- leaflet(shp)  %>%
                                 addTiles() %>%
                                 addPolygons(fillColor =
-                                                    ~factpal(pull(shp, !!fill)),
+                                                    ~factpal(pull(shp, {{ fill }})),
                                             weight = 2,
                                             opacity = 1,
                                             color = "white",

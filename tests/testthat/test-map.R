@@ -15,7 +15,8 @@ test_that("map renders correctly with year input to copyright_year", {
                  subtitle = "Males in Upper Tier Local Authorities England",
                  copyright_year = 2019)
 
-        vdiffr::expect_doppelganger("map", p)
+        vdiffr::expect_doppelganger("map", p,
+                                    path = "")
 })
 test_that("map renders correctly with date input to copyright_year", {
         skip_on_cran()
@@ -29,7 +30,8 @@ test_that("map renders correctly with date input to copyright_year", {
                   subtitle = "Males in Upper Tier Local Authorities England",
                   copyright_year = as.Date("2019-01-01"))
 
-        vdiffr::expect_doppelganger("map p1", p1)
+        vdiffr::expect_doppelganger("map p1", p1,
+                                    path = "")
 })
 
 test_that("error where string passed to copyright_year in map fails", {
