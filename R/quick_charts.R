@@ -836,7 +836,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                         ftipspal <- scale_fill_phe("fingertips")
                         ftipspal <- ftipspal$palette(1)
 
-                        if (is.factor(pull(data, !!fill))) {
+                        if (is.factor(pull(data, {{ fill }}))) {
                                 factpal <- colorFactor(ftipspal[levels(pull(data, {{ fill }}))],
                                                        domain = pull(data, {{ fill }}),
                                                        ordered = TRUE)
@@ -852,10 +852,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                                                as.character({{ area_code }}))
                         shp <- shp %>%
                                 mutate(AreaCode = as.character(!! quo(!! sym(join_field)))) %>%
-                                merge(data,
-                                      by.x = "AreaCode",
-                                      by.y = quo_text({{ area_code }}),
-                                      all.x = TRUE)
+                                left_join(data, setNames("AreaCode", rlang::as_name(rlang::enquo(area_code))))
                         value <- enquo(value)
                         if (!missing(name_for_label)) {
                                 # name_for_label <- enquo(name_for_label)
@@ -1112,48 +1109,45 @@ area_profiles <- function(data,
                           arrow_head_angle = 25,
                           horizontal_arrow_multiplier = 1) {
 
-        test_area_code <- enquo(area_code)
-        dummy_polarity <- enquo(polarity)
+        # test_area_code <- enquo(area_code)
+        # dummy_polarity <- enquo(polarity)
 
-        if (sum(median_line_area_code %in% pull(data, !!test_area_code)) < 1)
+        if (sum(median_line_area_code %in% pull(data, {{ area_code }})) < 1)
                 stop(paste0(median_line_area_code, " not in area_code field provided"))
-        if (sum(local_area_code %in% pull(data, !!test_area_code)) < 1)
+        if (sum(local_area_code %in% pull(data, {{ area_code }})) < 1)
                 stop(paste0(local_area_code, " not in area_code field provided"))
         if (!is.na(comparator_area_code) &
-            sum(comparator_area_code %in% pull(data, !!test_area_code)) < 1)
+            sum(comparator_area_code %in% pull(data, {{ area_code }})) < 1)
                 stop(paste0(comparator_area_code, " not in area_code field provided"))
         if (length(header_labels) != 8)
                 stop("header_labels argument must have a length of 8")
         if (length(header_positions) != 8)
                 stop("header_positions argument must have a length of 8")
 
-        data <- data %>%
-                mutate(!!quo_name(dummy_polarity) :=
-                               stringr::str_trim(!!dummy_polarity))
 
-        area_code <- enquo(area_code)
-        indicator <- enquo(indicator)
+        # area_code <- enquo(area_code)
+        # indicator <- enquo(indicator)
 
         # check for multiple values for an area per indicator
         check_message <- spine_data_check(data, indicator, area_code)
         if (!is.na(check_message)) stop(check_message)
 
         # create data table
-        value <- enquo(value)
-        count <- enquo(count)
-        timeperiod <- enquo(timeperiod)
-        if (is.factor(pull(data, !!indicator))) {
-                ind_order <- levels(pull(data, !!indicator))
+        # value <- enquo(value)
+        # count <- enquo(count)
+        # timeperiod <- enquo(timeperiod)
+        if (is.factor(pull(data, {{ indicator }}))) {
+                ind_order <- levels(pull(data, {{ indicator }}))
         } else {
                 data <- data %>%
-                        mutate(!!quo_name(indicator) :=
-                                       factor(!!indicator))
-                ind_order <- levels(pull(data, !!indicator))
+                        mutate({{ indicator }} :=
+                                       factor({{ indicator }}))
+                ind_order <- levels(pull(data, {{ indicator }}))
         }
 
         if (datatable == TRUE) {
                 if (!is.na(dps) & !is.integer(dps) & !is.numeric(dps)) stop("The dps argument must be a number or NA")
-                trend <- enquo(trend)
+                # trend <- enquo(trend)
                 dftable <- create_datatable(data,
                                             indicator,
                                             area_code,
@@ -1167,17 +1161,17 @@ area_profiles <- function(data,
                                             header_width = diff(range(header_positions)),
                                             horizontal_arrow_multiplier = horizontal_arrow_multiplier)
                 dftable <- dftable %>%
-                        mutate(!!quo_name(indicator) :=
-                                                  factor(!!indicator,
+                        mutate({{ indicator }} :=
+                                                  factor({{ indicator }},
                                                          levels = ind_order))
         } else {
                 dftable <- NA
         }
 
         # rescale data for charting
-        significance <- enquo(significance)
-        polarity <- enquo(polarity)
-        area_type <- enquo(area_type)
+        # significance <- enquo(significance)
+        # polarity <- enquo(polarity)
+        # area_type <- enquo(area_type)
         dfrescaled <- spine_rescaler(data,
                                      area_code,
                                      indicator,
@@ -1191,27 +1185,27 @@ area_profiles <- function(data,
                                      comparator_area_code,
                                      percent_display,
                                      dps = dps)
-        domain <- enquo(domain)
+        # domain <- enquo(domain)
         if (quo_text(domain) == "no_domains") {
                 domain_field <- NA
         } else {
                 domain_field <- domain
                 domain_lu <- data %>%
-                        select(!!indicator, !!domain) %>%
-                        mutate(!!quo_name(domain) := factor(!!domain)) %>%
+                        select({{ indicator }}, {{ domain }}) %>%
+                        mutate({{ domain }} := factor({{ domain }})) %>%
                         unique
                 dfrescaled$bars <- dfrescaled$bars %>%
                         merge(domain_lu,
-                              by = rlang::quo_text(indicator),
+                              by = rlang::as_name(rlang::enquo(indicator)),
                               all.x =TRUE)
                 dfrescaled$points <- dfrescaled$points %>%
                         merge(domain_lu,
-                              by = rlang::quo_text(indicator),
+                              by = rlang::as_name(rlang::enquo(indicator)),
                               all.x =TRUE)
                 if (is.data.frame(dftable))
                         dftable <- dftable %>%
                         merge(domain_lu,
-                              by = rlang::quo_text(indicator),
+                              by = rlang::as_name(rlang::enquo(indicator)),
                               all.x =TRUE)
         }
 
@@ -1232,7 +1226,7 @@ area_profiles <- function(data,
         if (length(missing_cols) > 0) cols <- c(cols, fingertips_cols[missing_cols])
 
         vline_length <- dfrescaled$bars %>%
-                pull(!!indicator) %>%
+                pull({{ indicator }}) %>%
                 unique %>%
                 length
 
@@ -1241,26 +1235,26 @@ area_profiles <- function(data,
                         y == 1.05 ~ header_positions[length(header_positions)],
                         y == -0.05 ~ header_positions[length(header_positions) - 1]
                         ),
-                       !!quo_name(indicator) :=
-                               factor(!!indicator,
+                       {{ indicator }} :=
+                               factor({{ indicator }},
                                       levels = ind_order))
         dfrescaled$points <- dfrescaled$points  %>%
-                mutate(!!quo_name(indicator) :=
-                               factor(!!indicator,
+                mutate({{ indicator }} :=
+                               factor({{ indicator }},
                                       levels = ind_order))
         p <- ggplot(dfrescaled$bars,
-                    aes_string(x = quo_text(indicator),
-                               y = "quantiles")) +
+                    aes(x = {{ indicator }},
+                        y = quantiles)) +
                 geom_bar(stat = "identity", width = bar_width,
-                         aes_string(fill = "GraphPoint"))
+                         aes(fill = GraphPoint))
 
 
         if (!is.na(comparator_area_code)) {
                 rescaled_comparator_field <- "region"
                 p <- p +
                         geom_point(data = dfrescaled$points,
-                                   aes_string(x = quo_text(indicator),
-                                              y = rescaled_comparator_field),
+                                   aes(x = {{ indicator }},
+                                       y = !! sym(rescaled_comparator_field)),
                                    shape = comparator_point_shape,
                                    colour = comparator_point_outline,
                                    fill = comparator_point_fill,
@@ -1268,9 +1262,9 @@ area_profiles <- function(data,
         }
         p <- p +
                 geom_point(data = dfrescaled$points,
-                           aes_string(x = quo_text(indicator),
-                                      y = "area",
-                                      fill = quo_text(significance)),
+                           aes(x = {{ indicator }},
+                               y = area,
+                               fill = {{ significance }}),
                            shape = local_point_shape,
                            colour = local_point_outline,
                            size = 2.5 * relative_point_size) +
@@ -1291,9 +1285,9 @@ area_profiles <- function(data,
                 dt_area_count <- count
                 dt_timeperiod <- timeperiod
                 dftable <- dftable %>%
-                        rename(ind = !!dt_indicator,
-                               count = !!dt_area_count,
-                               tp = !!dt_timeperiod)
+                        rename(ind = {{ dt_indicator }},
+                               count = {{ dt_area_count }},
+                               tp = {{ dt_timeperiod }})
                 lims <- range(header_positions)
                 lims[1] <- lims[1] + indicator_label_nudgex
                 lims <- lims * 1.06
@@ -1312,7 +1306,7 @@ area_profiles <- function(data,
                                   hjust = 1
                         ) +
                         geom_text(data = dftable,
-                                  aes_string(label = dt_median_field,
+                                  aes(label = !! sym(dt_median_field),
                                              x = "ind"),
                                   y = header_positions[6],
                                   col = "black",
@@ -1322,8 +1316,8 @@ area_profiles <- function(data,
                                   hjust = 1
                         ) +
                         geom_text(data = dftable,
-                                  aes_string(label = dt_area_field,
-                                             x = "ind"),
+                                  aes(label = !! sym(dt_area_field),
+                                      x = ind),
                                   y = header_positions[5],
                                   col = "black",
                                   size = 2.5 * relative_text_size,
@@ -1387,9 +1381,9 @@ area_profiles <- function(data,
                               panel.grid.minor = element_blank(),
                               legend.position = "none")
         }
-        if (quo_text(domain) != "no_domains") {
+        if (rlang::as_name(rlang::enquo(domain)) != "no_domains") {
                 p <- p +
-                        facet_grid(rows = quo_text(domain),
+                        facet_grid(rows = vars({{ domain }}),
                                    space = "free_y",
                                    scales = "free_y",
                                    switch = "y") +

@@ -17,12 +17,12 @@
 #' @return A processed data frame for latest time periods of given indicators
 #' @export
 spine_preprocess <- function(data, indicator, timeperiod_sortable) {
-        timeperiod_sortable <- enquo(timeperiod_sortable)
-        indicator <- enquo(indicator)
+        # timeperiod_sortable <- enquo(timeperiod_sortable)
+        # indicator <- enquo(indicator)
         data <- data %>%
-                group_by(!!indicator) %>%
-                filter((!!timeperiod_sortable) ==
-                               max(!!timeperiod_sortable)) %>%
+                group_by({{ indicator }}) %>%
+                filter({{ timeperiod_sortable }} ==
+                               max({{ timeperiod_sortable }})) %>%
                 ungroup()
 }
 
@@ -30,12 +30,17 @@ spine_preprocess <- function(data, indicator, timeperiod_sortable) {
 #' @inheritParams area_profiles
 spine_data_check <- function(data, indicator, area_code) {
         data <- data %>%
-                group_by(!!indicator, !!area_code) %>%
+                group_by({{ indictor }}, {{ area_code }}) %>%
                 count() %>%
                 filter(n > 1)
         if (nrow(data) > 0) {
-                area <- data[[as_label(area_code)]][1]
-                indicatorname <- as.character(data[[as_label(indicator)]][1])
+                area <- data %>%
+                        slice(1) %>%
+                        pull({{ area_code }})
+                indicatorname <- data %>%
+                        slice(1) %>%
+                        pull({{ indicator }}) %>%
+                        as.character()
                 message <- paste("Some areas have multiple values for an indicator. An example is",
                                  area,
                                  "for the indicator",
@@ -56,7 +61,7 @@ spine_data_check <- function(data, indicator, area_code) {
 #'   length when horizonal
 #' @import dplyr
 #' @importFrom tidyr pivot_wider
-#' @importFrom rlang quo_text .data eval_tidy
+#' @importFrom rlang  .data eval_tidy as_name enquo
 #' @importFrom scales comma
 #' @return A data frame containing the information that sits alongside the spine
 #'   chart
@@ -76,39 +81,39 @@ create_datatable <- function(data, indicator,
                 area_codes <- c(local_area_code, median_line_area_code, comparator_area_code)
         }
         data_temp <- data %>%
-                filter((!!area_code) %in% area_codes) %>%
-                mutate(!!quo_name(area_code) :=
-                               case_when((!!area_code) == local_area_code ~ "Area_value",
-                                         (!!area_code) == median_line_area_code ~ "Median_value",
-                                         (!!area_code) == comparator_area_code ~ "Comparator_value",
+                filter({{ area_code }} %in% area_codes) %>%
+                mutate({{ area_code }} :=
+                               case_when({{ area_code }} == local_area_code ~ "Area_value",
+                                         {{ area_code }} == median_line_area_code ~ "Median_value",
+                                         {{ area_code }} == comparator_area_code ~ "Comparator_value",
                                          TRUE ~ "Error"),
-                       !!quo_name(value) := as.character(!!value),
-                       dps_2b_removed = !!dps,
-                       !!quo_name(value) := suppressWarnings(case_when(
-                               is.na(as.numeric(!!value)) ~ !!value,
+                       {{ value }} := as.character({{ value }}),
+                       dps_2b_removed = {{ dps }},
+                       {{ value }} := suppressWarnings(case_when(
+                               is.na(as.numeric({{ value }})) ~ {{ value }},
                                TRUE ~ ifelse(
                                        !is.na(dps_2b_removed), paste0("\'",
-                                                                      format(comma(round2(as.numeric(!!value), dps),
+                                                                      format(comma(round2(as.numeric({{ value }}), dps),
                                                                                    accuracy = 1 / (10 ^ dps)), nsmall = 1),
                                                                       "\'"),
                                        paste0("\'",
-                                              formatC(as.numeric(!!value),
+                                              formatC(as.numeric({{ value }}),
                                                       format = "f",
                                                       big.mark = ",",
                                                       drop0trailing = TRUE),
                                               "\'")
                                        )))) %>%
-                select(!!indicator, !!area_code, !!timeperiod, !!value) %>%
-                tidyr::pivot_wider(names_from = !!area_code,
-                                   values_from = !!value)
+                select({{ indicator }}, {{ area_code }}, {{ timeperiod }}, {{ value }}) %>%
+                tidyr::pivot_wider(names_from = {{ area_code }},
+                                   values_from = {{ value }})
         data_count <- data %>%
-                filter((!!area_code) == local_area_code) %>%
-                select(!!indicator, !!count) %>%
-                mutate(!!quo_name(count) :=
-                               suppressWarnings(ifelse(is.na(as.integer(!!count)),
-                                                       !!count,
+                filter({{ area_code }} == local_area_code) %>%
+                select({{ indicator }}, {{ count }}) %>%
+                mutate({{ count }} :=
+                               suppressWarnings(ifelse(is.na(as.integer({{ count }})),
+                                                       {{ count }},
                                                        paste0("'",
-                                                              scales::comma(round2(as.numeric(!!count), 0),
+                                                              scales::comma(round2(as.numeric({{ count }}), 0),
                                                                             accuracy = 1),
                                                               "'"))))
         if (is.character(rlang::eval_tidy(trend, data)) |
@@ -145,10 +150,10 @@ create_datatable <- function(data, indicator,
 
         }
         data_temp <- merge(data_temp, data_count,
-                           by = rlang::quo_text(indicator),
+                           by = rlang::as_name(rlang::enquo(indicator)),
                            all.x = TRUE) %>%
                 merge(data_trend,
-                      by = rlang::quo_text(indicator),
+                      by = rlang::as_name(rlang::enquo(indicator)),
                       all.x = TRUE) %>%
                 select({{ indicator }}, .data$direction, .data$trend_sig, {{ timeperiod }}, {{ count }}, everything())
 
@@ -171,7 +176,7 @@ create_datatable <- function(data, indicator,
 #' @importFrom tidyr gather
 #' @importFrom stats quantile
 #' @importFrom scales comma
-#' @importFrom rlang quo_name
+#' @importFrom rlang as_name enquo
 spine_rescaler <- function(data,
                            area_code,
                            indicator,
@@ -187,47 +192,47 @@ spine_rescaler <- function(data,
                            dps = 1) {
         # make sure value field is numeric and doesn't contain annotations (based on Health Profiles annotations)
         data <- data %>%
-                mutate(!!quo_name(value) :=
-                               suppressWarnings(as.character(!!value)),
-                       !!quo_name(value) :=
-                               ifelse(grepl("^[0-9]", !!value),
-                                      str_extract(!!value, "^\\d+\\.*\\d*"),
+                mutate({{ value }} :=
+                               suppressWarnings(as.character({{ value }})),
+                       {{ value }} :=
+                               ifelse(grepl("^[0-9]", {{ value }}),
+                                      str_extract({{ value }}, "^\\d+\\.*\\d*"),
                                       NA),
-                       !!quo_name(value) :=
-                               suppressWarnings(as.numeric(!!value)))
+                       {{ value }} :=
+                               suppressWarnings(as.numeric({{ value }})))
 
-        areatype <- filter(data, (!!area_code) == local_area_code) %>%
-                pull(!!area_type) %>%
+        areatype <- filter(data, {{ area_code }} == local_area_code) %>%
+                pull({{ area_type }}) %>%
                 unique
         remove_data <- data %>%
-                filter(!!area_type == areatype) %>%
-                group_by(!!indicator) %>%
-                summarise(percent_na = sum(is.na(!!value)) / n()) %>%
+                filter({{ area_type }} == areatype) %>%
+                group_by({{ indicator }}) %>%
+                summarise(percent_na = sum(is.na({{ value }})) / n()) %>%
                 filter(percent_na >= percent_display) %>%
-                pull(!!indicator)
+                pull({{ indicator }})
 
         # convert indicators to remove to na
         if (length(remove_data) > 0) {
                 data <- data %>%
-                        mutate(!!quo_name(value) :=
-                                       ifelse(!!indicator %in% remove_data,
+                        mutate({{ value }} :=
+                                       ifelse({{ indicator }} %in% remove_data,
                                               NA,
-                                              !!value))
+                                              {{ value }}))
         }
 
         create_point_data <- function(data, areacode){
                 if (areacode %in% c(median_line_area_code, comparator_area_code)){
                         data <- data %>%
-                                filter((!!area_code) == areacode) %>%
-                                select(!!indicator, !!value) %>%
-                                rename(regionalvalue = !!value)
+                                filter({{ area_code }} == areacode) %>%
+                                select({{ indicator }}, {{ value }}) %>%
+                                rename(regionalvalue = {{ value }})
                 } else {
                         data <- data %>%
-                                filter((!!area_code) == areacode) %>%
-                                select(!!indicator, !!significance,
-                                       !!polarity, !!value) %>%
-                                rename(areavalue = !!value,
-                                       Significance = !!significance)
+                                filter({{ area_code }} == areacode) %>%
+                                select({{ indicator }}, {{ significance }},
+                                       {{ polarity }}, {{ value }}) %>%
+                                rename(areavalue = {{ value }},
+                                       Significance = {{ significance }})
                 }
                 data <- data.frame(data)
         }
@@ -235,19 +240,19 @@ spine_rescaler <- function(data,
                 parentdata <- create_point_data(data, comparator_area_code)
         areadata <- create_point_data(data, local_area_code)
         mean <- create_point_data(data, median_line_area_code)
-        data <- filter(data, (!!area_type) == areatype)
+        data <- filter(data, {{ area_type }} == areatype)
 
         quantiles <- data %>%
-                split(pull(data, !!indicator)) %>%
-                purrr::map(rlang::quo_text(value)) %>%
-                map_df(quantile, na.rm = TRUE, .id = rlang::quo_text(indicator)) %>%
+                split(pull(data, {{ indicator }})) %>%
+                purrr::map(rlang::as_name(rlang::enquo(value))) %>%
+                map_df(quantile, na.rm = TRUE, .id = rlang::as_name(rlang::enquo(indicator))) %>%
                 data.frame()
 
         names(quantiles)[-1] <- c(paste0("Q", 100 * seq(0, 1, by = 0.25)))
         quantiles[, "Q50"] <- NULL
         quantiles <- quantiles %>%
                 merge(mean,
-                      by = rlang::quo_text(indicator),
+                      by = rlang::as_name(rlang::enquo(indicator)),
                       all.x = TRUE) %>%
                 rename(mean = regionalvalue)
 
@@ -291,22 +296,22 @@ spine_rescaler <- function(data,
                 }
 
                 graphpoints <- c("Worst","Q25","Q75","Best")
-                scaled_spine_inputs <- list(bars = tibble(!!quo_name(indicator) := IndicatorName,
+                scaled_spine_inputs <- list(bars = tibble({{ indicator }} := IndicatorName,
                                                           quantiles = quantiles,
                                                           GraphPoint = factor(graphpoints, levels = rev(graphpoints))),
-                                            points = tibble(!!quo_name(indicator) := IndicatorName,
+                                            points = tibble({{ indicator }} := IndicatorName,
                                                             significance = Significance,
                                                             area = pointdata[1],
                                                             region = pointdata[2]))
         }
 
         dfgraph <- merge(quantiles, areadata,
-                         by = rlang::quo_text(indicator),
+                         by = rlang::as_name(rlang::enquo(indicator)),
                          all.x = TRUE)
         if (!is.na(comparator_area_code)) {
                 dfgraph <- dfgraph %>%
                         merge(parentdata,
-                              by = rlang::quo_text(indicator),
+                              by = rlang::as_name(rlang::enquo(indicator)),
                               all.x =TRUE)
         } else {
                 dfgraph <- dfgraph %>%
@@ -314,24 +319,24 @@ spine_rescaler <- function(data,
         }
 
         dfgraph <- dfgraph %>%
-                rename(IndicatorName = !!indicator,
-                       Polarity = !!polarity) %>%
+                rename(IndicatorName = {{ indicator }},
+                       Polarity = {{ polarity }}) %>%
                 lapply(purrr::map, .f = as.character) %>%
                 pmap(scaled_spine_inputs)
         dfgraphfinal <- list(bars = suppressWarnings(map_df(dfgraph, "bars")),
                              points = suppressWarnings(map_df(dfgraph, "points")))
         dfpolarity <- areadata %>%
-                select(!!indicator, !!polarity)
+                select({{ indicator }}, {{ polarity }})
         dfannotate <- quantiles %>%
                 merge(dfpolarity,
-                      by = rlang::quo_text(indicator),
+                      by = rlang::as_name(rlang::enquo(indicator)),
                       all.x =TRUE) %>%
-                mutate(reverse = ifelse(grepl("Low is good", !!polarity),
+                mutate(reverse = ifelse(grepl("Low is good", {{ polarity }}),
                                         TRUE,
                                         FALSE),
                        Worst = ifelse(reverse == TRUE, Q100, Q0),
                        Best = ifelse(reverse == TRUE, Q0, Q100)) %>%
-                select(!!indicator, Best, Worst) %>%
+                select({{ indicator }}, Best, Worst) %>%
                 gather(GraphPoint, label, Best:Worst) %>%
                 mutate(y = ifelse(GraphPoint == "Best", 1.05, -0.05),
                        dps_2b_removed = dps,
@@ -348,26 +353,26 @@ spine_rescaler <- function(data,
                 select(-(dps_2b_removed))
 
         timeperiod <- data %>%
-                select(!!indicator, !!timeperiod) %>%
+                select({{ indicator }}, {{ timeperiod }}) %>%
                 ungroup %>%
                 unique %>%
-                mutate(!!quo_name(indicator) := as.character(!!indicator))
+                mutate({{ indicator }} := as.character({{ indicator }}))
 
         areadata <- areadata %>%
-                select(!!indicator, areavalue)
+                select({{ indicator }}, areavalue)
         mean <- mean %>%
                 rename(England = regionalvalue)
 
         if (!is.na(comparator_area_code))
                 mean <- merge(parentdata, mean,
-                              by = rlang::quo_text(indicator),
+                              by = rlang::as_name(rlang::enquo(indicator)),
                               all =TRUE)
         dfannotatepoints <- merge(mean, areadata,
-                                  by = rlang::quo_text(indicator),
+                                  by = rlang::as_name(rlang::enquo(indicator)),
                                   all =TRUE) %>%
                 merge(timeperiod,
-                      by = rlang::quo_text(indicator),
-                      all =TRUE) %>%
+                      by = rlang::as_name(rlang::enquo(indicator)),
+                      all = TRUE) %>%
                 mutate(England = as.character(England),
                        England = case_when(
                         is.na(as.numeric(England)) ~ England,
@@ -385,13 +390,13 @@ spine_rescaler <- function(data,
 
         dfgraphfinal$bars <- merge(dfgraphfinal$bars,
                                        dfannotate,
-                                       by = c(rlang::quo_text(indicator), "GraphPoint"),
+                                       by = c(rlang::as_name(rlang::enquo(indicator)), "GraphPoint"),
                                        all.x =TRUE)
         dfgraphfinal$points <- merge(dfgraphfinal$points,
                                          dfannotatepoints,
-                                         by = rlang::quo_text(indicator),
+                                         by = rlang::as_name(rlang::enquo(indicator)),
                                          all.x =TRUE) %>%
-                rename(!!quo_name(significance) := significance)
+                rename({{ significance }} := significance)
         if (is.na(comparator_area_code)) dfgraphfinal$points$region <- NULL
         return(dfgraphfinal)
 }
