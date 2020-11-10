@@ -444,23 +444,23 @@ trends <- function(data, timeperiod, value,
                    lowerci, upperci,
                    title = "", subtitle = "",
                    xlab = "", ylab = "", point_size = 4) {
-        timeperiod <- enquo(timeperiod)
-        value <- enquo(value)
-        area <- enquo(area)
+        # timeperiod <- enquo(timeperiod)
+        # value <- enquo(value)
+        # area <- enquo(area)
 
         data <- data %>%
-                filter((!!area) %in% c(area_name, comparator))
+                filter({{ area }} %in% c(area_name, comparator))
         line_colours <- c("black", "#7CB5EC")
         names(line_colours) <- c(comparator, area_name)
         trends <- ggplot(data,
-                         aes(x = !!timeperiod,
-                             y = !!value,
-                             group = !!area)) +
-                geom_line(aes(linetype = !!area,
-                              colour = !!area)) +
-                geom_point(data = filter(data, (!!area) == comparator),
+                         aes(x = {{ timeperiod }},
+                             y = {{ value }},
+                             group = {{ area }})) +
+                geom_line(aes(linetype = {{ area }},
+                              colour = {{ area }})) +
+                geom_point(data = filter(data, {{ area }} == comparator),
                            fill = "black",
-                           aes(shape = !!area),
+                           aes(shape = {{ area }}),
                            size = point_size) +
                 scale_linetype_manual(name = "",
                                       values = rep("solid", 2),
@@ -477,27 +477,27 @@ trends <- function(data, timeperiod, value,
                 theme_phe("fingertips") +
                 theme(legend.position = "bottom")
         if (!missing(fill)) {
-                fill <- enquo(fill)
+                # fill <- enquo(fill)
                 trends <- trends +
-                        geom_point(data = filter(data, (!!area) == area_name),
-                                   aes(fill = !!fill),
+                        geom_point(data = filter(data, {{ area }} == area_name),
+                                   aes(fill = {{ fill }}),
                                    shape = 21,
                                    size = point_size, show.legend = F) +
                         scale_fill_phe("fingertips")
         } else {
                 trends <- trends +
-                        geom_point(data = filter(data, (!!area) == area_name),
+                        geom_point(data = filter(data, {{ area }} == area_name),
                                    fill = "#C9C9C9",
                                    shape = 21,
                                    size = point_size, show.legend = F)
         }
         if (!missing(lowerci) & !missing(upperci)) {
-                lowerci <- enquo(lowerci)
-                upperci <- enquo(upperci)
+                # lowerci <- enquo(lowerci)
+                # upperci <- enquo(upperci)
                 trends <- trends +
-                        geom_errorbar(data = filter(data, (!!area) == area_name),
-                                      aes(ymin= !!lowerci,
-                                          ymax = !!upperci),
+                        geom_errorbar(data = filter(data, {{ area }} == area_name),
+                                      aes(ymin= {{ lowerci }},
+                                          ymax = {{ upperci }}),
                                       width=.2)
 
         }

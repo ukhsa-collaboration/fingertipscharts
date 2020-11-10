@@ -1,8 +1,4 @@
-# context("compare_indicators")
-# library(tidyr)
-# library(fingertipscharts)
-
-# set.seed(42)
+# Visual tests ------------------------------------------------------------
 
 test_that("Error for missing area field works", {
         df_ci <- create_test_data() %>%
@@ -22,8 +18,6 @@ test_that("Error for missing area field works", {
                                         add_R2 = TRUE),
                      "If highlight_area contains a value, so must area_field")
 })
-
-# Visual tests ------------------------------------------------------------
 
 test_that("compare indicators no highlight draws correctly", {
         df_ci <- create_test_data() %>%
@@ -70,7 +64,6 @@ test_that("compare indicators highlight draws correctly", {
 })
 
 test_that("compare indicators highlight high R2 draws correctly", {
-        local_edition(3)
         df_ci <- create_test_data() %>%
                 filter(IndicatorName %in% c("Indicator 1", "Indicator 3")) %>%
                 select(IndicatorName, AreaCode, Value) %>%

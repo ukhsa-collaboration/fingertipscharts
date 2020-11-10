@@ -17,8 +17,8 @@ test_that("desc compare areas draws correctly", {
                                 top_areas = top_names,
                                 title = "Compare the local areas")
         vdiffr::expect_doppelganger("desc compare areas",
-                                    desc_p
-        )
+                                    desc_p,
+                                    path = "")
 })
 
 test_that("no top desc compare areas draws correctly", {
@@ -37,8 +37,8 @@ test_that("no top desc compare areas draws correctly", {
                                        title = "Compare the local areas")
 
         vdiffr::expect_doppelganger("no top areas desc compare areas",
-                                    desc_no_top_p
-        )
+                                    desc_no_top_p,
+                                    path = "")
 })
 
 test_that("asc compare areas draws correctly", {
@@ -57,8 +57,8 @@ test_that("asc compare areas draws correctly", {
                                top_areas = top_names,
                                title = "Compare the local areas")
         vdiffr::expect_doppelganger("asc compare areas",
-                                    asc_p
-        )
+                                    asc_p,
+                                    path = "")
 })
 
 test_that("no top asc compare areas draws correctly", {
@@ -77,8 +77,8 @@ test_that("no top asc compare areas draws correctly", {
                                       title = "Compare the local areas")
 
         vdiffr::expect_doppelganger("no top areas asc compare areas",
-                                    asc_no_top_p
-        )
+                                    asc_no_top_p,
+                                    path = "")
 })
 
 test_that("desc compare areas no fill draws correctly", {
@@ -96,8 +96,8 @@ test_that("desc compare areas no fill draws correctly", {
                                         top_areas = top_names,
                                         title = "Compare the local areas")
         vdiffr::expect_doppelganger("desc no fill compare areas",
-                                    desc_p_no_fill
-        )
+                                    desc_p_no_fill,
+                                    path = "")
 })
 
 
@@ -118,7 +118,6 @@ test_that("desc compare areas no fill draws correctly while displaying values to
                                                   display.values = TRUE,
                                                   dps = 2)
         vdiffr::expect_doppelganger("desc no fill compare areas displaying values",
-                                    desc_p_no_fill_disp_vals
-        )
-        desc_p_no_fill_disp_vals
+                                    desc_p_no_fill_disp_vals,
+                                    path = "")
 })
