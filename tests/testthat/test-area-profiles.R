@@ -68,8 +68,8 @@ test_that("full area profiles draws correctly", {
                                                      -0.15, -0.05, 1.08)
         )
         vdiffr::expect_doppelganger("full area profiles",
-                                    full_p
-        )
+                                    full_p,
+                                    path = "")
 })
 
 test_that("full area profiles draws correctly with no trends information", {
@@ -101,8 +101,8 @@ test_that("full area profiles draws correctly with no trends information", {
                                                            "Worst/\nLowest", "Best/\nHighest")
         )
         vdiffr::expect_doppelganger("full area profiles no trend",
-                                    full_p_no_trend
-        )
+                                    full_p_no_trend,
+                                    path = "")
 })
 
 test_that("full area profiles with factor indicator name draws correctly", {
@@ -135,8 +135,8 @@ test_that("full area profiles with factor indicator name draws correctly", {
                                                    -0.15, -0.05, 1.08))
         )
         vdiffr::expect_doppelganger("full with factor area profiles",
-                                    full_with_factor_indicators_p
-        )
+                                    full_with_factor_indicators_p,
+                                    path = "")
 })
 
 test_that("area profiles with no dt draws correctly", {
@@ -159,8 +159,8 @@ test_that("area profiles with no dt draws correctly", {
                                       datatable = FALSE)
 
         vdiffr::expect_doppelganger("no dt area profiles",
-                                    full_no_dt_p
-        )
+                                    full_no_dt_p,
+                                    path = "")
 })
 
 test_that("area profiles with colour modification draws correctly", {
@@ -183,8 +183,8 @@ test_that("area profiles with colour modification draws correctly", {
                                                        bar_width = 0.68,
                                                        datatable = FALSE)
         vdiffr::expect_doppelganger("modified colours area profiles",
-                                    full_no_dt_p_modified_colours
-        )
+                                    full_no_dt_p_modified_colours,
+                                    path = "")
 })
 
 test_that("area profiles with domains draws correctly", {
@@ -213,8 +213,8 @@ test_that("area profiles with domains draws correctly", {
                                                                   -0.15, -0.05, 1.05),
                                              domain = Domain)
         vdiffr::expect_doppelganger("domains included area profiles",
-                                    full_with_domains_p
-        )
+                                    full_with_domains_p,
+                                    path = "")
 })
 
 test_that("full area profiles all dividers draws correctly", {
@@ -242,11 +242,11 @@ test_that("full area profiles all dividers draws correctly", {
                                                                   -0.15, -0.05, 1.05))
 
         vdiffr::expect_doppelganger("full area all dividers profiles",
-                                    full_all_dividers_p
-        )
+                                    full_all_dividers_p,
+                                    path = "")
 })
 
-test_that("error messages work for area_profiles", {
+test_that("error for incorrect area_code supplied for local_area_code", {
         df <- create_test_data()
 
         expect_error(area_profiles(df,
@@ -262,6 +262,10 @@ test_that("error messages work for area_profiles", {
                                    area_type = AreaType,
                                    median_line_area_code = "C001"),
                      "BB2 not in area_code field provided")
+})
+
+test_that("error for incorrect area_code supplied for median_line_area_code", {
+        df <- create_test_data()
         expect_error(area_profiles(df,
                                    value = Value,
                                    count = Count,
@@ -275,6 +279,10 @@ test_that("error messages work for area_profiles", {
                                    area_type = AreaType,
                                    median_line_area_code = "AB1"),
                      "AB1 not in area_code field provided")
+})
+
+test_that("error for incorrect area_code supplied for comparator_area_code", {
+        df <- create_test_data()
         expect_error(area_profiles(df,
                                    value = Value,
                                    count = Count,
@@ -289,6 +297,10 @@ test_that("error messages work for area_profiles", {
                                    median_line_area_code = "C001",
                                    comparator_area_code = "CB1"),
                      "CB1 not in area_code field provided")
+})
+
+test_that("error for incorrect lengthof header_labels", {
+        df <- create_test_data()
         expect_error(full_no_dt_p <- area_profiles(df,
                                                    value = Value,
                                                    count = Count,
@@ -309,6 +321,9 @@ test_that("error messages work for area_profiles", {
                                                    bar_width = 0.68,
                                                    datatable = FALSE),
                      "header_labels argument must have a length of 8")
+})
+test_that("error for incorrect length of header_positions", {
+        df <- create_test_data()
         expect_error(full_no_dt_p <- area_profiles(df,
                                                    value = Value,
                                                    count = Count,
@@ -411,6 +426,6 @@ test_that("differing dps area profiles draws correctly", {
                                                     -0.15, -0.05, 1.08),
                                dps = NA)
         vdiffr::expect_doppelganger("differing dps area profiles",
-                                    dps_p
-        )
+                                    dps_p,
+                                    path = "")
 })
