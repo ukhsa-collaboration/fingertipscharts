@@ -557,10 +557,10 @@ trends <- function(data, timeperiod, value,
 population <- function(data, value, sex, age,
                        area, area_name, comparator_1, comparator_2,
                        title, subtitle, xlab) {
-        value <- enquo(value)
-        sex <- enquo(sex)
-        age <- enquo(age)
-        area <- enquo(area)
+        # value <- enquo(value)
+        # sex <- enquo(sex)
+        # age <- enquo(age)
+        # area <- enquo(area)
 
         if(!missing(area_name) &
            !missing(comparator_1) &
@@ -581,19 +581,19 @@ population <- function(data, value, sex, age,
 
 
         data <- data %>%
-                filter((!!area) %in% areas) %>%
-                group_by(!!area) %>%
-                mutate(!!quo_name(value) :=
-                               100 * (!!value) / sum(!!value),
-                       !!quo_name(value) :=
-                               ifelse((!!sex) == "Male",
-                                      -(!!value), (!!value)))
-        extremex <- breaks_pretty(n = 3)(0:max(abs(pull(data, !!value)),
+                filter({{ area }} %in% areas) %>%
+                group_by({{ area }}) %>%
+                mutate({{ value }} :=
+                               100 * ({{ value }}) / sum({{ value }}),
+                       {{ value }} :=
+                               ifelse({{ sex }} == "Male",
+                                      -({{ value }}), ({{ value }})))
+        extremex <- breaks_pretty(n = 3)(0:max(abs(pull(data, {{ value }})),
                                                na.rm = T))
-        population <- ggplot(filter(data, (!!area) == area_name),
-                             aes_string(y = quo_text(value),
-                                        x = quo_text(age),
-                                        fill = quo_text(sex))) +
+        population <- ggplot(filter(data, {{ area }} == area_name),
+                             aes(y = {{ value }},
+                                 x = {{ age }},
+                                 fill = {{ sex }})) +
                 geom_col(col = "black", width = 0.7) +
                 coord_flip() +
                 scale_y_continuous(breaks = c(rev(-extremex), extremex[2:length(extremex)]),
@@ -614,22 +614,24 @@ population <- function(data, value, sex, age,
                       rect = element_blank(),
                       panel.grid.major.x = element_line(colour = "gray80"))
         if (!missing(comparator_1)) {
-                compdata1 <- filter(data, (!!area) == comparator_1)
+                compdata1 <- filter(data, {{ area }} == comparator_1)
                 population <- population +
                         geom_line(data = compdata1,
-                                  aes_string(y = quo_text(value),
-                                             x = quo_text(age),
-                                             group = interaction(pull(compdata1, !!sex), pull(compdata1, !!area)),
-                                             col = quo_text(area)),
+                                  aes(y = {{ value }},
+                                      x = {{ age }},
+                                      group = interaction(pull(compdata1, {{ sex }}),
+                                                          pull(compdata1, {{ area }})),
+                                      col = {{ area }}),
                                   size = 1.5)
                 if (!missing(comparator_2)) {
-                        compdata2 <- filter(data, (!!area) == comparator_2)
+                        compdata2 <- filter(data, {{ area }} == comparator_2)
                         population <- population +
                                 geom_line(data = compdata2,
-                                          aes_string(y = quo_text(value),
-                                                     x = quo_text(age),
-                                                     group = interaction(pull(compdata2, !!sex), pull(compdata2, !!area)),
-                                                     col = quo_text(area)),
+                                          aes(y = {{ value }},
+                                              x = {{ age }},
+                                              group = interaction(pull(compdata2, {{ sex }}),
+                                                                  pull(compdata2, {{ area }})),
+                                              col = {{ area }}),
                                           size = 1.5) +
                                 scale_colour_manual(name = "",
                                                     breaks = c(comparator_1, comparator_2),
