@@ -56,84 +56,84 @@ compare_areas <- function(data, area, value,
                           legend.position = "bottom",
                           display.values = FALSE,
                           dps = 1) {
-        area <- enquo(area)
-        value <- enquo(value)
+        # area <- enquo(area)
+        # value <- enquo(value)
         if (order == "desc") {
                 if (!missing(top_areas)) {
                         levels <- data %>%
-                                filter(!((!!area) %in% top_areas)) %>%
+                                filter(!({{ area }} %in% top_areas)) %>%
                                 droplevels() %>%
-                                arrange(-(!!value)) %>%
-                                select(!!area) %>%
+                                arrange(-{{ value }}) %>%
+                                select({{ area }}) %>%
                                 pull() %>%
                                 as.character()
                         levels <- rev(c(top_areas, levels))
                         data <- data %>%
-                                mutate(!!quo_name(area) :=
-                                               factor((!!area),
+                                mutate({{ area }} :=
+                                               factor({{ area }},
                                                       levels = levels))
                 } else {
                         levels <- data %>%
                                 droplevels() %>%
-                                arrange(-(!!value)) %>%
-                                select(!!area) %>%
+                                arrange(-{{ value }}) %>%
+                                select({{ area }}) %>%
                                 pull() %>%
                                 as.character() %>%
                                 rev()
                         data <- data %>%
-                                mutate(!!quo_name(area) :=
-                                               factor((!!area),
+                                mutate({{ area }} :=
+                                               factor({{ area }},
                                                       levels = levels))
 
                 }
         } else if (order == "asc") {
                 if (!missing(top_areas)) {
                         levels <- data %>%
-                                filter(!((!!area) %in% top_areas)) %>%
+                                filter(!({{ area }} %in% top_areas)) %>%
                                 droplevels() %>%
-                                arrange(!!value) %>%
-                                select(!!area) %>%
+                                arrange({{ value }}) %>%
+                                select({{ area }}) %>%
                                 pull() %>%
                                 as.character() %>%
                                 unique
                         levels <- rev(c(top_areas, levels))
                         data <- data %>%
-                                mutate(!!quo_name(area) :=
-                                               factor((!!area),
+                                mutate({{ area }} :=
+                                               factor({{ area }},
                                                       levels = levels))
                 } else {
                         levels <- data %>%
                                 droplevels() %>%
-                                arrange(!!value) %>%
-                                select(!!area) %>%
+                                arrange({{ value }}) %>%
+                                select({{ area }}) %>%
                                 pull() %>%
                                 as.character() %>%
                                 rev()
                         data <- data %>%
-                                mutate(!!quo_name(area) :=
-                                               factor((!!area),
+                                mutate({{ area }} :=
+                                               factor({{ area }},
                                                       levels = levels))
 
                 }
 
         }
         if (display.values) data <- data %>%
-                mutate(label = round2(!!value, dps),
+                mutate(label = round2({{ value }}, dps),
                        label = formatC(label, format = "f", digits = dps, big.mark = ","))
 
 
         compare_areas <- ggplot(data,
-                                aes_string(x = quo_text(area),
-                                           y = quo_text(value))) +
+                                aes(x = {{ area }},
+                                    y = {{ value }})) +
                 coord_flip() +
                 labs(title = title,
                      x = ylab,
                      y = xlab)
 
         if (!missing(fill)) {
-                fill <- enquo(fill)
+                # fill <- enquo(fill)
                 compare_areas <- compare_areas +
-                        geom_col(aes_string(fill = quo_text(fill))) +
+                        geom_col(aes(fill = {{ fill }})) +
                         scale_fill_phe(theme = "fingertips") +
                         labs(fill = "Area compared to Benchmark")
 
@@ -142,23 +142,23 @@ compare_areas <- function(data, area, value,
                         geom_col()
         }
         if (!missing(lowerci) & !missing(upperci)) {
-                lowerci <- enquo(lowerci)
-                upperci <- enquo(upperci)
+                # lowerci <- enquo(lowerci)
+                # upperci <- enquo(upperci)
                 compare_areas <- compare_areas +
-                        geom_errorbar(aes_string(ymin = quo_text(lowerci),
-                                                 ymax = quo_text(upperci)),
+                        geom_errorbar(aes(ymin = {{ lowerci }},
+                                          ymax = {{ upperci }}),
                                       width=.2, show.legend = FALSE)
         }
         if (display.values) {
                 if (!missing(upperci)) {
-                        upperci <- enquo(upperci)
+                        # upperci <- enquo(upperci)
                         label_position <- data %>%
-                                filter((!!upperci) == max((!!upperci), na.rm = TRUE)) %>%
-                                pull(!!upperci)
+                                filter({{ upperci }} == max({{ upperci }}, na.rm = TRUE)) %>%
+                                pull({{ upperci }})
                 } else {
                         label_position <- data %>%
-                                filter((!!value) == max((!!value), na.rm = TRUE)) %>%
-                                pull(!!value)
+                                filter({{ value }} == max({{ value }}, na.rm = TRUE)) %>%
+                                pull({{ value }})
                 }
                 adjust_factor <- 25
                 label_position <- label_position / -adjust_factor
