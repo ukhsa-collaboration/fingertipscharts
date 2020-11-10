@@ -233,7 +233,7 @@ overview <- function(data, area, indicator, value,
                         unique()
                 levels <- c("Period", top_areas, levels)
                 data <- data %>%
-                        mutate(!!quo_name(enquo(area)) :=
+                        mutate({{ area }} :=
                                        factor(({{ area }}),
                                               levels = levels))
         } else {
@@ -245,15 +245,15 @@ overview <- function(data, area, indicator, value,
                         as.character() %>%
                         unique()
                 data <- data %>%
-                        mutate(!!quo_name(enquo(area)) :=
+                        mutate({{ area }} :=
                                        factor(({{ area }}),
                                               levels = c("Period", levels)))
         }
         tp <- data %>%
                 filter(({{ area }}) == levels[2]) %>%
-                mutate(!!quo_name(enquo(area)) := "Period",
-                       !!quo_name(enquo(fill)) := NA,
-                       !!quo_name(enquo(value)) :=
+                mutate({{ area }} := "Period",
+                       {{ fill }} := NA,
+                       {{ value }} :=
                                as.character(str_wrap(({{ timeperiod }}), 9)))
 
 
@@ -268,7 +268,7 @@ overview <- function(data, area, indicator, value,
                 unique() %>%
                 str_wrap(wrap_length)
         data <- data %>%
-                mutate(!!quo_name(enquo(indicator)) :=
+                mutate({{ indicator }} :=
                                factor(str_wrap(({{ indicator }}), wrap_length),
                                       levels = levels)) %>%
                 droplevels()
