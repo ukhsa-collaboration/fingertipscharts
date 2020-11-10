@@ -1129,7 +1129,7 @@ area_profiles <- function(data,
         # indicator <- enquo(indicator)
 
         # check for multiple values for an area per indicator
-        check_message <- spine_data_check(data, indicator, area_code)
+        check_message <- spine_data_check(data, {{ indicator }}, {{ area_code }})
         if (!is.na(check_message)) stop(check_message)
 
         # create data table
@@ -1149,11 +1149,12 @@ area_profiles <- function(data,
                 if (!is.na(dps) & !is.integer(dps) & !is.numeric(dps)) stop("The dps argument must be a number or NA")
                 # trend <- enquo(trend)
                 dftable <- create_datatable(data,
-                                            indicator,
-                                            area_code,
-                                            timeperiod,
-                                            trend,
-                                            count, value,
+                                            {{ indicator }},
+                                            {{ area_code }},
+                                            {{ timeperiod }},
+                                            {{ trend }},
+                                            {{ count }},
+                                            {{ value }},
                                             local_area_code,
                                             median_line_area_code,
                                             comparator_area_code,
@@ -1173,23 +1174,20 @@ area_profiles <- function(data,
         # polarity <- enquo(polarity)
         # area_type <- enquo(area_type)
         dfrescaled <- spine_rescaler(data,
-                                     area_code,
-                                     indicator,
-                                     significance,
-                                     polarity,
-                                     area_type,
-                                     value,
-                                     timeperiod,
+                                     {{ area_code }},
+                                     {{ indicator }},
+                                     {{ significance }},
+                                     {{ polarity }},
+                                     {{ area_type }},
+                                     {{ value }},
+                                     {{ timeperiod }},
                                      local_area_code,
                                      median_line_area_code,
                                      comparator_area_code,
                                      percent_display,
                                      dps = dps)
         # domain <- enquo(domain)
-        if (quo_text(domain) == "no_domains") {
-                domain_field <- NA
-        } else {
-                domain_field <- domain
+        if (rlang::as_name(rlang::enquo(domain)) != "no_domains") {
                 domain_lu <- data %>%
                         select({{ indicator }}, {{ domain }}) %>%
                         mutate({{ domain }} := factor({{ domain }})) %>%
@@ -1278,16 +1276,16 @@ area_profiles <- function(data,
                 labs(x = "", y = "")
 
         if (is.data.frame(dftable)) {
-                dt_indicator <- indicator
+                # dt_indicator <- indicator
                 dt_area_field <- "Area_value"
                 dt_comparator_field <- "Comparator_value"
                 dt_median_field <- "Median_value"
-                dt_area_count <- count
-                dt_timeperiod <- timeperiod
+                # dt_area_count <- count
+                # dt_timeperiod <- timeperiod
                 dftable <- dftable %>%
-                        rename(ind = {{ dt_indicator }},
-                               count = {{ dt_area_count }},
-                               tp = {{ dt_timeperiod }})
+                        mutate(ind = {{ indicator }},
+                               count = {{ count }},
+                               tp = {{ timeperiod }})
                 lims <- range(header_positions)
                 lims[1] <- lims[1] + indicator_label_nudgex
                 lims <- lims * 1.06
@@ -1307,7 +1305,7 @@ area_profiles <- function(data,
                         ) +
                         geom_text(data = dftable,
                                   aes(label = !! sym(dt_median_field),
-                                             x = "ind"),
+                                             x = ind),
                                   y = header_positions[6],
                                   col = "black",
                                   size = 2.5 * relative_text_size,

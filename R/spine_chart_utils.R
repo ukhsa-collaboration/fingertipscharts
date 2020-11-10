@@ -30,7 +30,7 @@ spine_preprocess <- function(data, indicator, timeperiod_sortable) {
 #' @inheritParams area_profiles
 spine_data_check <- function(data, indicator, area_code) {
         data <- data %>%
-                group_by({{ indictor }}, {{ area_code }}) %>%
+                group_by({{ indicator }}, {{ area_code }}) %>%
                 count() %>%
                 filter(n > 1)
         if (nrow(data) > 0) {
@@ -61,7 +61,7 @@ spine_data_check <- function(data, indicator, area_code) {
 #'   length when horizonal
 #' @import dplyr
 #' @importFrom tidyr pivot_wider
-#' @importFrom rlang  .data eval_tidy as_name enquo
+#' @importFrom rlang  .data as_name enquo
 #' @importFrom scales comma
 #' @return A data frame containing the information that sits alongside the spine
 #'   chart
@@ -116,8 +116,8 @@ create_datatable <- function(data, indicator,
                                                               scales::comma(round2(as.numeric({{ count }}), 0),
                                                                             accuracy = 1),
                                                               "'"))))
-        if (is.character(rlang::eval_tidy(trend, data)) |
-            is.factor(rlang::eval_tidy(trend, data))) {
+        if (is.character(rlang::eval_tidy(enquo(trend), data)) |
+            is.factor(rlang::eval_tidy(enquo(trend), data))) {
 
                 data_trend <- data %>%
                         filter(({{ area_code }}) == local_area_code) %>%
