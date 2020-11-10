@@ -307,8 +307,8 @@ overview <- function(data, area, indicator, value,
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr
-#' @importFrom rlang quo_text
-#' @importFrom stats lm as.formula
+#' @importFrom rlang quo_text new_formula ensym
+#' @importFrom stats lm
 #' @examples
 #' library(tidyr)
 #' library(dplyr)
@@ -337,11 +337,11 @@ compare_indicators <- function(data, x, y,
                                point_size = 4, highlight_area,
                                area, add_R2 = FALSE) {
 
-        x <- enquo(x)
-        y <- enquo(y)
+        # x <- enquo(x)
+        # y <- enquo(y)
 
-        compare_indicators <- ggplot(data, aes_string(x = quo_text(x),
-                                                      y = quo_text(y))) +
+        compare_indicators <- ggplot(data, aes(x = {{ x }},
+                                               y = {{ y }})) +
                 labs(x = xlab,
                      y = ylab) +
                 theme(rect = element_blank(),
@@ -352,9 +352,9 @@ compare_indicators <- function(data, x, y,
                 if (missing(area)){
                         stop("If highlight_area contains a value, so must area_field")
                 }
-                area <- enquo(area)
+                # area <- enquo(area)
                 data <- data %>%
-                        mutate(highlight = ifelse((!!area) %in% highlight_area, T, F))
+                        mutate(highlight = ifelse({{ area }} %in% highlight_area, T, F))
                 compare_indicators <- compare_indicators +
                         geom_point(data = data,
                                    aes(shape = highlight,
@@ -372,7 +372,7 @@ compare_indicators <- function(data, x, y,
         }
 
         if (add_R2 == TRUE) {
-                form <- as.formula(paste(as_label(y), " ~ ", as_label(x)))
+                form <- rlang::new_formula(rlang::ensym(y), rlang::ensym(x))
                 r2 <- summary(lm(form, data = data))
                 r2frame <- data.frame(val = ifelse(r2$r.squared > 0.15,
                                                    paste("R^2:",round2(r2$r.squared, 2)),
