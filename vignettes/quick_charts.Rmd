@@ -221,7 +221,7 @@ p
 
 The area profiles image is created using the `area_profiles()` function.
 
-```{r area profiles data, cache=TRUE}
+```{r area profiles data}
 dfspine <- create_test_data()
 ```
 

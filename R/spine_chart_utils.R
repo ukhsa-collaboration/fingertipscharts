@@ -91,10 +91,11 @@ create_datatable <- function(data, indicator,
                        {{ value }} := suppressWarnings(case_when(
                                is.na(as.numeric({{ value }})) ~ {{ value }},
                                TRUE ~ ifelse(
-                                       !is.na(dps_2b_removed), paste0("\'",
-                                                                      format(comma(round2(as.numeric({{ value }}), dps),
-                                                                                   accuracy = 1 / (10 ^ dps)), nsmall = 1),
-                                                                      "\'"),
+                                       !is.na(.data$dps_2b_removed), paste0("\'",
+                                                                            format(comma(round2(as.numeric({{ value }}), dps),
+                                                                                         accuracy = 1 / (10 ^ dps)),
+                                                                                   nsmall = 1),
+                                                                            "\'"),
                                        paste0("\'",
                                               formatC(as.numeric({{ value }}),
                                                       format = "f",
@@ -172,10 +173,10 @@ create_datatable <- function(data, indicator,
 #' @importFrom tibble column_to_rownames rownames_to_column
 #' @importFrom purrr map map_df pmap
 #' @importFrom stringr str_trim str_locate str_extract
-#' @importFrom tidyr gather
+#' @importFrom tidyr pivot_longer
 #' @importFrom stats quantile
 #' @importFrom scales comma
-#' @importFrom rlang as_name enquo
+#' @importFrom rlang as_name enquo .data
 spine_rescaler <- function(data,
                            area_code,
                            indicator,
@@ -207,7 +208,7 @@ spine_rescaler <- function(data,
                 filter({{ area_type }} == areatype) %>%
                 group_by({{ indicator }}) %>%
                 summarise(percent_na = sum(is.na({{ value }})) / n()) %>%
-                filter(percent_na >= percent_display) %>%
+                filter(.data$percent_na >= percent_display) %>%
                 pull({{ indicator }})
 
         # convert indicators to remove to na
@@ -253,7 +254,7 @@ spine_rescaler <- function(data,
                 merge(mean,
                       by = rlang::as_name(rlang::enquo(indicator)),
                       all.x = TRUE) %>%
-                rename(mean = regionalvalue)
+                rename(mean = .data$regionalvalue)
 
         scaled_spine_inputs <- function(IndicatorName, Q0, Q25, mean, Q75, Q100, Significance, Polarity, areavalue, regionalvalue) {
                 Polarity <- stringr::str_trim(Polarity)
@@ -333,23 +334,25 @@ spine_rescaler <- function(data,
                 mutate(reverse = ifelse(grepl("Low is good", {{ polarity }}),
                                         TRUE,
                                         FALSE),
-                       Worst = ifelse(reverse == TRUE, Q100, Q0),
-                       Best = ifelse(reverse == TRUE, Q0, Q100)) %>%
-                select({{ indicator }}, Best, Worst) %>%
-                gather(GraphPoint, label, Best:Worst) %>%
-                mutate(y = ifelse(GraphPoint == "Best", 1.05, -0.05),
+                       Worst = ifelse(.data$reverse == TRUE, .data$Q100, .data$Q0),
+                       Best = ifelse(.data$reverse == TRUE, .data$Q0, .data$Q100)) %>%
+                select({{ indicator }}, .data$Best, .data$Worst) %>%
+                tidyr::pivot_longer(names_to = "GraphPoint",
+                                    values_to = "label",
+                                    cols = .data$Best:.data$Worst) %>%
+                mutate(y = ifelse(.data$GraphPoint == "Best", 1.05, -0.05),
                        dps_2b_removed = dps,
-                       label = ifelse(is.na(label),
+                       label = ifelse(is.na(.data$label),
                                       NA,
-                                      ifelse(!is.na(dps_2b_removed),
-                                             format(comma(round2(as.numeric(label), dps),
+                                      ifelse(!is.na(.data$dps_2b_removed),
+                                             format(comma(round2(as.numeric(.data$label), dps),
                                                           accuracy = 1 / (10 ^ dps)), nsmall = 1),
-                                             formatC(as.numeric(label),
+                                             formatC(as.numeric(.data$label),
                                                      format = "f",
                                                      big.mark = ",",
                                                      drop0trailing = TRUE))),
-                       GraphPoint = factor(GraphPoint, levels = c("Best","Q75","Q25","Worst"))) %>%
-                select(-(dps_2b_removed))
+                       GraphPoint = factor(.data$GraphPoint, levels = c("Best","Q75","Q25","Worst"))) %>%
+                select(-(.data$dps_2b_removed))
 
         timeperiod <- data %>%
                 select({{ indicator }}, {{ timeperiod }}) %>%
@@ -358,9 +361,9 @@ spine_rescaler <- function(data,
                 mutate({{ indicator }} := as.character({{ indicator }}))
 
         areadata <- areadata %>%
-                select({{ indicator }}, areavalue)
+                select({{ indicator }}, .data$areavalue)
         mean <- mean %>%
-                rename(England = regionalvalue)
+                rename(England = .data$regionalvalue)
 
         if (!is.na(comparator_area_code))
                 mean <- merge(parentdata, mean,
@@ -372,20 +375,20 @@ spine_rescaler <- function(data,
                 merge(timeperiod,
                       by = rlang::as_name(rlang::enquo(indicator)),
                       all = TRUE) %>%
-                mutate(England = as.character(England),
+                mutate(England = as.character(.data$England),
                        England = case_when(
-                        is.na(as.numeric(England)) ~ England,
-                        TRUE ~ format(round2(as.numeric(England), dps), nsmall = 1)),
-                       areavalue = as.character(areavalue),
+                        is.na(as.numeric(.data$England)) ~ .data$England,
+                        TRUE ~ format(round2(as.numeric(.data$England), dps), nsmall = 1)),
+                       areavalue = as.character(.data$areavalue),
                        areavalue = case_when(
-                               is.na(as.numeric(areavalue)) ~ areavalue,
-                               TRUE ~ format(round2(as.numeric(areavalue), dps), nsmall = 1)))
+                               is.na(as.numeric(.data$areavalue)) ~ .data$areavalue,
+                               TRUE ~ format(round2(as.numeric(.data$areavalue), dps), nsmall = 1)))
         if (!is.na(comparator_area_code))
                 dfannotatepoints <- dfannotatepoints %>%
-                mutate(regionalvalue = as.character(regionalvalue),
+                mutate(regionalvalue = as.character(.data$regionalvalue),
                        regionalvalue = case_when(
-                        is.na(as.numeric(regionalvalue)) ~ regionalvalue,
-                        TRUE ~ format(round2(as.numeric(regionalvalue), dps), nsmall = 1)))
+                        is.na(as.numeric(.data$regionalvalue)) ~ .data$regionalvalue,
+                        TRUE ~ format(round2(as.numeric(.data$regionalvalue), dps), nsmall = 1)))
 
         dfgraphfinal$bars <- merge(dfgraphfinal$bars,
                                        dfannotate,

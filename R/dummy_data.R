@@ -25,68 +25,68 @@ create_test_data <- function() {
                                AreaType = "Local",
                                Count = sample(20:500, 600, replace = T),
                                Denominator = sample(500:1000, 600, replace = T)) %>%
-                mutate(Value = 100 * Count / Denominator,
-                       LCI = Value * 0.95,
-                       UCI = Value * 1.05) %>%
+                mutate(Value = 100 * .data$Count / .data$Denominator,
+                       LCI = .data$Value * 0.95,
+                       UCI = .data$Value * 1.05) %>%
                 mutate_if(is.factor, as.character)
 
         df_parent <- df_local %>%
-                group_by(IndicatorName, ParentAreaCode, Timeperiod, Polarity) %>%
-                summarise(Count = sum(Count),
-                          Denominator = sum(Denominator)) %>%
+                group_by(.data$IndicatorName, .data$ParentAreaCode, .data$Timeperiod, .data$Polarity) %>%
+                summarise(Count = sum(.data$Count),
+                          Denominator = sum(.data$Denominator)) %>%
                 ungroup() %>%
-                mutate(Value = 100 * Count / Denominator,
-                       LCI = Value * 0.95,
-                       UCI = Value * 1.05,
+                mutate(Value = 100 * .data$Count / .data$Denominator,
+                       LCI = .data$Value * 0.95,
+                       UCI = .data$Value * 1.05,
                        AreaType = "Parent",
-                       AreaCode = ParentAreaCode,
+                       AreaCode = .data$ParentAreaCode,
                        ParentAreaCode = "C001")
         df_country <- df_parent %>%
-                group_by(IndicatorName, ParentAreaCode, Timeperiod, Polarity) %>%
-                summarise(Count = sum(Count),
-                          Denominator = sum(Denominator)) %>%
+                group_by(.data$IndicatorName, .data$ParentAreaCode, .data$Timeperiod, .data$Polarity) %>%
+                summarise(Count = sum(.data$Count),
+                          Denominator = sum(.data$Denominator)) %>%
                 ungroup() %>%
-                mutate(Value = 100 * Count / Denominator,
-                       LCI = Value * 0.95,
-                       UCI = Value * 1.05,
+                mutate(Value = 100 * .data$Count / .data$Denominator,
+                       LCI = .data$Value * 0.95,
+                       UCI = .data$Value * 1.05,
                        AreaType = "Country",
-                       AreaCode = ParentAreaCode,
+                       AreaCode = .data$ParentAreaCode,
                        ParentAreaCode = NA,
                        Significance = "Not compared")
 
         country_values <- df_country %>%
-                select(IndicatorName, EngVal = Value)
+                select(.data$IndicatorName, EngVal = .data$Value)
 
         df_local <- df_local %>%
                 left_join(country_values, by = "IndicatorName") %>%
-                mutate(Significance = ifelse(grepl("^Not", Polarity), "None",
-                                             ifelse(grepl("^RAG", Polarity),
-                                                    ifelse(grepl("Low", Polarity),
-                                                           ifelse(UCI < EngVal, "Better",
-                                                                  ifelse(LCI > EngVal, "Worse",
+                mutate(Significance = ifelse(grepl("^Not", .data$Polarity), "None",
+                                             ifelse(grepl("^RAG", .data$Polarity),
+                                                    ifelse(grepl("Low", .data$Polarity),
+                                                           ifelse(.data$UCI < .data$EngVal, "Better",
+                                                                  ifelse(.data$LCI > .data$EngVal, "Worse",
                                                                          "Similar")),
-                                                           ifelse(UCI < EngVal, "Worse",
-                                                                  ifelse(LCI > EngVal, "Better",
+                                                           ifelse(.data$UCI < .data$EngVal, "Worse",
+                                                                  ifelse(.data$LCI > .data$EngVal, "Better",
                                                                          "Similar"))),
-                                                    ifelse(UCI < EngVal, "Lower",
-                                                           ifelse(LCI > EngVal, "Higher",
+                                                    ifelse(.data$UCI < .data$EngVal, "Lower",
+                                                           ifelse(.data$LCI > .data$EngVal, "Higher",
                                                                   "Similar"))))) %>%
-                select(-EngVal)
+                select(-.data$EngVal)
         df_parent <- df_parent %>%
                 left_join(country_values, by = "IndicatorName") %>%
-                mutate(Significance = ifelse(grepl("^Not", Polarity), "None",
-                                             ifelse(grepl("^RAG", Polarity),
-                                                    ifelse(grepl("Low", Polarity),
-                                                           ifelse(UCI < EngVal, "Better",
-                                                                  ifelse(LCI > EngVal, "Worse",
+                mutate(Significance = ifelse(grepl("^Not", .data$Polarity), "None",
+                                             ifelse(grepl("^RAG", .data$Polarity),
+                                                    ifelse(grepl("Low", .data$Polarity),
+                                                           ifelse(.data$UCI < .data$EngVal, "Better",
+                                                                  ifelse(.data$LCI > .data$EngVal, "Worse",
                                                                          "Similar")),
-                                                           ifelse(UCI < EngVal, "Worse",
-                                                                  ifelse(LCI > EngVal, "Better",
+                                                           ifelse(.data$UCI < .data$EngVal, "Worse",
+                                                                  ifelse(.data$LCI > .data$EngVal, "Better",
                                                                          "Similar"))),
-                                                    ifelse(UCI < EngVal, "Lower",
-                                                           ifelse(LCI > EngVal, "Higher",
+                                                    ifelse(.data$UCI < .data$EngVal, "Lower",
+                                                           ifelse(.data$LCI > .data$EngVal, "Higher",
                                                                   "Similar"))))) %>%
-                select(-EngVal)
+                select(-.data$EngVal)
 
         trend_categories <- c("Increasing and getting better",
                               "Increasing and getting worse",
@@ -100,8 +100,8 @@ create_test_data <- function() {
                         df_parent,
                         df_country) %>%
                 mutate(Domain = case_when(
-                        grepl("1$", IndicatorName) ~ "Dom 1",
-                        grepl("2$", IndicatorName) ~ "Dom 2",
+                        grepl("1$", .data$IndicatorName) ~ "Dom 1",
+                        grepl("2$", .data$IndicatorName) ~ "Dom 2",
                         TRUE ~ "Dom 3"),
                        Trend = sample(trend_categories, n(), replace = TRUE))
         return(df)

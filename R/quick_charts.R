@@ -117,7 +117,7 @@ compare_areas <- function(data, area, value,
         }
         if (display.values) data <- data %>%
                 mutate(label = round2({{ value }}, dps),
-                       label = formatC(label, format = "f", digits = dps, big.mark = ","))
+                       label = formatC(.data$label, format = "f", digits = dps, big.mark = ","))
 
 
         compare_areas <- ggplot(data,
@@ -158,7 +158,7 @@ compare_areas <- function(data, area, value,
                 label_position <- label_position / -adjust_factor
                 scale_adjust <- 1.05 * (label_position * -adjust_factor) - (label_position * -adjust_factor)
                 compare_areas <- compare_areas +
-                        geom_text(aes(label = label),
+                        geom_text(aes(label = .data$label),
                                   hjust = 1,
                                   y = label_position / 2) +
                         scale_y_continuous(limits = c(label_position - scale_adjust,
@@ -348,8 +348,8 @@ compare_indicators <- function(data, x, y,
                         mutate(highlight = ifelse({{ area }} %in% highlight_area, T, F))
                 compare_indicators <- compare_indicators +
                         geom_point(data = data,
-                                   aes(shape = highlight,
-                                       fill = highlight),
+                                   aes(shape = .data$highlight,
+                                       fill = .data$highlight),
                                    size = point_size) +
                         scale_shape_manual(values = c(23, 21),
                                            limits = c(T, F)) +
@@ -372,9 +372,9 @@ compare_indicators <- function(data, x, y,
                                  y = Inf)
                 if (r2$r.squared > 0.15) {
                         compare_indicators <- compare_indicators +
-                                geom_text(data = r2frame, aes(x = x,
-                                                              y = y,
-                                                              label = val),
+                                geom_text(data = r2frame, aes(x = .data$x,
+                                                              y = .data$y,
+                                                              label = .data$val),
                                           hjust = 0,
                                           vjust = 1,
                                           parse = TRUE) +
@@ -383,9 +383,9 @@ compare_indicators <- function(data, x, y,
                                             colour = "#ED1F52")
                 } else {
                         compare_indicators <- compare_indicators +
-                                geom_text(data = r2frame, aes(x = x,
-                                                              y = y,
-                                                              label = val),
+                                geom_text(data = r2frame, aes(x = .data$x,
+                                                              y = .data$y,
+                                                              label = .data$val),
                                           hjust = 0,
                                           vjust = 1)
                 }
@@ -670,9 +670,9 @@ box_plots <- function(data, timeperiod, value,
                           y75 = quantile({{ value }}, 0.75, na.rm = TRUE),
                           y95 = quantile({{ value }}, 0.95, na.rm = TRUE))
         boxplots <- ggplot(data, aes(x = {{ timeperiod }})) +
-                geom_boxplot(aes(ymin = y5, lower = y25,
-                                 middle = y50, upper = y75,
-                                 ymax = y95),
+                geom_boxplot(aes(ymin = .data$y5, lower = .data$y25,
+                                 middle = .data$y50, upper = .data$y75,
+                                 ymax = .data$y95),
                              fill = "#CCCCCC",
                              stat = "identity") +
                 labs(title = title,
@@ -684,20 +684,20 @@ box_plots <- function(data, timeperiod, value,
 
         boxplots <- boxplots +
                 geom_segment(data = dat,
-                             aes(x = xmin + ((xmax - xmin) * 0.25),
-                                 xend = xmin + ((xmax - xmin) * 0.75),
-                                 y = ymax,
-                                 yend = ymax)) +
-                geom_segment(data=dat,
-                             aes(x = xmin + ((xmax - xmin) * 0.25),
-                                 xend = xmin + ((xmax - xmin) * 0.75),
-                                 y = ymin,
-                                 yend = ymin)) +
-                geom_segment(data=dat,
-                             aes(x = xmin,
-                                 xend = xmax,
-                                 y = middle,
-                                 yend = middle),
+                             aes(x = .data$xmin + ((.data$xmax - .data$xmin) * 0.25),
+                                 xend = .data$xmin + ((.data$xmax - .data$xmin) * 0.75),
+                                 y = .data$ymax,
+                                 yend = .data$ymax)) +
+                geom_segment(data = dat,
+                             aes(x = .data$xmin + ((.data$xmax - .data$xmin) * 0.25),
+                                 xend = .data$xmin + ((.data$xmax - .data$xmin) * 0.75),
+                                 y = .data$ymin,
+                                 yend = .data$ymin)) +
+                geom_segment(data = dat,
+                             aes(x = .data$xmin,
+                                 xend = .data$xmax,
+                                 y = .data$middle,
+                                 yend = .data$middle),
                              colour="red", size = 1)
         return(boxplots)
 
@@ -798,9 +798,9 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                                 scale_fill_phe(theme = "fingertips") +
                                 theme_void() +
                                 geom_text(data = copyright,
-                                          aes(x = x,
-                                              y = y,
-                                              label = val),
+                                          aes(x = .data$x,
+                                              y = .data$y,
+                                              label = .data$val),
                                           colour = "black",
                                           hjust = 1,
                                           vjust = 0,
@@ -1208,8 +1208,8 @@ area_profiles <- function(data,
                                       levels = ind_order))
         p <- ggplot(dfrescaled$bars,
                     aes(x = {{ indicator }},
-                        y = quantiles)) +
-                geom_col(aes(fill = GraphPoint),
+                        y = .data$quantiles)) +
+                geom_col(aes(fill = .data$GraphPoint),
                          width = bar_width,
                          na.rm = TRUE)
 
@@ -1229,7 +1229,7 @@ area_profiles <- function(data,
         p <- p +
                 geom_point(data = dfrescaled$points,
                            aes(x = {{ indicator }},
-                               y = area,
+                               y = .data$area,
                                fill = {{ significance }}),
                            shape = local_point_shape,
                            colour = local_point_outline,
@@ -1263,7 +1263,7 @@ area_profiles <- function(data,
                                            expand = c(0, 0)) +
                         geom_text(data = dfrescaled$bars[!dfrescaled$bars$GraphPoint %in%
                                                                  c("Q75", "Q25"), ],
-                                  aes(label = label, y = y),
+                                  aes(label = .data$label, y = .data$y),
                                   col = "black",
                                   size = 2.5 * relative_text_size,
                                   lineheight = datatable_line_height,
@@ -1271,7 +1271,7 @@ area_profiles <- function(data,
                                   na.rm = TRUE) +
                         geom_text(data = dftable,
                                   aes(label = !! sym(dt_median_field),
-                                             x = ind),
+                                             x = .data$ind),
                                   y = header_positions[6],
                                   col = "black",
                                   size = 2.5 * relative_text_size,
@@ -1281,7 +1281,7 @@ area_profiles <- function(data,
                                   na.rm = TRUE) +
                         geom_text(data = dftable,
                                   aes(label = !! sym(dt_area_field),
-                                      x = ind),
+                                      x = .data$ind),
                                   y = header_positions[5],
                                   col = "black",
                                   size = 2.5 * relative_text_size,
@@ -1290,7 +1290,7 @@ area_profiles <- function(data,
                                   hjust = 1,
                                   na.rm = TRUE) +
                         geom_text(data = dftable,
-                                  aes(label = count, x = ind),
+                                  aes(label = count, x = .data$ind),
                                   y = header_positions[4],
                                   col = "black",
                                   size = 2.5 * relative_text_size,
@@ -1299,7 +1299,7 @@ area_profiles <- function(data,
                                   hjust = 1,
                                   na.rm = TRUE) +
                         geom_text(data = dftable,
-                                  aes(label = tp, x = ind),
+                                  aes(label = .data$tp, x = .data$ind),
                                   y = header_positions[3],
                                   col = "black",
                                   size = 2.5 * relative_text_size,
@@ -1307,7 +1307,7 @@ area_profiles <- function(data,
                                   hjust = 1,
                                   na.rm = TRUE) +
                         geom_spoke(data = dftable,
-                                   aes(x = ind,
+                                   aes(x = .data$ind,
                                        y = header_positions[2],
                                        angle = .data$direction,
                                        colour = .data$trend_sig,
@@ -1318,7 +1318,7 @@ area_profiles <- function(data,
                                            angle = arrow_head_angle),
                                    na.rm = TRUE) +
                         geom_spoke(data = dftable,
-                                   aes(x = ind,
+                                   aes(x = .data$ind,
                                        y = header_positions[2],
                                        angle = .data$direction + pi,
                                        colour = .data$trend_sig,
@@ -1326,9 +1326,9 @@ area_profiles <- function(data,
                                    size = arrow_thickness,
                                    na.rm = TRUE) +
                         geom_text(data = dftable,
-                                  aes(label = ind,
+                                  aes(label = .data$ind,
                                       y = header_positions[1],
-                                      x = ind),
+                                      x = .data$ind),
                                   hjust = 0,
                                   nudge_y = indicator_label_nudgex,
                                   col = "black",
