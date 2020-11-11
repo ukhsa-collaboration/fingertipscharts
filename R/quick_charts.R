@@ -853,7 +853,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                         shp <- shp %>%
                                 mutate(AreaCode = as.character(!! quo(!! sym(join_field)))) %>%
                                 left_join(data, setNames("AreaCode", rlang::as_name(rlang::enquo(area_code))))
-                        value <- enquo(value)
+                        # value <- enquo(value)
                         if (!missing(name_for_label)) {
                                 # name_for_label <- enquo(name_for_label)
                                 labels <- sprintf("<strong>%s</strong><br/>Value: %g",
@@ -868,7 +868,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                         map <- leaflet(shp)  %>%
                                 addTiles() %>%
                                 addPolygons(fillColor =
-                                                    ~factpal(pull(shp, {{ fill }})),
+                                                    ~ factpal(pull(shp, {{ fill }})),
                                             weight = 2,
                                             opacity = 1,
                                             color = "white",
@@ -877,7 +877,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                                             popup = labels) %>%
                                 addLegend("topright",
                                           pal = factpal,
-                                          values = fill,
+                                          values = ~ pull(shp, {{ fill }}),
                                           title = title,
                                           opacity = 1)
                 } # nocov end
