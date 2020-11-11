@@ -30,8 +30,7 @@ spine_preprocess <- function(data, indicator, timeperiod_sortable) {
 #' @inheritParams area_profiles
 spine_data_check <- function(data, indicator, area_code) {
         data <- data %>%
-                group_by({{ indicator }}, {{ area_code }}) %>%
-                count() %>%
+                count({{ indicator }}, {{ area_code }}) %>%
                 filter(n > 1)
         if (nrow(data) > 0) {
                 area <- data %>%
