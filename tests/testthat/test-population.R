@@ -1,6 +1,4 @@
 
-
-
 test_that("Error for missing area name works", {
         agelevels <- c("0-4", "5-9","10-14","15-19",
                        "20-24","25-29","30-34",
@@ -28,7 +26,7 @@ test_that("Error for missing area name works", {
 
 # Visual tests ------------------------------------------------------------
 
-test_that("full population pyramid draws correctly", {
+test_that("population pyramid with two comparators", {
         agelevels <- c("0-4", "5-9","10-14","15-19",
                        "20-24","25-29","30-34",
                        "35-39","40-44","45-49",
@@ -53,12 +51,12 @@ test_that("full population pyramid draws correctly", {
                              subtitle = "2015/16",
                              xlab = "% of total population")
 
-        vdiffr::expect_doppelganger("full pop pyramid",
+        vdiffr::expect_doppelganger("population pyramid with two comparators",
                                     full_p,
                                     path = "")
 })
 
-test_that("one comparator population pyramid draws correctly", {
+test_that("population pyramid with one comparator draws correctly", {
         agelevels <- c("0-4", "5-9","10-14","15-19",
                        "20-24","25-29","30-34",
                        "35-39","40-44","45-49",
@@ -81,12 +79,12 @@ test_that("one comparator population pyramid draws correctly", {
                                        title = "Age Profile",
                                        subtitle = "2015/16",
                                        xlab = "% of total population")
-        vdiffr::expect_doppelganger("one comparator pop pyramid",
+        vdiffr::expect_doppelganger("population pyramid with one comparator",
                                     one_comparator_p,
                                     path = "")
 })
 
-test_that("no comparator population pyramid draws correctly", {
+test_that("population pyramid with no comparators draws correctly", {
         agelevels <- c("0-4", "5-9","10-14","15-19",
                        "20-24","25-29","30-34",
                        "35-39","40-44","45-49",
@@ -108,7 +106,7 @@ test_that("no comparator population pyramid draws correctly", {
                                       title = "Age Profile",
                                       subtitle = "2015/16",
                                       xlab = "% of total population")
-        vdiffr::expect_doppelganger("no comparator pop pyramid",
+        vdiffr::expect_doppelganger("population pyramid with no comparators",
                                     no_comparator_p,
                                     path = "")
 })

@@ -1,7 +1,7 @@
 
 # Visual tests ------------------------------------------------------------
 
-test_that("desc compare areas draws correctly", {
+test_that("compare areas descending draws correctly", {
 
         parent <- "PAC11"
         top_names <- c("C001", parent)
@@ -16,12 +16,12 @@ test_that("desc compare areas draws correctly", {
                                 order = "desc",
                                 top_areas = top_names,
                                 title = "Compare the local areas")
-        vdiffr::expect_doppelganger("desc compare areas",
+        vdiffr::expect_doppelganger("compare areas descending",
                                     desc_p,
                                     path = "")
 })
 
-test_that("no top desc compare areas draws correctly", {
+test_that("compare areas descending without top_areas draws correctly", {
         parent <- "PAC11"
         top_names <- c("C001", parent)
         df_ca <- create_test_data() %>%
@@ -36,12 +36,12 @@ test_that("no top desc compare areas draws correctly", {
                                        order = "desc",
                                        title = "Compare the local areas")
 
-        vdiffr::expect_doppelganger("no top areas desc compare areas",
+        vdiffr::expect_doppelganger("compare areas descending without top_areas",
                                     desc_no_top_p,
                                     path = "")
 })
 
-test_that("asc compare areas draws correctly", {
+test_that("compare areas ascending draws correctly", {
         parent <- "PAC11"
         top_names <- c("C001", parent)
         df_ca <- create_test_data() %>%
@@ -56,12 +56,12 @@ test_that("asc compare areas draws correctly", {
                                order = "asc",
                                top_areas = top_names,
                                title = "Compare the local areas")
-        vdiffr::expect_doppelganger("asc compare areas",
+        vdiffr::expect_doppelganger("compare areas ascending",
                                     asc_p,
                                     path = "")
 })
 
-test_that("no top asc compare areas draws correctly", {
+test_that("compare areas ascending without top_areas", {
         parent <- "PAC11"
         top_names <- c("C001", parent)
         df_ca <- create_test_data() %>%
@@ -76,12 +76,12 @@ test_that("no top asc compare areas draws correctly", {
                                       order = "asc",
                                       title = "Compare the local areas")
 
-        vdiffr::expect_doppelganger("no top areas asc compare areas",
+        vdiffr::expect_doppelganger("compare areas ascending without top_areas",
                                     asc_no_top_p,
                                     path = "")
 })
 
-test_that("desc compare areas no fill draws correctly", {
+test_that("compare areas descending without significance fill draws correctly", {
         parent <- "PAC11"
         top_names <- c("C001", parent)
         df_ca <- create_test_data() %>%
@@ -95,13 +95,13 @@ test_that("desc compare areas no fill draws correctly", {
                                         order = "desc",
                                         top_areas = top_names,
                                         title = "Compare the local areas")
-        vdiffr::expect_doppelganger("desc no fill compare areas",
+        vdiffr::expect_doppelganger("compare areas descending without significance fill",
                                     desc_p_no_fill,
                                     path = "")
 })
 
 
-test_that("desc compare areas no fill draws correctly while displaying values to 2 dps", {
+test_that("compare areas descending without significance fill and two dps draws correctly", {
         parent <- "PAC11"
         top_names <- c("C001", parent)
         df_ca <- create_test_data() %>%
@@ -117,7 +117,7 @@ test_that("desc compare areas no fill draws correctly while displaying values to
                                                   title = "Compare the local areas",
                                                   display.values = TRUE,
                                                   dps = 2)
-        vdiffr::expect_doppelganger("desc no fill compare areas displaying values",
+        vdiffr::expect_doppelganger("compare areas descending without significance fill and two dps",
                                     desc_p_no_fill_disp_vals,
                                     path = "")
 })

@@ -1,36 +1,3 @@
-# Visual tests ------------------------------------------------------------
-
-test_that("map renders correctly with year input to copyright_year", {
-        skip_on_cran()
-        df <- mapdata
-        ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
-        p <- map(df,
-                 ons_api = ons_api,
-                 area_code = AreaCode,
-                 fill = Significance,
-                 title = "Life expectancy at birth",
-                 subtitle = "Males in Upper Tier Local Authorities England",
-                 copyright_year = 2019)
-
-        vdiffr::expect_doppelganger("map", p,
-                                    path = "")
-})
-test_that("map renders correctly with date input to copyright_year", {
-        skip_on_cran()
-        df <- mapdata
-        ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
-        p1 <- map(df,
-                  ons_api = ons_api,
-                  area_code = AreaCode,
-                  fill = Significance,
-                  title = "Life expectancy at birth",
-                  subtitle = "Males in Upper Tier Local Authorities England",
-                  copyright_year = as.Date("2019-01-01"))
-
-        vdiffr::expect_doppelganger("map p1", p1,
-                                    path = "")
-})
-
 test_that("error where string passed to copyright_year in map fails", {
         skip_on_cran()
         df <- mapdata
@@ -76,5 +43,39 @@ test_that("error where ons api url isn't passed to map function", {
                          title = "Life expectancy at birth",
                          subtitle = "Males in Upper Tier Local Authorities England"),
                      "ons_api must contain a string to a geojson url on the ONS geography portal")
+})
+
+
+# Visual tests ------------------------------------------------------------
+
+test_that("map renders correctly with year input to copyright_year", {
+        skip_on_cran()
+        df <- mapdata
+        ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
+        p <- map(df,
+                 ons_api = ons_api,
+                 area_code = AreaCode,
+                 fill = Significance,
+                 title = "Life expectancy at birth",
+                 subtitle = "Males in Upper Tier Local Authorities England",
+                 copyright_year = 2019)
+
+        vdiffr::expect_doppelganger("map with numeric copyright_year", p,
+                                    path = "")
+})
+test_that("map renders correctly with date input to copyright_year", {
+        skip_on_cran()
+        df <- mapdata
+        ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
+        p1 <- map(df,
+                  ons_api = ons_api,
+                  area_code = AreaCode,
+                  fill = Significance,
+                  title = "Life expectancy at birth",
+                  subtitle = "Males in Upper Tier Local Authorities England",
+                  copyright_year = as.Date("2019-01-01"))
+
+        vdiffr::expect_doppelganger("map with date copyright_year", p1,
+                                    path = "")
 })
 

@@ -1,7 +1,7 @@
 
 # Visual tests ------------------------------------------------------------
 
-test_that("trends with fill draws correctly", {
+test_that("trends with significance fill draws correctly", {
         df_trend <- create_test_data() %>%
                 arrange(IndicatorName) %>%
                 mutate(Timeperiod = rep(c("2011", "2012", "2013", "2014", "2015", "2016"),
@@ -19,12 +19,12 @@ test_that("trends with fill draws correctly", {
                               subtitle = "For area AC142",
                               xlab = "Year",
                               ylab = "Value (%)")
-        vdiffr::expect_doppelganger("with fill trends",
+        vdiffr::expect_doppelganger("trends with significance fill",
                                     with_fill_p,
                                     path = "")
 })
 
-test_that("trends without fill draws correctly", {
+test_that("trends without significance fill draws correctly", {
         df_trend <- create_test_data() %>%
                 arrange(IndicatorName) %>%
                 mutate(Timeperiod = rep(c("2011", "2012", "2013", "2014", "2015", "2016"),
@@ -42,7 +42,7 @@ test_that("trends without fill draws correctly", {
                                  xlab = "Year",
                                  ylab = "Value (%)")
 
-        vdiffr::expect_doppelganger("without fill trends",
+        vdiffr::expect_doppelganger("trends without significance fill",
                                     without_fill_p,
                                     path = "")
 })

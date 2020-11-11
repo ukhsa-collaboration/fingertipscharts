@@ -52,7 +52,7 @@
 <circle cx='425.42' cy='331.92' r='3.02pt' style='stroke-width: 0.71; fill: #92D050;' clip-path='url(#cpNjQuMDR8NzE0LjUyfDU1NS4yMHwyMi43Nw==)' />
 <circle cx='388.27' cy='246.05' r='3.02pt' style='stroke-width: 0.71; fill: #FFC000;' clip-path='url(#cpNjQuMDR8NzE0LjUyfDU1NS4yMHwyMi43Nw==)' />
 <circle cx='357.35' cy='160.17' r='3.02pt' style='stroke-width: 0.71; fill: #5555E6;' clip-path='url(#cpNjQuMDR8NzE0LjUyfDU1NS4yMHwyMi43Nw==)' />
-<circle cx='315.69' cy='74.30' r='3.02pt' style='stroke-width: 0.71; fill: #C00000;' clip-path='url(#cpNjQuMDR8NzE0LjUyfDU1NS4yMHwyMi43Nw==)' />
+<circle cx='315.69' cy='74.30' r='3.02pt' style='stroke-width: 0.71; fill: #A020F0;' clip-path='url(#cpNjQuMDR8NzE0LjUyfDU1NS4yMHwyMi43Nw==)' />
 <line x1='389.28' y1='555.20' x2='389.28' y2='22.77' style='stroke-width: 1.07; stroke: #8B0000; stroke-linecap: butt;' clip-path='url(#cpNjQuMDR8NzE0LjUyfDU1NS4yMHwyMi43Nw==)' />
 <defs>
   <clipPath id='cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA='>
@@ -65,5 +65,5 @@
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='18.06' y='249.07' style='font-size: 8.80px; font-family: Liberation Sans;' textLength='41.05px' lengthAdjust='spacingAndGlyphs'>Indicator 4</text></g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='18.06' y='163.20' style='font-size: 8.80px; font-family: Liberation Sans;' textLength='41.05px' lengthAdjust='spacingAndGlyphs'>Indicator 5</text></g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='18.06' y='77.32' style='font-size: 8.80px; font-family: Liberation Sans;' textLength='41.05px' lengthAdjust='spacingAndGlyphs'>Indicator 6</text></g>
-<g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='64.04' y='14.56' style='font-size: 13.20px; font-family: Liberation Sans;' textLength='105.48px' lengthAdjust='spacingAndGlyphs'>no dt area profiles</text></g>
+<g clip-path='url(#cpMC4wMHw3MjAuMDB8NTc2LjAwfDAuMDA=)'><text x='64.04' y='14.56' style='font-size: 13.20px; font-family: Liberation Sans;' textLength='199.28px' lengthAdjust='spacingAndGlyphs'>area profiles with modified colours</text></g>
 </svg>

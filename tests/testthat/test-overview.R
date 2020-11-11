@@ -1,6 +1,6 @@
 # Visual tests ------------------------------------------------------------
 
-test_that("overview with top areas draws correctly", {
+test_that("overview with top_areas draws correctly", {
     parent <- "PAC14"
     top_names <- c("C001", parent)
     df_over <- create_test_data() %>%
@@ -17,12 +17,12 @@ test_that("overview with top areas draws correctly", {
                             wrap_length = 40,
                             value_label_size = 0.8)
 
-    vdiffr::expect_doppelganger("overview top areas",
+    vdiffr::expect_doppelganger("overview with top_areas",
                                 top_areas_p,
                                 path = "")
 })
 
-test_that("overview without top areas draws correctly", {
+test_that("overview without top_areas draws correctly", {
     parent <- "PAC14"
     top_names <- c("C001", parent)
     df_over <- create_test_data() %>%
@@ -37,7 +37,7 @@ test_that("overview without top areas draws correctly", {
                                timeperiod = Timeperiod,
                                wrap_length = 40,
                                value_label_size = 0.8)
-    vdiffr::expect_doppelganger("overview no top areas",
+    vdiffr::expect_doppelganger("overview without top_areas",
                                 no_top_areas_p,
                                 path = "")
 })

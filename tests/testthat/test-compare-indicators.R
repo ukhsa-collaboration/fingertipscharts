@@ -20,7 +20,7 @@ test_that("Error for missing area field works", {
 
 # Visual tests ------------------------------------------------------------
 
-test_that("compare indicators no highlight draws correctly", {
+test_that("compare indicators without highlighted areas draws correctly", {
         df_ci <- create_test_data() %>%
                 filter(IndicatorName %in% c("Indicator 1", "Indicator 3")) %>%
                 select(IndicatorName, AreaCode, Value) %>%
@@ -36,12 +36,12 @@ test_that("compare indicators no highlight draws correctly", {
                                          ylab = "Indicator 3 label",
                                          add_R2 = TRUE)
 
-        vdiffr::expect_doppelganger("compare indicators no highlight",
+        vdiffr::expect_doppelganger("compare indicators without highlighted areas",
                                     comp_ind_p,
                                     path = "")
 })
 
-test_that("compare indicators highlight draws correctly", {
+test_that("compare indicators with highlighted areas draws correctly", {
         df_ci <- create_test_data() %>%
                 filter(IndicatorName %in% c("Indicator 1", "Indicator 3")) %>%
                 select(IndicatorName, AreaCode, Value) %>%
@@ -59,12 +59,12 @@ test_that("compare indicators highlight draws correctly", {
                                                    area = AreaCode,
                                                    add_R2 = TRUE)
 
-        vdiffr::expect_doppelganger("compare indicators highlight",
+        vdiffr::expect_doppelganger("compare indicators with highlighted areas",
                                     comp_ind_highlight_p,
                                     path = "")
 })
 
-test_that("compare indicators highlight high R2 draws correctly", {
+test_that("compare indicators with high R2 draws correctly", {
         df_ci <- create_test_data() %>%
                 filter(IndicatorName %in% c("Indicator 1", "Indicator 3")) %>%
                 select(IndicatorName, AreaCode, Value) %>%
@@ -79,7 +79,7 @@ test_that("compare indicators highlight high R2 draws correctly", {
                                              xlab = "Indicator 1 label",
                                              ylab = "Indicator 2 label",
                                              add_R2 = TRUE)
-        vdiffr::expect_doppelganger("compare indicators high R2",
+        vdiffr::expect_doppelganger("compare indicators with high R2",
                                     comp_ind__R2_p,
                                     path = "")
 })
