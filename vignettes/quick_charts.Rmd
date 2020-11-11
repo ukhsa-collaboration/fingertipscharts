@@ -21,6 +21,7 @@ The charts produced, generally, order the data alphabetically. In the [static ma
 library(fingertipscharts)
 library(dplyr)
 library(tidyr)
+library(webshot)
 ```
 
 ## Overview {#overview}
