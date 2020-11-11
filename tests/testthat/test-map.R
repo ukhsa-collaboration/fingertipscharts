@@ -1,6 +1,3 @@
-
-
-
 # Visual tests ------------------------------------------------------------
 
 test_that("map renders correctly with year input to copyright_year", {

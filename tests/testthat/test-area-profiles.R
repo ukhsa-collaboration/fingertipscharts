@@ -106,6 +106,7 @@ test_that("full area profiles draws correctly with no trends information", {
 })
 
 test_that("full area profiles with factor indicator name draws correctly", {
+        df <- create_test_data()
         df2 <- create_test_data() %>%
                 mutate(IndicatorName = factor(IndicatorName,
                                               levels = rev(unique(df$IndicatorName))),
