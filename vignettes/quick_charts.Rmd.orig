@@ -7,8 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
-```r
+```{r setup}
 knitr::opts_chunk$set(fig.path = "charts-")
 ```
 
@@ -22,8 +21,7 @@ The charts produced, generally, order the data alphabetically. In the [static ma
 
 ## Libraries
 
-
-```r
+```{r libraries, message=FALSE}
 library(fingertipscharts)
 library(dplyr)
 library(tidyr)
@@ -34,8 +32,7 @@ library(tidyr)
 
 This function plots the **Overview** view (also known as the Tartan Rug). All of the charts in this vignette, starting with this one, use a function called `create_test_data()` from this packages to generate a dummy dataset. This data has the same structure as data exported from the `fingertips_data()` function in the `fingertipsR` package.
 
-
-```r
+```{r overview-data, message=FALSE}
 region <- "PAC19"
 top_names <- c("C001", region)
 dfdom <- create_test_data() %>%
@@ -46,8 +43,7 @@ dfdom <- create_test_data() %>%
 
 This is how the `overview()` function works:
 
-
-```r
+```{r overview, out.width='100%', fig.width=12, fig.height=5, fig.align='center', warning=FALSE}
 p <- overview(data = dfdom,
               area = AreaCode,
               indicator = IndicatorName,
@@ -59,14 +55,11 @@ p <- overview(data = dfdom,
 p
 ```
 
-<img src="charts-overview-1.png" title="plot of chunk overview" alt="plot of chunk overview" width="100%" style="display: block; margin: auto;" />
-
 ## Compare indicators
 
 Here is a function that helps produce a scatter plot as displayed on Fingertips. First the data needs to be changed to the correct format. The two variables that will be plotted need to be in separate fields. The `pivot_wider()` function from the `tidyr` package demonstrates how to do this below:
 
-
-```r
+```{r compare-indicators data}
 df <- create_test_data() %>%
   filter(IndicatorName %in% c("Indicator 1", "Indicator 2")) %>%
   select(IndicatorName, AreaCode, Value) %>%
@@ -77,8 +70,7 @@ df <- create_test_data() %>%
 
 This is how the `compare_indicators()` function works:
 
-
-```r
+```{r compare-indicators, out.width='80%', fig.width=9, fig.height=5, fig.align='center',warning=FALSE}
 p <- compare_indicators(data = df,
                         x = Indicator1,
                         y = Indicator2,
@@ -90,17 +82,15 @@ p <- compare_indicators(data = df,
 p
 ```
 
-<img src="charts-compare-indicators-1.png" title="plot of chunk compare-indicators" alt="plot of chunk compare-indicators" width="80%" style="display: block; margin: auto;" />
-
 ## Maps
 
 Here the package provides both interactive and static maps.
 
 The shape files need to be sources from the ONS Geography Portal. To do this, click on the API button [here](http://geoportal.statistics.gov.uk/datasets/counties-and-unitary-authorities-december-2016-ultra-generalised-clipped-boundaries-in-england-and-wales), using Counties and Unitary Authorities as an example, and then use the GeoJSON address as the string input to the `ons_api` parameter.
 
-
-```r
+```{r map-get-data}
 ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
+
 ```
 
 
@@ -108,8 +98,7 @@ ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca
 
 **Note,** before plotting the chart, the levels of the field that is determining the fill of the polygons need to be reordered, as if they aren't, they will be ordered alphabetically in the legend:
 
-
-```r
+```{r static-reorder}
 ordered_levels <- c("Better",
                     "Similar",
                     "Worse",
@@ -122,8 +111,7 @@ df <- mapdata %>%
 
 The default map type is static:
 
-
-```r
+```{r map-static, out.width='80%', fig.width=8, fig.height=8, fig.align='center', warning=FALSE}
 p <- fingertipscharts::map(data = df,
                     ons_api = ons_api,
                     area_code = AreaCode,
@@ -134,14 +122,11 @@ p <- fingertipscharts::map(data = df,
 p
 ```
 
-<img src="charts-map-static-1.png" title="plot of chunk map-static" alt="plot of chunk map-static" width="80%" style="display: block; margin: auto;" />
-
 ### Interactive
 
 It is also possible to have interactive maps. Note, for this to work the value parameter must be included and subtitle doesn't work.
 
-
-```r
+```{r map-interactive, out.width='80%', fig.width=8, fig.height=8, fig.align='center', warning=FALSE}
 p <- map(df,
          ons_api = ons_api,
          area_code = AreaCode,
@@ -153,14 +138,11 @@ p <- map(df,
 p
 ```
 
-<img src="charts-map-interactive-1.png" title="plot of chunk map-interactive" alt="plot of chunk map-interactive" width="80%" style="display: block; margin: auto;" />
-
 ## Trends
 
 This function allows users to plot the trends graph. The dummy dataset is slightly manipulated here to extend over a few years. A significance is then prescribed based on whether the confidence intervals overlap the country value.
 
-
-```r
+```{r trends-get-data}
 df <- create_test_data() %>%
         arrange(IndicatorName) %>%
         mutate(Timeperiod = rep(c("2011", "2012", "2013", "2014", "2015", "2016"),
@@ -176,12 +158,12 @@ df <- df %>%
     UCI < Country_val ~ "Lower",
     TRUE ~ "Similar"
   ))
+
 ```
 
 Here is an example of how to use the `trends()` function:
 
-
-```r
+```{r trends, out.width='70%', fig.width=9, fig.height=5, fig.align='center'}
 p <- trends(df,
             timeperiod = Timeperiod,
             value = Value,
@@ -198,14 +180,11 @@ p <- trends(df,
 p
 ```
 
-<img src="charts-trends-1.png" title="plot of chunk trends" alt="plot of chunk trends" width="70%" style="display: block; margin: auto;" />
-
 ## Compare areas {#compareareas}
 
 This code filters the dummy dataset for a single region and its parent, and all the child areas within that region.
 
-
-```r
+```{r get-fingertips-data}
 region <- "PAC10"
 top_names <- c("C001", region)
 df <- create_test_data() %>%
@@ -216,8 +195,7 @@ df <- create_test_data() %>%
 
 **Note,** before plotting the chart, the levels of the field that is determining the fill of the bars need to be reordered, as if they aren't, they will be ordered alphabetically in the legend:
 
-
-```r
+```{r compare-areas-reorder}
 ordered_levels <- c("Better",
                     "Similar",
                     "Worse",
@@ -230,8 +208,7 @@ df <- df %>%
 
 The `compare_areas` function makes plotting the compare areas chart straight forward.
 
-
-```r
+```{r compare-areas, out.width='80%', fig.width=9, fig.height=6, fig.align='center'}
 p <- compare_areas(df,
                    AreaCode,
                    Value,
@@ -244,20 +221,16 @@ p <- compare_areas(df,
 p
 ```
 
-<img src="charts-compare-areas-1.png" title="plot of chunk compare-areas" alt="plot of chunk compare-areas" width="80%" style="display: block; margin: auto;" />
-
 ## Area profiles
 
 The area profiles image is created using the `area_profiles()` function.
 
-
-```r
+```{r area-profiles-data}
 dfspine <- create_test_data()
 ```
 
 
-
-```r
+```{r area-profiles, warning=FALSE, out.width='100%', fig.width=10, fig.height=2.5}
 p <- area_profiles(dfspine,
                    value = Value,
                    count = Count,
@@ -281,16 +254,14 @@ p <- area_profiles(dfspine,
                    bar_width = 0.68,
                    horizontal_arrow_multiplier = 0.7)
 p
-```
 
-<img src="charts-area-profiles-1.png" title="plot of chunk area-profiles" alt="plot of chunk area-profiles" width="100%" />
+```
 
 ## Population
 
 This function provides the ability to draw the traditional population pyramid. Note that the ordering of the age bands are defined prior to the data being provided to the `population()` function:
 
-
-```r
+```{r population-data}
 set.seed(1234)
 agelevels <- c("0-4", "5-9","10-14","15-19",
                "20-24","25-29","30-34",
@@ -320,12 +291,13 @@ pops <- data.frame(Value = c(local_males,
                    stringsAsFactors = FALSE) %>%
   mutate(Age = factor(rep(agelevels, 6),
                           levels = agelevels))
+
+
 ```
 
 This is how the function works:
 
-
-```r
+```{r population, out.width='70%', fig.width=8, fig.height=7, fig.align='center'}
 p <- population(pops,
                 value = Value,
                 sex = Sex,
@@ -340,14 +312,11 @@ p <- population(pops,
 p
 ```
 
-<img src="charts-population-1.png" title="plot of chunk population" alt="plot of chunk population" width="70%" style="display: block; margin: auto;" />
-
 ## Box plots
 
 Box plots can also be drawn.
 
-
-```r
+```{r boxplots-data}
 df <- create_test_data() %>%
         arrange(IndicatorName) %>%
         mutate(Timeperiod = rep(c("2011", "2012", "2013", "2014", "2015", "2016"),
@@ -356,8 +325,7 @@ df <- create_test_data() %>%
 
 This is how the function works. Note, the levels of the factor for the `timeperiod` parameter may need to be reordered, as this determines the order along the x-axis:
 
-
-```r
+```{r boxplots, out.width='80%', fig.width=10, fig.height=7, fig.align='center'}
 p <- box_plots(df,
                timeperiod = Timeperiod,
                value = Value,
@@ -366,5 +334,3 @@ p <- box_plots(df,
                ylab = "Unit of measurement")
 p
 ```
-
-<img src="charts-boxplots-1.png" title="plot of chunk boxplots" alt="plot of chunk boxplots" width="80%" style="display: block; margin: auto;" />
