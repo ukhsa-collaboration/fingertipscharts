@@ -127,13 +127,13 @@ accompanying table}
 
 \item{header_positions}{numeric vector; used to adjust columns of data table
 if they are overlapping. The final value shouldn't be less than 1. Must
-have a length of 7. Defaults to c(-1.43, -.53, -.35, -.25, -.15, -0.05,
-1.05)}
+have a length of 7. Defaults to c(-1.83, -1.13, -.53, -.35, -.25, -.15,
+-0.05, 1.05)}
 
 \item{header_labels}{character vector; labels used for the titles of the
 columns for a data table. Must have a length of 7. Defaults to
-c("Indicator", "Time period", "Local count","Local value", "England value",
-"Worst/Lowest","Best/Highest")}
+c("Indicator", "Trend", "Time period", "Local count","Local value",
+"England value", "Worst/Lowest","Best/Highest")}
 
 \item{indicator_label_nudgex}{number; nudge the placement of the indicator
 label in the x direction. Negative values nudge to the left}
@@ -196,7 +196,7 @@ This function filters for the area type that is the same as your
   are removed before the spine is produced.
 }
 \examples{
-## An example with differing decimal places for individual indicators
+## An example with differing decimal places for individual indicators and no trend
 
 library(dplyr)
 df <- create_test_data() \%>\%
@@ -210,7 +210,6 @@ full_p <- area_profiles(df,
                         local_area_code = "AC122",
                         indicator = IndicatorName,
                         timeperiod = Timeperiod,
-                        trend = Trend,
                         polarity = Polarity,
                         significance = Significance,
                         area_type = AreaType,
@@ -224,6 +223,11 @@ full_p <- area_profiles(df,
                         show_dividers = "outer",
                         header_positions = c(-1, -0.7, -0.44, -0.35, -0.25,
                                              -0.15, -0.05, 1.08),
+                        header_labels = c("Indicator", "",
+                                          "Time\nperiod",
+                                          "Local\ncount","Local\nvalue",
+                                          "England\nvalue",
+                                          "Worst/\nLowest","Best/\nHighest"),
                         dps = NA)
 full_p
 

@@ -958,12 +958,12 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'   the spine chart
 #' @param header_positions numeric vector; used to adjust columns of data table
 #'   if they are overlapping. The final value shouldn't be less than 1. Must
-#'   have a length of 7. Defaults to c(-1.43, -.53, -.35, -.25, -.15, -0.05,
-#'   1.05)
+#'   have a length of 7. Defaults to c(-1.83, -1.13, -.53, -.35, -.25, -.15,
+#'   -0.05, 1.05)
 #' @param header_labels character vector; labels used for the titles of the
 #'   columns for a data table. Must have a length of 7. Defaults to
-#'   c("Indicator", "Time period", "Local count","Local value", "England value",
-#'   "Worst/Lowest","Best/Highest")
+#'   c("Indicator", "Trend", "Time period", "Local count","Local value",
+#'   "England value", "Worst/Lowest","Best/Highest")
 #' @param domain unquoted field name describing the grouping of the domains if
 #'   wishing to split the spine chart into domains
 #' @param relative_domain_text_size numeric; control the text size for the
@@ -1002,7 +1002,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #' @importFrom stats reformulate
 #' @importFrom stringr str_trim
 #' @examples
-#' ## An example with differing decimal places for individual indicators
+#' ## An example with differing decimal places for individual indicators and no trend
 #'
 #' library(dplyr)
 #' df <- create_test_data() %>%
@@ -1016,7 +1016,6 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'                         local_area_code = "AC122",
 #'                         indicator = IndicatorName,
 #'                         timeperiod = Timeperiod,
-#'                         trend = Trend,
 #'                         polarity = Polarity,
 #'                         significance = Significance,
 #'                         area_type = AreaType,
@@ -1030,6 +1029,11 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'                         show_dividers = "outer",
 #'                         header_positions = c(-1, -0.7, -0.44, -0.35, -0.25,
 #'                                              -0.15, -0.05, 1.08),
+#'                         header_labels = c("Indicator", "",
+#'                                           "Time\nperiod",
+#'                                           "Local\ncount","Local\nvalue",
+#'                                           "England\nvalue",
+#'                                           "Worst/\nLowest","Best/\nHighest"),
 #'                         dps = NA)
 #' full_p
 #'
