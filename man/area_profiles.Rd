@@ -46,54 +46,65 @@ area_profiles(
 )
 }
 \arguments{
-\item{data}{a data frame to create the spine chart from. the data frame
-should contain data for all area types included in the chart (eg, if
+\item{data}{a data frame to create the spine chart from. The data frame
+should contain records for all area types included in the chart (eg, if
 plotting for County & UA with a comparator of region and a median line for
-national, the data frame should contain all of these data)}
+national, the data frame should contain records for all of these data). The
+minimum field requirements in the data frame are; value, count, area_code,
+indicator, timeperiod, polarity, significance, area_type. See below for the
+definitions of these fields}
 
-\item{value}{unquoted field name containing the values to be plotted}
+\item{value}{unquoted field name for the field containing the values to be
+plotted}
 
-\item{count}{unquoted field name where the count (numerator) is stored}
+\item{count}{unquoted field name for the field where the count (numerator) is
+stored. This is provided to the accompanying data table}
 
-\item{area_code}{unquoted field name where area codes are stored
-(local_area_code, median_line_area_code and comparator_area_code, if using,
-should all exist in this field)}
+\item{area_code}{unquoted field name for the field where area codes are
+stored (local_area_code, median_line_area_code and comparator_area_code, if
+using, should all exist in this field)}
 
-\item{local_area_code}{string; the code of the area that the spine chart is
-being drawn for}
+\item{local_area_code}{string; the code of the area whose data is being
+presented}
 
-\item{indicator}{unquoted field name of the field containing the indicator
-labels. Take care as errors will occur where indicator labels are the same
-but data exist for multiple sub-categories (for example, sex or age)}
+\item{indicator}{unquoted field name for the field of the field containing
+the indicator labels. Take care as errors will occur where indicator labels
+are the same but data exist for multiple sub-categories (for example, sex
+or age)}
 
-\item{timeperiod}{unquoted field name of the time period field}
+\item{timeperiod}{unquoted field name for the field of the time period field.
+This gets used in the accompanying data table}
 
-\item{trend}{unquoted field name of the trend field; if the user doesn't want
-to display trend information then leave this incomplete and amend the
-header_labels argument to replace the "Trend" header with "". Text within
-this field should contain one of the following words to control the arrows
-that are displayed; "decreasing", "increasing", "no significant change",
-"could not be calculated". The text within this field should contain one of
-the following words to control the colour; "better", "worse", "no
-significant change". If none of these words appear in the string, the words
-"increasing" or "decreasing" will be used to colour the arrows in different
-shades of blue}
+\item{trend}{unquoted field name for the field of the trend field; if the
+user doesn't want to display trend information then leave this incomplete
+and amend the header_labels argument by replacing the "Trend" header with
+"". Text within this field should contain one of the following words to
+control the arrows that are displayed; "decreasing", "increasing", "no
+significant change", "could not be calculated". The text within this field
+should contain one of the following words to control the colour; "better",
+"worse", "no significant change". If none of these words appear in the
+string, the words "increasing" or "decreasing" will be used to colour the
+arrows in different shades of blue}
 
-\item{polarity}{unquoted field name containing the polarity information
-(currently only handles polarity returned by fingertipsR package)}
+\item{polarity}{unquoted field name for the field containing the polarity
+information (currently only handles "Not applicable", "RAG - Low is good",
+"RAG - High is good", "BOB - Blue orange blue")}
 
-\item{significance}{unquoted field name describing the statistical
-significance for that indicator (eg, Better, Worse, Similar etc)}
+\item{significance}{unquoted field name for the field describing the
+statistical significance for that indicator. This determines the colour of
+the point within the spine for the area. Colours are built in for the
+following significances; 'Better', 'Same', 'Worse', 'Not compared', 'None',
+'Higher', 'Similar', 'Lower'. Use the cols argument to colour other
+significance values}
 
-\item{area_type}{unquoted field name containing area type information. This
-ensures the vertabra are only plotted for the same area types as the
-local_area area type (eg, when plotting a spine chart for County & UA
-areas, regions and national area types will be removed)}
+\item{area_type}{unquoted field name for the field containing area type
+information. This ensures the vertabra are only plotted for the same area
+types as the local_area area type (eg, when plotting a spine chart for
+County & UA areas, regions and national area types will be removed)}
 
 \item{cols}{named character vector for the cols that will be applied to the
 significance field. The names should contain all of the levels in the
-significance field of the data frame. Defaults to the Fingertips colours
-based on the outputs from the API}
+significance field of the data frame. Defaults to the Fingertips colours}
 
 \item{median_line_area_code}{string; area code for the median line. Defaults
 to "E92000001" (England)}
@@ -127,19 +138,20 @@ accompanying table}
 
 \item{header_positions}{numeric vector; used to adjust columns of data table
 if they are overlapping. The final value shouldn't be less than 1. Must
-have a length of 7. Defaults to c(-1.83, -1.13, -.53, -.35, -.25, -.15,
--0.05, 1.05)}
+have a length of 7, if not using the trend argument, or 8 otherwise.
+Defaults to c(-1.83, -1.13, -.53, -.35, -.25, -.15, -0.05, 1.05)}
 
 \item{header_labels}{character vector; labels used for the titles of the
-columns for a data table. Must have a length of 7. Defaults to
-c("Indicator", "Trend", "Time period", "Local count","Local value",
-"England value", "Worst/Lowest","Best/Highest")}
+columns for a data table. Must have a length of 7, if not using the trend
+argument, or 8 otherwise. Defaults to c("Indicator", "Trend", "Time
+period", "Local count","Local value", "England value",
+"Worst/Lowest","Best/Highest")}
 
 \item{indicator_label_nudgex}{number; nudge the placement of the indicator
 label in the x direction. Negative values nudge to the left}
 
-\item{domain}{unquoted field name describing the grouping of the domains if
-wishing to split the spine chart into domains}
+\item{domain}{unquoted field name for the field describing the grouping of
+the domains if wishing to split the spine chart into domains}
 
 \item{relative_domain_text_size}{numeric; control the text size for the
 domain labels (if include.domains = TRUE) relative to 1}
@@ -179,14 +191,14 @@ a ggplot object containing a spine chart
 Returns ggplot of spine chart
 }
 \details{
-the function draws a bar chart (which is the spine) and then plots
+The function draws a bar chart (which is the spine) and then plots
   the data table (if datatable = TRUE) using geom_text. The bar chart is
-  always plotted between 0 and 1 on the x scale. The columns in the data
-  table are controlled by the header_positions argument. To adjust the length
-  of the bars in the visualisation, amend the header_positions argument. The
-  more negative the first value of the vector that goes into
-  header_positions, the more condensed the bar part of the visualisation will
-  be.
+  always plotted between 0 and 1 on the x scale, which isn't visible in the
+  output. The column locations in the data table are controlled by the
+  header_positions argument. To adjust the length of the bars in the
+  visualisation, amend the header_positions argument. The more negative the
+  first value of the vector that goes into header_positions, the more
+  condensed the bar part of the visualisation will be.
 
 This function filters for the area type that is the same as your
   local area type and then calculates the "vertebra" from those data.

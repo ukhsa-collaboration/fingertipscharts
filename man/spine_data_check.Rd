@@ -7,18 +7,22 @@
 spine_data_check(data, indicator, area_code)
 }
 \arguments{
-\item{data}{a data frame to create the spine chart from. the data frame
-should contain data for all area types included in the chart (eg, if
+\item{data}{a data frame to create the spine chart from. The data frame
+should contain records for all area types included in the chart (eg, if
 plotting for County & UA with a comparator of region and a median line for
-national, the data frame should contain all of these data)}
+national, the data frame should contain records for all of these data). The
+minimum field requirements in the data frame are; value, count, area_code,
+indicator, timeperiod, polarity, significance, area_type. See below for the
+definitions of these fields}
 
-\item{indicator}{unquoted field name of the field containing the indicator
-labels. Take care as errors will occur where indicator labels are the same
-but data exist for multiple sub-categories (for example, sex or age)}
+\item{indicator}{unquoted field name for the field of the field containing
+the indicator labels. Take care as errors will occur where indicator labels
+are the same but data exist for multiple sub-categories (for example, sex
+or age)}
 
-\item{area_code}{unquoted field name where area codes are stored
-(local_area_code, median_line_area_code and comparator_area_code, if using,
-should all exist in this field)}
+\item{area_code}{unquoted field name for the field where area codes are
+stored (local_area_code, median_line_area_code and comparator_area_code, if
+using, should all exist in this field)}
 }
 \description{
 Check function for multiple values for an area in an indicator for spine chart

@@ -18,24 +18,33 @@ overview(
 )
 }
 \arguments{
-\item{data}{data.frame object to plot using ggplot2 functions}
+\item{data}{data.frame or tibble which will be fed into ggplot functions.
+This object should contain the fields used for the arguments within this
+function}
 
-\item{area}{field containing area names (unquoted)}
+\item{area}{unquoted field name for the field containing area names}
 
-\item{indicator}{field containing indicator names (unquoted)}
+\item{indicator}{unquoted field name for the field containing indicator names}
 
-\item{value}{field containing variable to be plotted (unquoted)}
+\item{value}{unquoted field name for the field containing values for the
+indicators to be displayed}
 
-\item{fill}{field to be used to determine the colouring of the bars (unquoted)}
+\item{fill}{unquoted field name for the field to be used to determine the
+colouring of the bars; usually reflecting significance. The values that
+values that can be used in this field with predetermined colours are:
+'Better', 'Higher', 'Similar', 'Lower', 'Worse', 'Not compared', 'None'}
 
-\item{timeperiod}{field containing the time period (unquoted)}
+\item{timeperiod}{unquoted field name for the field containing the time
+period}
 
-\item{top_areas}{character vector; the areas to fix at the left}
+\item{top_areas}{character vector; controls the areas to be displayed at the
+top on the left hand side of the chart. The values in the character vector
+must appear in the field represented by the area argument. Optional}
 
-\item{wrap_length}{number; maximum number of characters in indicator before
-wrapping it}
+\item{wrap_length}{number; maximum number of characters in the indicator name
+displayed before the text is wrapped to the next line}
 
-\item{value_label_size}{number; amount to scale the size of the value label}
+\item{value_label_size}{number; controls the size of the label of the value}
 
 \item{legend_position}{the position of legends ("none", "left", "right",
 "bottom", "top", or two-element numeric vector)}

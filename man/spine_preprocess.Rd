@@ -7,10 +7,13 @@
 spine_preprocess(data, indicator, timeperiod_sortable)
 }
 \arguments{
-\item{data}{a data frame to create the spine chart from. the data frame
-should contain data for all area types included in the chart (eg, if
+\item{data}{a data frame to create the spine chart from. The data frame
+should contain records for all area types included in the chart (eg, if
 plotting for County & UA with a comparator of region and a median line for
-national, the data frame should contain all of these data)}
+national, the data frame should contain records for all of these data). The
+minimum field requirements in the data frame are; value, count, area_code,
+indicator, timeperiod, polarity, significance, area_type. See below for the
+definitions of these fields}
 
 \item{indicator}{unquoted field name for indicators. This should be what is
 presented as the label for the final spine chart, hence should be unique

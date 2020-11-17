@@ -17,11 +17,13 @@ compare_indicators(
 )
 }
 \arguments{
-\item{data}{data.frame object to plot using ggplot2 functions}
+\item{data}{data.frame or tibble which will be fed into ggplot functions.
+This object should contain the fields used for the arguments within this
+function}
 
-\item{x}{field containing x variable (unquoted)}
+\item{x}{unquoted field name for the field containing x variable}
 
-\item{y}{field containing y variable (unquoted)}
+\item{y}{unquoted field name for the field containing y variable}
 
 \item{xlab}{string; x-axis title}
 
@@ -29,15 +31,16 @@ compare_indicators(
 
 \item{point_size}{number; size of point}
 
-\item{highlight_area}{character vector; list of areas for highlighting}
+\item{highlight_area}{character vector; list of areas for highlighting. These
+ares must be in the area field of the data supplied}
 
-\item{area}{field containing areas - should contain contents of
-highlight_area. Only required if highlight_area has a value (unquoted)}
+\item{area}{unquoted field name for the field containing areas. This is Only
+required if highlight_area has a value (optional)}
 
-\item{add_R2}{boolean; should R2 be displayed?}
+\item{add_R2}{logical; should R2 be displayed?}
 }
 \value{
-a ggplot of compare indicators for 2 indicators
+a ggplot object of a scatterplot comparing two indicators
 }
 \description{
 Plot compare indicators plot

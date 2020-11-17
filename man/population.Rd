@@ -19,18 +19,21 @@ population(
 )
 }
 \arguments{
-\item{data}{data.frame object to plot using ggplot2 functions}
+\item{data}{data.frame or tibble which will be fed into ggplot functions.
+This object should contain the fields used for the arguments within this
+function}
 
-\item{value}{field containing variable to be plotted on x axis (unquoted)}
+\item{value}{unquoted field name for the field containing the population
+values for each age band}
 
-\item{sex}{field containing sex variable (unquoted)}
+\item{sex}{unquoted field name for the field containing sex variable}
 
-\item{age}{field containing age variable (unquoted)}
+\item{age}{unquoted field name for the field containing age band variable}
 
-\item{area}{field containing variable to be plotted on y axis (unquoted)}
+\item{area}{unquoted field name for the field containing the area names}
 
-\item{area_name}{string; name of the local area (this should exist in the
-field described by the area parameter)}
+\item{area_name}{string; name of the area to display the bars for (this
+should exist in the field described by the area parameter)}
 
 \item{comparator_1}{string; name of comparator area (this should exist in the
 field described by the area parameter)}
@@ -40,7 +43,7 @@ field described by the area parameter)}
 
 \item{title}{string; title of chart}
 
-\item{subtitle}{string; text to use as subtitle to graph}
+\item{subtitle}{string; subtitle of the chart}
 
 \item{xlab}{string; x-axis title}
 }

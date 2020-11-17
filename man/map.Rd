@@ -19,29 +19,34 @@ map(
 )
 }
 \arguments{
-\item{data}{data.frame object to plot using ggplot2 functions}
+\item{data}{data.frame or tibble which will be fed into ggplot functions.
+This object should contain the fields used for the arguments within this
+function}
 
-\item{ons_api}{string; GeoJSON address provided from the ONS geography portal}
+\item{ons_api}{string; GeoJSON url of a shape file. This can be found on the
+ONS geography portal}
 
 \item{area_code}{field containing area codes to join to shape file imported
 from ONS API}
 
-\item{fill}{field to be used to determine the colouring of the areas
-(unquoted)}
+\item{fill}{unquoted field name for the field to be used to determine the
+colouring of the bars; usually reflecting significance. The values that
+values that can be used in this field with predetermined colours are:
+'Better', 'Higher', 'Similar', 'Lower', 'Worse', 'Not compared', 'None'}
 
 \item{type}{string; the output map required. Can be "static" or "interactive"}
 
-\item{value}{if interactive map, name of field containing values
-to be used for label (unquoted)}
+\item{value}{if interactive map, unquoted field name for the field containing
+values to be used for label of polygons when hovering}
 
-\item{name_for_label}{if interactive map, name of field containing area names
-to be used for label (unquoted) - optional}
+\item{name_for_label}{if interactive map, unquoted field name for the field
+containing area names to be used for label of polygons - optional}
 
 \item{title}{string; title of chart}
 
-\item{subtitle}{string; text to use as subtitle to graph}
+\item{subtitle}{string; subtitle of the chart}
 
-\item{copyright_size}{number; fix the size of the copyright text}
+\item{copyright_size}{number; used to control the size of the copyright text}
 
 \item{copyright_year}{number (length 4 characters) or Date class; the
 copyright year displayed at bottom of the map. Applies to static maps only}

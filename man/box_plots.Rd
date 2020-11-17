@@ -15,22 +15,27 @@ box_plots(
 )
 }
 \arguments{
-\item{data}{data.frame object to plot using ggplot2 functions}
+\item{data}{data.frame or tibble which will be fed into ggplot functions.
+This object should contain the fields used for the arguments within this
+function}
 
-\item{timeperiod}{field containing the time period (unquoted)}
+\item{timeperiod}{unquoted field name for the field containing the time
+period}
 
-\item{value}{field containing variable to be plotted on x axis (unquoted)}
+\item{value}{unquoted field name for the field containing the values for the
+indicator that is being plotted}
 
 \item{title}{string; title of chart}
 
-\item{subtitle}{string; text to use as subtitle to graph}
+\item{subtitle}{string; subtitle of the chart}
 
 \item{xlab}{string; x-axis title}
 
 \item{ylab}{string; y-axis title}
 }
 \value{
-a ggplot of boxplots for many areas over time
+a ggplot of boxplots for an indicator for containing values for
+  multiple areas over time
 }
 \description{
 Plot a series of boxplots

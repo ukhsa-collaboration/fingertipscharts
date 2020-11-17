@@ -21,38 +21,45 @@ create_datatable(
 )
 }
 \arguments{
-\item{data}{a data frame to create the spine chart from. the data frame
-should contain data for all area types included in the chart (eg, if
+\item{data}{a data frame to create the spine chart from. The data frame
+should contain records for all area types included in the chart (eg, if
 plotting for County & UA with a comparator of region and a median line for
-national, the data frame should contain all of these data)}
+national, the data frame should contain records for all of these data). The
+minimum field requirements in the data frame are; value, count, area_code,
+indicator, timeperiod, polarity, significance, area_type. See below for the
+definitions of these fields}
 
-\item{indicator}{unquoted field name of the field containing the indicator
-labels. Take care as errors will occur where indicator labels are the same
-but data exist for multiple sub-categories (for example, sex or age)}
+\item{indicator}{unquoted field name for the field of the field containing
+the indicator labels. Take care as errors will occur where indicator labels
+are the same but data exist for multiple sub-categories (for example, sex
+or age)}
 
-\item{area_code}{unquoted field name where area codes are stored
-(local_area_code, median_line_area_code and comparator_area_code, if using,
-should all exist in this field)}
+\item{area_code}{unquoted field name for the field where area codes are
+stored (local_area_code, median_line_area_code and comparator_area_code, if
+using, should all exist in this field)}
 
-\item{timeperiod}{unquoted field name of the time period field}
+\item{timeperiod}{unquoted field name for the field of the time period field.
+This gets used in the accompanying data table}
 
-\item{trend}{unquoted field name of the trend field; if the user doesn't want
-to display trend information then leave this incomplete and amend the
-header_labels argument to replace the "Trend" header with "". Text within
-this field should contain one of the following words to control the arrows
-that are displayed; "decreasing", "increasing", "no significant change",
-"could not be calculated". The text within this field should contain one of
-the following words to control the colour; "better", "worse", "no
-significant change". If none of these words appear in the string, the words
-"increasing" or "decreasing" will be used to colour the arrows in different
-shades of blue}
+\item{trend}{unquoted field name for the field of the trend field; if the
+user doesn't want to display trend information then leave this incomplete
+and amend the header_labels argument by replacing the "Trend" header with
+"". Text within this field should contain one of the following words to
+control the arrows that are displayed; "decreasing", "increasing", "no
+significant change", "could not be calculated". The text within this field
+should contain one of the following words to control the colour; "better",
+"worse", "no significant change". If none of these words appear in the
+string, the words "increasing" or "decreasing" will be used to colour the
+arrows in different shades of blue}
 
-\item{count}{unquoted field name where the count (numerator) is stored}
+\item{count}{unquoted field name for the field where the count (numerator) is
+stored. This is provided to the accompanying data table}
 
-\item{value}{unquoted field name containing the values to be plotted}
+\item{value}{unquoted field name for the field containing the values to be
+plotted}
 
-\item{local_area_code}{string; the code of the area that the spine chart is
-being drawn for}
+\item{local_area_code}{string; the code of the area whose data is being
+presented}
 
 \item{median_line_area_code}{string; area code for the median line. Defaults
 to "E92000001" (England)}

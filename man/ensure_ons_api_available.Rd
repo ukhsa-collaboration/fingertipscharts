@@ -7,10 +7,11 @@
 ensure_ons_api_available(ons_api)
 }
 \arguments{
-\item{ons_api}{string; GeoJSON address provided from the ONS geography portal}
+\item{ons_api}{string; GeoJSON url of a shape file. This can be found on the
+ONS geography portal}
 }
 \value{
-\code{TRUE} if the API is available, otherwise \code{stop()} is called.
+\code{TRUE} if the API is available, otherwise an error will occur.
 }
 \description{
 Check if the given ONS json is available

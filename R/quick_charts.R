@@ -2,23 +2,31 @@
 #'
 #' Returns ggplot of compare areas chart
 #' @return a ggplot of a compare areas chart
-#' @param data data.frame object to plot using ggplot2 functions
-#' @param area field containing variable to be plotted on y axis (unquoted)
-#' @param value field containing variable to be plotted on x axis (unquoted)
-#' @param lowerci field containing variable to be plotted as lower confidence
-#'   interval (unquoted - not required)
-#' @param upperci string; field containing variable to be plotted as upper confidence
-#'   interval (unquoted - not required)
-#' @param fill field to be used to determine the colouring of the bars (unquoted)
+#' @param data data.frame or tibble which will be fed into ggplot functions.
+#'   This object should contain the fields used for the arguments within this
+#'   function
+#' @param area unquoted field name for the field containing the area variable
+#'   which will be plotted on y axis
+#' @param value unquoted field name for the field containing the value variable
+#'   which will be plotted on x axis
+#' @param lowerci unquoted field name for the field containing the variable to
+#'   be plotted as lower confidence interval (optional)
+#' @param upperci unquoted field name for the field containing the variable to
+#'   be plotted as upper confidence interval (optional)
+#' @param fill unquoted field name for the field to be used to determine the
+#'   colouring of the bars; usually reflecting significance. The values that
+#'   values that can be used in this field with predetermined colours are:
+#'   'Better', 'Higher', 'Similar', 'Lower', 'Worse', 'Not compared', 'None'
 #' @param order one of "alphabetical", "asc" or "desc" - to determine how to
 #'   order the bars
-#' @param top_areas character vector; the areas to fix at the top of the chart
+#' @param top_areas character vector; the areas to fix at the top of the chart.
+#'   These values must exist within the area field of the data provided
 #' @param title string; title of chart
 #' @param xlab string; x-axis title
 #' @param ylab string; y-axis title
-#' @param legend.position the position of legends ("none", "left", "right",
-#'   "bottom", "top", or two-element numeric vector)
-#' @param display.values logical; where or not to display the rounded values
+#' @param legend.position string; the position of legend ("none", "left",
+#'   "right", "bottom", "top", or two-element numeric vector)
+#' @param display.values logical; whether or not to display the rounded values
 #'   next to the bars on the chart
 #' @param dps number; number of decimal places to be displayed when
 #'   display.values = TRUE. The default is 1.
@@ -175,14 +183,18 @@ compare_areas <- function(data, area, value,
 #'
 #' @return a ggplot of the overview/tartan rug plot
 #' @inheritParams compare_areas
-#' @param area field containing area names (unquoted)
-#' @param indicator field containing indicator names (unquoted)
-#' @param value field containing variable to be plotted (unquoted)
-#' @param timeperiod field containing the time period (unquoted)
-#' @param top_areas character vector; the areas to fix at the left
-#' @param wrap_length number; maximum number of characters in indicator before
-#'   wrapping it
-#' @param value_label_size number; amount to scale the size of the value label
+#' @param area unquoted field name for the field containing area names
+#' @param indicator unquoted field name for the field containing indicator names
+#' @param value unquoted field name for the field containing values for the
+#'   indicators to be displayed
+#' @param timeperiod unquoted field name for the field containing the time
+#'   period
+#' @param top_areas character vector; controls the areas to be displayed at the
+#'   top on the left hand side of the chart. The values in the character vector
+#'   must appear in the field represented by the area argument. Optional
+#' @param wrap_length number; maximum number of characters in the indicator name
+#'   displayed before the text is wrapped to the next line
+#' @param value_label_size number; controls the size of the label of the value
 #' @param legend_position the position of legends ("none", "left", "right",
 #'   "bottom", "top", or two-element numeric vector)
 #' @family quick charts
@@ -289,15 +301,16 @@ overview <- function(data, area, indicator, value,
 
 #' Plot compare indicators plot
 #'
-#' @return a ggplot of compare indicators for 2 indicators
+#' @return a ggplot object of a scatterplot comparing two indicators
 #' @inheritParams compare_areas
-#' @param x field containing x variable (unquoted)
-#' @param y field containing y variable (unquoted)
+#' @param x unquoted field name for the field containing x variable
+#' @param y unquoted field name for the field containing y variable
 #' @param point_size number; size of point
-#' @param highlight_area character vector; list of areas for highlighting
-#' @param area field containing areas - should contain contents of
-#'   highlight_area. Only required if highlight_area has a value (unquoted)
-#' @param add_R2 boolean; should R2 be displayed?
+#' @param highlight_area character vector; list of areas for highlighting. These
+#'   ares must be in the area field of the data supplied
+#' @param area unquoted field name for the field containing areas. This is Only
+#'   required if highlight_area has a value (optional)
+#' @param add_R2 logical; should R2 be displayed?
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr
@@ -399,11 +412,12 @@ compare_indicators <- function(data, x, y,
 #' @inheritParams compare_areas
 #' @inheritParams overview
 #' @inheritParams compare_indicators
-#' @param comparator string; name of comparator area (this should exist in the
-#'   field described by the area parameter)
-#' @param area_name string; name of the local area (this should exist in the
-#'   field described by the area parameter)
-#' @param subtitle string; text to use as subtitle to graph
+#' @param area unquoted field name for the field containing the area names
+#' @param comparator string; name of comparator area (this value should exist in
+#'   the field described by the area parameter)
+#' @param area_name string; name of the area to be displayed (this value should
+#'   exist in the field described by the area parameter)
+#' @param subtitle string; subtitle of the chart
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr
@@ -498,8 +512,13 @@ trends <- function(data, timeperiod, value,
 #' @inheritParams compare_areas
 #' @inheritParams compare_indicators
 #' @inheritParams trends
-#' @param sex field containing sex variable (unquoted)
-#' @param age field containing age variable (unquoted)
+#' @param value unquoted field name for the field containing the population
+#'   values for each age band
+#' @param sex unquoted field name for the field containing sex variable
+#' @param age unquoted field name for the field containing age band variable
+#' @param area unquoted field name for the field containing the area names
+#' @param area_name string; name of the area to display the bars for (this
+#'   should exist in the field described by the area parameter)
 #' @param comparator_1 string; name of comparator area (this should exist in the
 #'   field described by the area parameter)
 #' @param comparator_2 string; name of comparator area (this should exist in the
@@ -633,7 +652,10 @@ population <- function(data, value, sex, age,
 
 #' Plot a series of boxplots
 #'
-#' @return a ggplot of boxplots for many areas over time
+#' @return a ggplot of boxplots for an indicator for containing values for
+#'   multiple areas over time
+#' @param value unquoted field name for the field containing the values for the
+#'   indicator that is being plotted
 #' @inheritParams compare_indicators
 #' @inheritParams compare_areas
 #' @inheritParams overview
@@ -711,16 +733,15 @@ box_plots <- function(data, timeperiod, value,
 #' @param area_code field containing area codes to join to shape file imported
 #'   from ONS API
 #' @param type string; the output map required. Can be "static" or "interactive"
-#' @param ons_api string; GeoJSON address provided from the ONS geography portal
-#' @param copyright_size number; fix the size of the copyright text
+#' @param ons_api string; GeoJSON url of a shape file. This can be found on the
+#'   ONS geography portal
+#' @param copyright_size number; used to control the size of the copyright text
 #' @param copyright_year number (length 4 characters) or Date class; the
 #'   copyright year displayed at bottom of the map. Applies to static maps only
-#' @param name_for_label if interactive map, name of field containing area names
-#'   to be used for label (unquoted) - optional
-#' @param fill field to be used to determine the colouring of the areas
-#'   (unquoted)
-#' @param value if interactive map, name of field containing values
-#'   to be used for label (unquoted)
+#' @param name_for_label if interactive map, unquoted field name for the field
+#'   containing area names to be used for label of polygons - optional
+#' @param value if interactive map, unquoted field name for the field containing
+#'   values to be used for label of polygons when hovering
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr
@@ -866,51 +887,62 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'
 #' Returns ggplot of spine chart
 #' @return a ggplot object containing a spine chart
-#' @details the function draws a bar chart (which is the spine) and then plots
+#' @details The function draws a bar chart (which is the spine) and then plots
 #'   the data table (if datatable = TRUE) using geom_text. The bar chart is
-#'   always plotted between 0 and 1 on the x scale. The columns in the data
-#'   table are controlled by the header_positions argument. To adjust the length
-#'   of the bars in the visualisation, amend the header_positions argument. The
-#'   more negative the first value of the vector that goes into
-#'   header_positions, the more condensed the bar part of the visualisation will
-#'   be.
-#' @param data a data frame to create the spine chart from. the data frame
-#'   should contain data for all area types included in the chart (eg, if
+#'   always plotted between 0 and 1 on the x scale, which isn't visible in the
+#'   output. The column locations in the data table are controlled by the
+#'   header_positions argument. To adjust the length of the bars in the
+#'   visualisation, amend the header_positions argument. The more negative the
+#'   first value of the vector that goes into header_positions, the more
+#'   condensed the bar part of the visualisation will be.
+#' @param data a data frame to create the spine chart from. The data frame
+#'   should contain records for all area types included in the chart (eg, if
 #'   plotting for County & UA with a comparator of region and a median line for
-#'   national, the data frame should contain all of these data)
-#' @param value unquoted field name containing the values to be plotted
-#' @param count unquoted field name where the count (numerator) is stored
-#' @param area_code unquoted field name where area codes are stored
-#'   (local_area_code, median_line_area_code and comparator_area_code, if using,
-#'   should all exist in this field)
-#' @param local_area_code string; the code of the area that the spine chart is
-#'   being drawn for
-#' @param indicator unquoted field name of the field containing the indicator
-#'   labels. Take care as errors will occur where indicator labels are the same
-#'   but data exist for multiple sub-categories (for example, sex or age)
-#' @param timeperiod unquoted field name of the time period field
-#' @param trend unquoted field name of the trend field; if the user doesn't want
-#'   to display trend information then leave this incomplete and amend the
-#'   header_labels argument to replace the "Trend" header with "". Text within
-#'   this field should contain one of the following words to control the arrows
-#'   that are displayed; "decreasing", "increasing", "no significant change",
-#'   "could not be calculated". The text within this field should contain one of
-#'   the following words to control the colour; "better", "worse", "no
-#'   significant change". If none of these words appear in the string, the words
-#'   "increasing" or "decreasing" will be used to colour the arrows in different
-#'   shades of blue
-#' @param polarity unquoted field name containing the polarity information
-#'   (currently only handles polarity returned by fingertipsR package)
-#' @param significance unquoted field name describing the statistical
-#'   significance for that indicator (eg, Better, Worse, Similar etc)
-#' @param area_type unquoted field name containing area type information. This
-#'   ensures the vertabra are only plotted for the same area types as the
-#'   local_area area type (eg, when plotting a spine chart for County & UA
-#'   areas, regions and national area types will be removed)
+#'   national, the data frame should contain records for all of these data). The
+#'   minimum field requirements in the data frame are; value, count, area_code,
+#'   indicator, timeperiod, polarity, significance, area_type. See below for the
+#'   definitions of these fields
+#' @param value unquoted field name for the field containing the values to be
+#'   plotted
+#' @param count unquoted field name for the field where the count (numerator) is
+#'   stored. This is provided to the accompanying data table
+#' @param area_code unquoted field name for the field where area codes are
+#'   stored (local_area_code, median_line_area_code and comparator_area_code, if
+#'   using, should all exist in this field)
+#' @param local_area_code string; the code of the area whose data is being
+#'   presented
+#' @param indicator unquoted field name for the field of the field containing
+#'   the indicator labels. Take care as errors will occur where indicator labels
+#'   are the same but data exist for multiple sub-categories (for example, sex
+#'   or age)
+#' @param timeperiod unquoted field name for the field of the time period field.
+#'   This gets used in the accompanying data table
+#' @param trend unquoted field name for the field of the trend field; if the
+#'   user doesn't want to display trend information then leave this incomplete
+#'   and amend the header_labels argument by replacing the "Trend" header with
+#'   "". Text within this field should contain one of the following words to
+#'   control the arrows that are displayed; "decreasing", "increasing", "no
+#'   significant change", "could not be calculated". The text within this field
+#'   should contain one of the following words to control the colour; "better",
+#'   "worse", "no significant change". If none of these words appear in the
+#'   string, the words "increasing" or "decreasing" will be used to colour the
+#'   arrows in different shades of blue
+#' @param polarity unquoted field name for the field containing the polarity
+#'   information (currently only handles "Not applicable", "RAG - Low is good",
+#'   "RAG - High is good", "BOB - Blue orange blue")
+#' @param significance unquoted field name for the field describing the
+#'   statistical significance for that indicator. This determines the colour of
+#'   the point within the spine for the area. Colours are built in for the
+#'   following significances; 'Better', 'Same', 'Worse', 'Not compared', 'None',
+#'   'Higher', 'Similar', 'Lower'. Use the cols argument to colour other
+#'   significance values
+#' @param area_type unquoted field name for the field containing area type
+#'   information. This ensures the vertabra are only plotted for the same area
+#'   types as the local_area area type (eg, when plotting a spine chart for
+#'   County & UA areas, regions and national area types will be removed)
 #' @param cols named character vector for the cols that will be applied to the
 #'   significance field. The names should contain all of the levels in the
 #'   significance field of the data frame. Defaults to the Fingertips colours
-#'   based on the outputs from the API
 #' @param median_line_area_code string; area code for the median line. Defaults
 #'   to "E92000001" (England)
 #' @param comparator_area_code string; area code for the comparator point.
@@ -933,14 +965,15 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #'   the spine chart
 #' @param header_positions numeric vector; used to adjust columns of data table
 #'   if they are overlapping. The final value shouldn't be less than 1. Must
-#'   have a length of 7. Defaults to c(-1.83, -1.13, -.53, -.35, -.25, -.15,
-#'   -0.05, 1.05)
+#'   have a length of 7, if not using the trend argument, or 8 otherwise.
+#'   Defaults to c(-1.83, -1.13, -.53, -.35, -.25, -.15, -0.05, 1.05)
 #' @param header_labels character vector; labels used for the titles of the
-#'   columns for a data table. Must have a length of 7. Defaults to
-#'   c("Indicator", "Trend", "Time period", "Local count","Local value",
-#'   "England value", "Worst/Lowest","Best/Highest")
-#' @param domain unquoted field name describing the grouping of the domains if
-#'   wishing to split the spine chart into domains
+#'   columns for a data table. Must have a length of 7, if not using the trend
+#'   argument, or 8 otherwise. Defaults to c("Indicator", "Trend", "Time
+#'   period", "Local count","Local value", "England value",
+#'   "Worst/Lowest","Best/Highest")
+#' @param domain unquoted field name for the field describing the grouping of
+#'   the domains if wishing to split the spine chart into domains
 #' @param relative_domain_text_size numeric; control the text size for the
 #'   domain labels (if include.domains = TRUE) relative to 1
 #' @param datatable logical; default = TRUE, display data table alongside spine

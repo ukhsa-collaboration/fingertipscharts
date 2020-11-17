@@ -1,6 +1,7 @@
 #' Check if the given ONS json is available
 #' @inheritParams map
-#' @return \code{TRUE} if the API is available, otherwise \code{stop()} is called.
+#' @importFrom httr status_code GET
+#' @return \code{TRUE} if the API is available, otherwise an error will occur.
 ensure_ons_api_available <- function(ons_api) {
         code <- FALSE
         try({

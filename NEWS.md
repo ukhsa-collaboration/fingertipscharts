@@ -1,8 +1,11 @@
 # fingertipscharts 0.0.11.9000
 
-* Improved documentation for `area_profiles()`
+* Improved documentation for all charting functions
 * Fixed interactive map where fill is not a factor
 * Improved messaging for area_profiles() data issues
+* Updated tests to testthat edition 3
+* Adapted non-standard evaluation of code to use dplyr 1.0.0 sytax
+* Graceful failure for API resource when unavailable so as not to impact CRAN tests
 
 # fingertipscharts 0.0.11 (2020-06-05)
 
