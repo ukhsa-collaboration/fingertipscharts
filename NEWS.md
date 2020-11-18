@@ -1,4 +1,4 @@
-# fingertipscharts 0.0.11.9000
+# fingertipscharts 0.0.12
 
 * Improved documentation for all charting functions
 * Fixed interactive map where fill is not a factor

@@ -1,9 +1,9 @@
-This release has a number of minor bug fixes and improvements. Now compatible with `dplyr v1.0.0` and removed dependency on `lemon`. Tests that were previously failing are now passing. Updated for R4.0.0 compatibility
+This release now adheres to CRAN policy of failing gracefully when internet resource unavailable along with a major overhaul in package documentation.
 
 ## Test
 
-* local Windows 10 install, R 4.0.0
-* used Travis to check on Linux (2020-06-04)
+* local Windows 10 install, R 4.0.3
+* used Travis to check on Linux (2020-11-18)
 
 ## R CMD check results
 
