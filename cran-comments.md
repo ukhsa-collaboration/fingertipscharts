@@ -1,3 +1,5 @@
+This is a new submission. My package was archived on 2020-11-21 for policy violation.
+
 This release now adheres to CRAN policy of failing gracefully when internet resource unavailable along with a major overhaul in package documentation.
 
 ## Test
