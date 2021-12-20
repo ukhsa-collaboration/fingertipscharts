@@ -5,8 +5,14 @@ This release now adheres to CRAN policy of failing gracefully when internet reso
 ## Test
 
 * local Windows 10 install, R 4.0.3
-* used Travis to check on Linux (2020-11-18)
+* used Travis to check on Linux (2020-11-23)
 
+### Results from rhub checks
+
+```
+cran_prep <- rhub::check_for_cran()
+cran_prep$cran_summary()
+```
 ## R CMD check results
 
 There were no NOTEs, WARNINGs or ERRORs.

@@ -1,17 +1,9 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[![Build
-Status](https://travis-ci.org/PublicHealthEngland/fingertipscharts.svg)](https://travis-ci.org/PublicHealthEngland/fingertipscharts)
+[![R-CMD-check](https://github.com/publichealthengland/fingertipscharts/workflows/R-CMD-check/badge.svg)](https://github.com/publichealthengland/fingertipscharts/actions)
 [![Coverage
 Status](https://coveralls.io/repos/github/PublicHealthEngland/fingertipscharts/badge.svg?branch=master)](https://coveralls.io/github/PublicHealthEngland/fingertipscharts?branch=master)
-
-[![CRAN Status
-Badge](http://www.r-pkg.org/badges/version/fingertipscharts)](https://cran.r-project.org/package=fingertipscharts)
-[![CRAN Total
-Downloads](http://cranlogs.r-pkg.org/badges/grand-total/fingertipscharts)](https://cran.r-project.org/package=fingertipscharts)
-[![CRAN Monthly
-Downloads](http://cranlogs.r-pkg.org/badges/fingertipscharts)](https://cran.r-project.org/package=fingertipscharts)
 
 # fingertipscharts
 
@@ -22,14 +14,6 @@ displayed on Public Health England’s
 data on the website into their own outputs.
 
 ## Installation
-
-### CRAN
-
-Get the latest released, stable version from CRAN:
-
-``` r
-install.packages("fingertipscharts")
-```
 
 ### With remotes
 
@@ -86,6 +70,8 @@ p <- trends(df,
             subtitle = "AC103 compared to C001",
             xlab = "Year",
             ylab = "Unit of measurement")
+#> Warning: `guides(<scale> = FALSE)` is deprecated. Please use `guides(<scale> =
+#> "none")` instead.
 p
 ```
 
