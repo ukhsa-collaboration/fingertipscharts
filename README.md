@@ -2,8 +2,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 [![R-CMD-check](https://github.com/publichealthengland/fingertipscharts/workflows/R-CMD-check/badge.svg)](https://github.com/publichealthengland/fingertipscharts/actions)
-[![Coverage
-Status](https://coveralls.io/repos/github/PublicHealthEngland/fingertipscharts/badge.svg?branch=master)](https://coveralls.io/github/PublicHealthEngland/fingertipscharts?branch=master)
+[![codecov](https://codecov.io/gh/publichealthengland/fingertipscharts/branch/master/graph/badge.svg?token=D2X7WL46CC)](https://codecov.io/gh/publichealthengland/fingertipscharts)
 
 # fingertipscharts
 
@@ -70,8 +69,6 @@ p <- trends(df,
             subtitle = "AC103 compared to C001",
             xlab = "Year",
             ylab = "Unit of measurement")
-#> Warning: `guides(<scale> = FALSE)` is deprecated. Please use `guides(<scale> =
-#> "none")` instead.
 p
 ```
 
