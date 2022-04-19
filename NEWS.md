@@ -1,3 +1,8 @@
+# fingertipscharts 0.0.13
+
+* fixed bug with map function
+* removed dependency on `geojsonio`
+
 # fingertipscharts 0.0.12
 
 * Improved documentation for all charting functions

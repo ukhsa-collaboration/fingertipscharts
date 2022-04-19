@@ -18,8 +18,7 @@ test_that("overview with top_areas draws correctly", {
                             value_label_size = 0.8)
 
     vdiffr::expect_doppelganger("overview with top_areas",
-                                top_areas_p,
-                                path = "")
+                                fig = top_areas_p)
 })
 
 test_that("overview without top_areas draws correctly", {
@@ -38,6 +37,5 @@ test_that("overview without top_areas draws correctly", {
                                wrap_length = 40,
                                value_label_size = 0.8)
     vdiffr::expect_doppelganger("overview without top_areas",
-                                no_top_areas_p,
-                                path = "")
+                                fig = no_top_areas_p)
 })

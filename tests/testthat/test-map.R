@@ -1,7 +1,7 @@
 test_that("error where string passed to copyright_year in map fails", {
         skip_on_cran()
         df <- mapdata
-        ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
+        ons_api <- "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Counties_and_Unitary_Authorities_December_2021_UK_BUC/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson"
         expect_error(map(df,
                          ons_api = ons_api,
                          area_code = AreaCode,
@@ -15,7 +15,7 @@ test_that("error where string passed to copyright_year in map fails", {
 test_that("error where no obvious join field between shape file and data", {
         skip_on_cran()
         df <- mapdata
-        ons_regions <- "https://opendata.arcgis.com/datasets/f99b145881724e15a04a8a113544dfc5_3.geojson"
+        ons_regions <- "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Regions_December_2021_EN_BUC/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson"
         expect_error(map(df,
                          ons_api = ons_regions,
                          area_code = AreaCode,
@@ -60,8 +60,8 @@ test_that("map renders correctly with year input to copyright_year", {
                  subtitle = "Males in Upper Tier Local Authorities England",
                  copyright_year = 2019)
 
-        vdiffr::expect_doppelganger("map with numeric copyright_year", p,
-                                    path = "")
+        vdiffr::expect_doppelganger("map with numeric copyright_year",
+                                    fig = p)
 })
 test_that("map renders correctly with date input to copyright_year", {
         skip_on_cran()
@@ -75,7 +75,7 @@ test_that("map renders correctly with date input to copyright_year", {
                   subtitle = "Males in Upper Tier Local Authorities England",
                   copyright_year = as.Date("2019-01-01"))
 
-        vdiffr::expect_doppelganger("map with date copyright_year", p1,
-                                    path = "")
+        vdiffr::expect_doppelganger("map with date copyright_year",
+                                    fig = p1)
 })
 

@@ -20,8 +20,7 @@ test_that("compare indicators example draws correctly", {
                                 area = AreaCode,
                                 add_R2 = TRUE)
         vdiffr::expect_doppelganger("example compare indicators",
-                                    p,
-                                    path = "")
+                                    fig = p)
 })
 
 
@@ -46,8 +45,7 @@ test_that("trends example draws correctly", {
                     xlab = "Year",
                     ylab = "Value (%)")
         vdiffr::expect_doppelganger("example trends",
-                                    p,
-                                    path = "")
+                                    fig = p)
 })
 
 
@@ -80,8 +78,7 @@ test_that("population example draws correctly", {
                         subtitle = "2015/16",
                         xlab = "% of total population")
         vdiffr::expect_doppelganger("example population",
-                                    p,
-                                    path = "")
+                                    fig = p)
 })
 
 
@@ -100,8 +97,7 @@ test_that("box plot example draws correctly", {
                        subtitle = "Boxplot over time",
                        ylab = "Proportion (%)")
         vdiffr::expect_doppelganger("example box plot",
-                                    p,
-                                    path = "")
+                                    fig = p)
 })
 
 
@@ -118,8 +114,7 @@ test_that("map example draws correctly", {
                                    subtitle = "An indicator for Upper Tier Local Authorities England",
                                    copyright_year = 2019)
         vdiffr::expect_doppelganger("example map",
-                                    p,
-                                    path = "")
+                                    fig = p)
 })
 
 
@@ -156,8 +151,7 @@ test_that("area profiles example with domains", {
                            domain = Domain
         )
         vdiffr::expect_doppelganger("example area profiles with domains",
-                                    p,
-                                    path = "")
+                                    fig = p)
 })
 
 test_that("area profiles example different decimal places and no trend", {
@@ -191,9 +185,8 @@ test_that("area profiles example different decimal places and no trend", {
                                                   "England\nvalue",
                                                   "Worst/\nLowest","Best/\nHighest"),
                                 dps = NA)
-        vdiffr::expect_doppelganger("area profiles example with different dps and no trend",
-                                    full_p,
-                                    path = "")
+        vdiffr::expect_doppelganger("ap example with different dps and no trend",
+                                    fig = full_p)
 })
 
 

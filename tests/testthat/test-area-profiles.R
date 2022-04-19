@@ -208,9 +208,8 @@ test_that("area profiles with all main inputs draws correctly", {
                                 header_positions = c(-1, -0.7, -0.44, -0.35, -0.25,
                                                      -0.15, -0.05, 1.08)
         )
-        vdiffr::expect_doppelganger("area profiles with all main inputs",
-                                    full_p,
-                                    path = "")
+        vdiffr::expect_doppelganger("ap with all main inputs",
+                                    fig = full_p)
 })
 
 test_that("area profiles without trend draws correctly", {
@@ -241,12 +240,11 @@ test_that("area profiles without trend draws correctly", {
                                                            "Local\nvalue", "England\nvalue",
                                                            "Worst/\nLowest", "Best/\nHighest")
         )
-        vdiffr::expect_doppelganger("area profiles without trend",
-                                    full_p_no_trend,
-                                    path = "")
+        vdiffr::expect_doppelganger("ap without trend",
+                                    fig = full_p_no_trend)
 })
 
-test_that("area profiles with using factor indicator variable draws correctly", {
+test_that("area profiles using factor indicator variable draws correctly", {
         df <- create_test_data()
         df2 <- create_test_data() %>%
                 mutate(IndicatorName = factor(IndicatorName,
@@ -274,9 +272,8 @@ test_that("area profiles with using factor indicator variable draws correctly", 
                                                        header_positions = c(-1, -0.7, -0.53, -0.35, -0.25,
                                                                             -0.15, -0.05, 1.08))
 
-        vdiffr::expect_doppelganger("area profiles with using factor indicator variable",
-                                    full_with_factor_indicators_p,
-                                    path = "")
+        vdiffr::expect_doppelganger("ap with factor",
+                                    fig = full_with_factor_indicators_p)
 })
 
 test_that("area profiles without data table draws correctly", {
@@ -298,9 +295,8 @@ test_that("area profiles without data table draws correctly", {
                                       bar_width = 0.68,
                                       datatable = FALSE)
 
-        vdiffr::expect_doppelganger("area profiles without data table",
-                                    full_no_dt_p,
-                                    path = "")
+        vdiffr::expect_doppelganger("ap without data table",
+                                    fig = full_no_dt_p)
 })
 
 test_that("area profiles with colour modification draws correctly", {
@@ -322,9 +318,8 @@ test_that("area profiles with colour modification draws correctly", {
                                                        comparator_area_code = "PAC12",
                                                        bar_width = 0.68,
                                                        datatable = FALSE)
-        vdiffr::expect_doppelganger("area profiles with modified colours",
-                                    full_no_dt_p_modified_colours,
-                                    path = "")
+        vdiffr::expect_doppelganger("ap with modified colours",
+                                    fig = full_no_dt_p_modified_colours)
 })
 
 test_that("area profiles with domains draws correctly", {
@@ -352,9 +347,8 @@ test_that("area profiles with domains draws correctly", {
                                              header_positions = c(-1, -0.7, -0.53, -0.35, -0.25,
                                                                   -0.15, -0.05, 1.05),
                                              domain = Domain)
-        vdiffr::expect_doppelganger("area profiles with domains",
-                                    full_with_domains_p,
-                                    path = "")
+        vdiffr::expect_doppelganger("ap with domains",
+                                    fig = full_with_domains_p)
 })
 
 test_that("area profiles with dividers between indicators draws correctly", {
@@ -381,9 +375,8 @@ test_that("area profiles with dividers between indicators draws correctly", {
                                              header_positions = c(-1, -0.7, -0.53, -0.35, -0.25,
                                                                   -0.15, -0.05, 1.05))
 
-        vdiffr::expect_doppelganger("area profiles with dividers between indicators",
-                                    full_all_dividers_p,
-                                    path = "")
+        vdiffr::expect_doppelganger("ap with dividers",
+                                    fig = full_all_dividers_p)
 })
 
 
@@ -417,7 +410,6 @@ test_that("area profiles with different decimal places draws correctly", {
                                header_positions = c(-1, -0.7, -0.44, -0.35, -0.25,
                                                     -0.15, -0.05, 1.08),
                                dps = NA)
-        vdiffr::expect_doppelganger("area profiles with different decimal places",
-                                    dps_p,
-                                    path = "")
+        vdiffr::expect_doppelganger("ap with different decimal places",
+                                    fig = dps_p)
 })

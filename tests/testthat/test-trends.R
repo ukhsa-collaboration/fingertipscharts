@@ -20,8 +20,7 @@ test_that("trends with significance fill draws correctly", {
                               xlab = "Year",
                               ylab = "Value (%)")
         vdiffr::expect_doppelganger("trends with significance fill",
-                                    with_fill_p,
-                                    path = "")
+                                    fig = with_fill_p)
 })
 
 test_that("trends without significance fill draws correctly", {
@@ -43,6 +42,5 @@ test_that("trends without significance fill draws correctly", {
                                  ylab = "Value (%)")
 
         vdiffr::expect_doppelganger("trends without significance fill",
-                                    without_fill_p,
-                                    path = "")
+                                    fig = without_fill_p)
 })

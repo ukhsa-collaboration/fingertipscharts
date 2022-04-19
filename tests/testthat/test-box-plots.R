@@ -15,6 +15,5 @@ test_that("box plots draws correctly", {
                        ylab = "Proportion (%)")
 
         vdiffr::expect_doppelganger("box-plots",
-                                    p,
-                                    path = "")
+                                    fig = p)
 })

@@ -17,8 +17,7 @@ test_that("compare areas descending draws correctly", {
                                 top_areas = top_names,
                                 title = "Compare the local areas")
         vdiffr::expect_doppelganger("compare areas descending",
-                                    desc_p,
-                                    path = "")
+                                    fig = desc_p)
 })
 
 test_that("compare areas descending without top_areas draws correctly", {
@@ -37,8 +36,7 @@ test_that("compare areas descending without top_areas draws correctly", {
                                        title = "Compare the local areas")
 
         vdiffr::expect_doppelganger("compare areas descending without top_areas",
-                                    desc_no_top_p,
-                                    path = "")
+                                    fig = desc_no_top_p)
 })
 
 test_that("compare areas ascending draws correctly", {
@@ -57,8 +55,7 @@ test_that("compare areas ascending draws correctly", {
                                top_areas = top_names,
                                title = "Compare the local areas")
         vdiffr::expect_doppelganger("compare areas ascending",
-                                    asc_p,
-                                    path = "")
+                                    fig = asc_p)
 })
 
 test_that("compare areas ascending without top_areas", {
@@ -77,8 +74,7 @@ test_that("compare areas ascending without top_areas", {
                                       title = "Compare the local areas")
 
         vdiffr::expect_doppelganger("compare areas ascending without top_areas",
-                                    asc_no_top_p,
-                                    path = "")
+                                    fig = asc_no_top_p)
 })
 
 test_that("compare areas descending without significance fill draws correctly", {
@@ -95,9 +91,8 @@ test_that("compare areas descending without significance fill draws correctly", 
                                         order = "desc",
                                         top_areas = top_names,
                                         title = "Compare the local areas")
-        vdiffr::expect_doppelganger("compare areas descending without significance fill",
-                                    desc_p_no_fill,
-                                    path = "")
+        vdiffr::expect_doppelganger("ca desc no significance fill",
+                                    fig = desc_p_no_fill)
 })
 
 
@@ -117,7 +112,6 @@ test_that("compare areas descending without significance fill and two dps draws 
                                                   title = "Compare the local areas",
                                                   display.values = TRUE,
                                                   dps = 2)
-        vdiffr::expect_doppelganger("compare areas descending without significance fill and two dps",
-                                    desc_p_no_fill_disp_vals,
-                                    path = "")
+        vdiffr::expect_doppelganger("ca desc no sig fill and two dps",
+                                    fig = desc_p_no_fill_disp_vals)
 })

@@ -501,8 +501,8 @@ trends <- function(data, timeperiod, value,
 
         }
         trends <- trends +
-                guides(shape = FALSE,
-                       linetype = FALSE)
+                guides(shape = "none",
+                       linetype = "none")
         return(trends)
 }
 
@@ -746,7 +746,6 @@ box_plots <- function(data, timeperiod, value,
 #' @import ggplot2
 #' @import dplyr
 #' @importFrom rlang quo_text quo sym as_name enquo
-#' @importFrom geojsonio geojson_read
 #' @importFrom leaflet colorFactor leaflet addTiles addPolygons addLegend
 #' @importFrom stats setNames
 #' @importFrom sf st_as_sf
@@ -779,8 +778,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                 title = "", subtitle = "", copyright_size = 4, copyright_year = Sys.Date()) {
         if (missing(ons_api)) stop("ons_api must contain a string to a geojson url on the ONS geography portal")
         if (ensure_ons_api_available(ons_api)) {
-                shp <- geojson_read(ons_api, what = "sp") %>%
-                        st_as_sf()
+                shp <- sf::read_sf(ons_api)
                 all_area_codes <- data %>%
                         pull({{ area_code }}) %>%
                         unique()

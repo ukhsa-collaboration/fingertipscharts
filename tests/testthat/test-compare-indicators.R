@@ -36,9 +36,8 @@ test_that("compare indicators without highlighted areas draws correctly", {
                                          ylab = "Indicator 3 label",
                                          add_R2 = TRUE)
 
-        vdiffr::expect_doppelganger("compare indicators without highlighted areas",
-                                    comp_ind_p,
-                                    path = "")
+        vdiffr::expect_doppelganger("ci without highlighted areas",
+                                    fig = comp_ind_p)
 })
 
 test_that("compare indicators with highlighted areas draws correctly", {
@@ -59,9 +58,8 @@ test_that("compare indicators with highlighted areas draws correctly", {
                                                    area = AreaCode,
                                                    add_R2 = TRUE)
 
-        vdiffr::expect_doppelganger("compare indicators with highlighted areas",
-                                    comp_ind_highlight_p,
-                                    path = "")
+        vdiffr::expect_doppelganger("ci with highlighted areas",
+                                    fig = comp_ind_highlight_p)
 })
 
 test_that("compare indicators with high R2 draws correctly", {
@@ -80,6 +78,5 @@ test_that("compare indicators with high R2 draws correctly", {
                                              ylab = "Indicator 2 label",
                                              add_R2 = TRUE)
         vdiffr::expect_doppelganger("compare indicators with high R2",
-                                    comp_ind__R2_p,
-                                    path = "")
+                                    fig = comp_ind__R2_p)
 })
