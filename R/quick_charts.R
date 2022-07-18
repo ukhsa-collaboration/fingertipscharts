@@ -33,7 +33,7 @@
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr
-#' @importFrom rlang quo_text
+#' @importFrom rlang quo_text `:=`
 #' @examples
 #' library(dplyr)
 #' df <- create_test_data()
@@ -64,119 +64,119 @@ compare_areas <- function(data, area, value,
                           legend.position = "bottom",
                           display.values = FALSE,
                           dps = 1) {
-        if (order == "desc") {
-                if (!missing(top_areas)) {
-                        levels <- data %>%
-                                filter(!({{ area }} %in% top_areas)) %>%
-                                droplevels() %>%
-                                arrange(-{{ value }}) %>%
-                                select({{ area }}) %>%
-                                pull() %>%
-                                as.character()
-                        levels <- rev(c(top_areas, levels))
-                        data <- data %>%
-                                mutate({{ area }} :=
-                                               factor({{ area }},
-                                                      levels = levels))
-                } else {
-                        levels <- data %>%
-                                droplevels() %>%
-                                arrange(-{{ value }}) %>%
-                                select({{ area }}) %>%
-                                pull() %>%
-                                as.character() %>%
-                                rev()
-                        data <- data %>%
-                                mutate({{ area }} :=
-                                               factor({{ area }},
-                                                      levels = levels))
-
-                }
-        } else if (order == "asc") {
-                if (!missing(top_areas)) {
-                        levels <- data %>%
-                                filter(!({{ area }} %in% top_areas)) %>%
-                                droplevels() %>%
-                                arrange({{ value }}) %>%
-                                select({{ area }}) %>%
-                                pull() %>%
-                                as.character() %>%
-                                unique
-                        levels <- rev(c(top_areas, levels))
-                        data <- data %>%
-                                mutate({{ area }} :=
-                                               factor({{ area }},
-                                                      levels = levels))
-                } else {
-                        levels <- data %>%
-                                droplevels() %>%
-                                arrange({{ value }}) %>%
-                                select({{ area }}) %>%
-                                pull() %>%
-                                as.character() %>%
-                                rev()
-                        data <- data %>%
-                                mutate({{ area }} :=
-                                               factor({{ area }},
-                                                      levels = levels))
-
-                }
-
-        }
-        if (display.values) data <- data %>%
-                mutate(label = round2({{ value }}, dps),
-                       label = formatC(.data$label, format = "f", digits = dps, big.mark = ","))
-
-
-        compare_areas <- ggplot(data,
-                                aes(x = {{ area }},
-                                    y = {{ value }})) +
-                coord_flip() +
-                labs(title = title,
-                     x = ylab,
-                     y = xlab)
-
-        if (!missing(fill)) {
-                compare_areas <- compare_areas +
-                        geom_col(aes(fill = {{ fill }})) +
-                        scale_fill_phe(theme = "fingertips") +
-                        labs(fill = "Area compared to Benchmark")
-
+    if (order == "desc") {
+        if (!missing(top_areas)) {
+            levels <- data %>%
+                filter(!({{ area }} %in% top_areas)) %>%
+                droplevels() %>%
+                arrange(-{{ value }}) %>%
+                select({{ area }}) %>%
+                pull() %>%
+                as.character()
+            levels <- rev(c(top_areas, levels))
+            data <- data %>%
+                mutate({{ area }} :=
+                           factor({{ area }},
+                                  levels = levels))
         } else {
-                compare_areas <- compare_areas +
-                        geom_col()
+            levels <- data %>%
+                droplevels() %>%
+                arrange(-{{ value }}) %>%
+                select({{ area }}) %>%
+                pull() %>%
+                as.character() %>%
+                rev()
+            data <- data %>%
+                mutate({{ area }} :=
+                           factor({{ area }},
+                                  levels = levels))
+
         }
-        if (!missing(lowerci) & !missing(upperci)) {
-                compare_areas <- compare_areas +
-                        geom_errorbar(aes(ymin = {{ lowerci }},
-                                          ymax = {{ upperci }}),
-                                      width=.2, show.legend = FALSE)
+    } else if (order == "asc") {
+        if (!missing(top_areas)) {
+            levels <- data %>%
+                filter(!({{ area }} %in% top_areas)) %>%
+                droplevels() %>%
+                arrange({{ value }}) %>%
+                select({{ area }}) %>%
+                pull() %>%
+                as.character() %>%
+                unique
+            levels <- rev(c(top_areas, levels))
+            data <- data %>%
+                mutate({{ area }} :=
+                           factor({{ area }},
+                                  levels = levels))
+        } else {
+            levels <- data %>%
+                droplevels() %>%
+                arrange({{ value }}) %>%
+                select({{ area }}) %>%
+                pull() %>%
+                as.character() %>%
+                rev()
+            data <- data %>%
+                mutate({{ area }} :=
+                           factor({{ area }},
+                                  levels = levels))
+
         }
-        if (display.values) {
-                if (!missing(upperci)) {
-                        label_position <- data %>%
-                                filter({{ upperci }} == max({{ upperci }}, na.rm = TRUE)) %>%
-                                pull({{ upperci }})
-                } else {
-                        label_position <- data %>%
-                                filter({{ value }} == max({{ value }}, na.rm = TRUE)) %>%
-                                pull({{ value }})
-                }
-                adjust_factor <- 25
-                label_position <- label_position / -adjust_factor
-                scale_adjust <- 1.05 * (label_position * -adjust_factor) - (label_position * -adjust_factor)
-                compare_areas <- compare_areas +
-                        geom_text(aes(label = .data$label),
-                                  hjust = 1,
-                                  y = label_position / 2) +
-                        scale_y_continuous(limits = c(label_position - scale_adjust,
-                                                      (label_position * -adjust_factor) + scale_adjust))
-        }
+
+    }
+    if (display.values) data <- data %>%
+            mutate(label = round2({{ value }}, dps),
+                   label = formatC(.data$label, format = "f", digits = dps, big.mark = ","))
+
+
+    compare_areas <- ggplot(data,
+                            aes(x = {{ area }},
+                                y = {{ value }})) +
+        coord_flip() +
+        labs(title = title,
+             x = ylab,
+             y = xlab)
+
+    if (!missing(fill)) {
         compare_areas <- compare_areas +
-                theme_phe("fingertips") +
-                theme(legend.position = legend.position,
-                      panel.grid.major.y = element_blank())
-        return(compare_areas)
+            geom_col(aes(fill = {{ fill }})) +
+            scale_fill_phe(theme = "fingertips") +
+            labs(fill = "Area compared to Benchmark")
+
+    } else {
+        compare_areas <- compare_areas +
+            geom_col()
+    }
+    if (!missing(lowerci) & !missing(upperci)) {
+        compare_areas <- compare_areas +
+            geom_errorbar(aes(ymin = {{ lowerci }},
+                              ymax = {{ upperci }}),
+                          width=.2, show.legend = FALSE)
+    }
+    if (display.values) {
+        if (!missing(upperci)) {
+            label_position <- data %>%
+                filter({{ upperci }} == max({{ upperci }}, na.rm = TRUE)) %>%
+                pull({{ upperci }})
+        } else {
+            label_position <- data %>%
+                filter({{ value }} == max({{ value }}, na.rm = TRUE)) %>%
+                pull({{ value }})
+        }
+        adjust_factor <- 25
+        label_position <- label_position / -adjust_factor
+        scale_adjust <- 1.05 * (label_position * -adjust_factor) - (label_position * -adjust_factor)
+        compare_areas <- compare_areas +
+            geom_text(aes(label = .data$label),
+                      hjust = 1,
+                      y = label_position / 2) +
+            scale_y_continuous(limits = c(label_position - scale_adjust,
+                                          (label_position * -adjust_factor) + scale_adjust))
+    }
+    compare_areas <- compare_areas +
+        theme_phe("fingertips") +
+        theme(legend.position = legend.position,
+              panel.grid.major.y = element_blank())
+    return(compare_areas)
 }
 
 #' Plot an overview (tartan rug) of multiple indicators
@@ -200,7 +200,7 @@ compare_areas <- function(data, area, value,
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr
-#' @importFrom rlang quo_text
+#' @importFrom rlang quo_text `:=`
 #' @importFrom stringr str_wrap
 #' @examples
 #' library(dplyr)
@@ -228,75 +228,75 @@ overview <- function(data, area, indicator, value,
                      value_label_size = 1, legend_position = "none") {
 
 
-        if (!missing(top_areas)) {
-                levels <- data %>%
-                        filter(!(({{ area }}) %in% top_areas)) %>%
-                        droplevels() %>%
-                        arrange(({{ area }})) %>%
-                        select({{ area }}) %>%
-                        pull() %>%
-                        as.character() %>%
-                        unique()
-                levels <- c("Period", top_areas, levels)
-                data <- data %>%
-                        mutate({{ area }} :=
-                                       factor(({{ area }}),
-                                              levels = levels))
-        } else {
-                levels <- data %>%
-                        droplevels() %>%
-                        arrange({{ area }}) %>%
-                        select({{ area }}) %>%
-                        pull() %>%
-                        as.character() %>%
-                        unique()
-                data <- data %>%
-                        mutate({{ area }} :=
-                                       factor(({{ area }}),
-                                              levels = c("Period", levels)))
-        }
-        tp <- data %>%
-                filter(({{ area }}) == levels[2]) %>%
-                mutate({{ area }} := "Period",
-                       {{ fill }} := NA,
-                       {{ value }} :=
-                               as.character(str_wrap(({{ timeperiod }}), 9)))
-
-
-        data <- rbind(data, tp)
+    if (!missing(top_areas)) {
         levels <- data %>%
-                droplevels() %>%
-                arrange({{ indicator }}) %>%
-                select({{ indicator }}) %>%
-                pull() %>%
-                as.character() %>%
-                rev() %>%
-                unique() %>%
-                str_wrap(wrap_length)
+            filter(!(({{ area }}) %in% top_areas)) %>%
+            droplevels() %>%
+            arrange(({{ area }})) %>%
+            select({{ area }}) %>%
+            pull() %>%
+            as.character() %>%
+            unique()
+        levels <- c("Period", top_areas, levels)
         data <- data %>%
-                mutate({{ indicator }} :=
-                               factor(str_wrap(({{ indicator }}), wrap_length),
-                                      levels = levels)) %>%
-                droplevels()
+            mutate({{ area }} :=
+                       factor(({{ area }}),
+                              levels = levels))
+    } else {
+        levels <- data %>%
+            droplevels() %>%
+            arrange({{ area }}) %>%
+            select({{ area }}) %>%
+            pull() %>%
+            as.character() %>%
+            unique()
+        data <- data %>%
+            mutate({{ area }} :=
+                       factor(({{ area }}),
+                              levels = c("Period", levels)))
+    }
+    tp <- data %>%
+        filter(({{ area }}) == levels[2]) %>%
+        mutate({{ area }} := "Period",
+               {{ fill }} := NA,
+               {{ value }} :=
+                   as.character(str_wrap(({{ timeperiod }}), 9)))
 
-        overview <- ggplot(data, aes(x = {{ area }},
-                                     y = {{ indicator }})) +
-                geom_tile(aes(fill = {{ fill }}),
-                          colour = "white") +
-                geom_text(aes(label = {{ value }}),
-                          size = value_label_size * 4) +
-                scale_fill_phe("fingertips",
-                               na.translate = FALSE,
-                               guide = guide_legend(byrow = TRUE)) +
-                scale_x_discrete(position = "top") +
-                theme(legend.position = legend_position,
-                      axis.text.x = element_text(angle = 90,
-                                                 hjust = 0),
-                      axis.text.y = element_text(size = rel(1)),
-                      axis.title = element_blank(),
-                      line = element_blank(),
-                      rect = element_blank())
-        return(overview)
+
+    data <- rbind(data, tp)
+    levels <- data %>%
+        droplevels() %>%
+        arrange({{ indicator }}) %>%
+        select({{ indicator }}) %>%
+        pull() %>%
+        as.character() %>%
+        rev() %>%
+        unique() %>%
+        str_wrap(wrap_length)
+    data <- data %>%
+        mutate({{ indicator }} :=
+                   factor(str_wrap(({{ indicator }}), wrap_length),
+                          levels = levels)) %>%
+        droplevels()
+
+    overview <- ggplot(data, aes(x = {{ area }},
+                                 y = {{ indicator }})) +
+        geom_tile(aes(fill = {{ fill }}),
+                  colour = "white") +
+        geom_text(aes(label = {{ value }}),
+                  size = value_label_size * 4) +
+        scale_fill_phe("fingertips",
+                       na.translate = FALSE,
+                       guide = guide_legend(byrow = TRUE)) +
+        scale_x_discrete(position = "top") +
+        theme(legend.position = legend_position,
+              axis.text.x = element_text(angle = 90,
+                                         hjust = 0),
+              axis.text.y = element_text(size = rel(1)),
+              axis.title = element_blank(),
+              line = element_blank(),
+              rect = element_blank())
+    return(overview)
 }
 
 #' Plot compare indicators plot
@@ -345,65 +345,65 @@ compare_indicators <- function(data, x, y,
                                area, add_R2 = FALSE) {
 
 
-        compare_indicators <- ggplot(data, aes(x = {{ x }},
-                                               y = {{ y }})) +
-                labs(x = xlab,
-                     y = ylab) +
-                theme(rect = element_blank(),
-                      line = element_blank(),
-                      panel.grid.major.y = element_line(colour = "#E6E6E6"),
-                      legend.position = "none")
-        if (!missing(highlight_area)) {
-                if (missing(area)){
-                        stop("If highlight_area contains a value, so must area_field")
-                }
-                data <- data %>%
-                        mutate(highlight = ifelse({{ area }} %in% highlight_area, T, F))
-                compare_indicators <- compare_indicators +
-                        geom_point(data = data,
-                                   aes(shape = .data$highlight,
-                                       fill = .data$highlight),
-                                   size = point_size) +
-                        scale_shape_manual(values = c(23, 21),
-                                           limits = c(T, F)) +
-                        scale_fill_manual(values = c("black", "#7CB5EC"),
-                                           limits = c(T, F))
-        } else {
-                compare_indicators <- compare_indicators +
-                        geom_point(shape = 21,
-                                   fill = "#7CB5EC",
-                                   size = point_size)
+    compare_indicators <- ggplot(data, aes(x = {{ x }},
+                                           y = {{ y }})) +
+        labs(x = xlab,
+             y = ylab) +
+        theme(rect = element_blank(),
+              line = element_blank(),
+              panel.grid.major.y = element_line(colour = "#E6E6E6"),
+              legend.position = "none")
+    if (!missing(highlight_area)) {
+        if (missing(area)){
+            stop("If highlight_area contains a value, so must area_field")
         }
+        data <- data %>%
+            mutate(highlight = ifelse({{ area }} %in% highlight_area, T, F))
+        compare_indicators <- compare_indicators +
+            geom_point(data = data,
+                       aes(shape = .data$highlight,
+                           fill = .data$highlight),
+                       size = point_size) +
+            scale_shape_manual(values = c(23, 21),
+                               limits = c(T, F)) +
+            scale_fill_manual(values = c("black", "#7CB5EC"),
+                              limits = c(T, F))
+    } else {
+        compare_indicators <- compare_indicators +
+            geom_point(shape = 21,
+                       fill = "#7CB5EC",
+                       size = point_size)
+    }
 
-        if (add_R2 == TRUE) {
-                form <- rlang::new_formula(rlang::ensym(y), rlang::ensym(x))
-                r2 <- summary(lm(form, data = data))
-                r2frame <- data.frame(val = ifelse(r2$r.squared > 0.15,
-                                                   paste("R^2:",round2(r2$r.squared, 2)),
-                                              "R2 below 0.15;\nNot displayed"),
-                                 x = -Inf,
-                                 y = Inf)
-                if (r2$r.squared > 0.15) {
-                        compare_indicators <- compare_indicators +
-                                geom_text(data = r2frame, aes(x = .data$x,
-                                                              y = .data$y,
-                                                              label = .data$val),
-                                          hjust = 0,
-                                          vjust = 1,
-                                          parse = TRUE) +
-                                geom_abline(intercept = r2$coefficients[1, 1],
-                                            slope = r2$coefficients[2, 1],
-                                            colour = "#ED1F52")
-                } else {
-                        compare_indicators <- compare_indicators +
-                                geom_text(data = r2frame, aes(x = .data$x,
-                                                              y = .data$y,
-                                                              label = .data$val),
-                                          hjust = 0,
-                                          vjust = 1)
-                }
+    if (add_R2 == TRUE) {
+        form <- rlang::new_formula(rlang::ensym(y), rlang::ensym(x))
+        r2 <- summary(lm(form, data = data))
+        r2frame <- data.frame(val = ifelse(r2$r.squared > 0.15,
+                                           paste("R^2:",round2(r2$r.squared, 2)),
+                                           "R2 below 0.15;\nNot displayed"),
+                              x = -Inf,
+                              y = Inf)
+        if (r2$r.squared > 0.15) {
+            compare_indicators <- compare_indicators +
+                geom_text(data = r2frame, aes(x = .data$x,
+                                              y = .data$y,
+                                              label = .data$val),
+                          hjust = 0,
+                          vjust = 1,
+                          parse = TRUE) +
+                geom_abline(intercept = r2$coefficients[1, 1],
+                            slope = r2$coefficients[2, 1],
+                            colour = "#ED1F52")
+        } else {
+            compare_indicators <- compare_indicators +
+                geom_text(data = r2frame, aes(x = .data$x,
+                                              y = .data$y,
+                                              label = .data$val),
+                          hjust = 0,
+                          vjust = 1)
         }
-        return(compare_indicators)
+    }
+    return(compare_indicators)
 }
 
 #' Plot trend chart
@@ -450,60 +450,60 @@ trends <- function(data, timeperiod, value,
                    title = "", subtitle = "",
                    xlab = "", ylab = "", point_size = 4) {
 
-        data <- data %>%
-                filter({{ area }} %in% c(area_name, comparator))
-        line_colours <- c("black", "#7CB5EC")
-        names(line_colours) <- c(comparator, area_name)
-        trends <- ggplot(data,
-                         aes(x = {{ timeperiod }},
-                             y = {{ value }},
-                             group = {{ area }})) +
-                geom_line(aes(linetype = {{ area }},
-                              colour = {{ area }})) +
-                geom_point(data = filter(data, {{ area }} == comparator),
-                           fill = "black",
-                           aes(shape = {{ area }}),
-                           size = point_size) +
-                scale_linetype_manual(name = "",
-                                      values = rep("solid", 2),
-                                      labels = comparator) +
-                scale_shape_manual(name = "",
-                                   values = 21,
-                                   labels = comparator) +
-                scale_colour_manual(name = "",
-                                    values = line_colours) +
-                labs(title = title,
-                     subtitle = subtitle,
-                     x = xlab,
-                     y= ylab) +
-                theme_phe("fingertips") +
-                theme(legend.position = "bottom")
-        if (!missing(fill)) {
-                trends <- trends +
-                        geom_point(data = filter(data, {{ area }} == area_name),
-                                   aes(fill = {{ fill }}),
-                                   shape = 21,
-                                   size = point_size, show.legend = F) +
-                        scale_fill_phe("fingertips")
-        } else {
-                trends <- trends +
-                        geom_point(data = filter(data, {{ area }} == area_name),
-                                   fill = "#C9C9C9",
-                                   shape = 21,
-                                   size = point_size, show.legend = F)
-        }
-        if (!missing(lowerci) & !missing(upperci)) {
-                trends <- trends +
-                        geom_errorbar(data = filter(data, {{ area }} == area_name),
-                                      aes(ymin= {{ lowerci }},
-                                          ymax = {{ upperci }}),
-                                      width=.2)
-
-        }
+    data <- data %>%
+        filter({{ area }} %in% c(area_name, comparator))
+    line_colours <- c("black", "#7CB5EC")
+    names(line_colours) <- c(comparator, area_name)
+    trends <- ggplot(data,
+                     aes(x = {{ timeperiod }},
+                         y = {{ value }},
+                         group = {{ area }})) +
+        geom_line(aes(linetype = {{ area }},
+                      colour = {{ area }})) +
+        geom_point(data = filter(data, {{ area }} == comparator),
+                   fill = "black",
+                   aes(shape = {{ area }}),
+                   size = point_size) +
+        scale_linetype_manual(name = "",
+                              values = rep("solid", 2),
+                              labels = comparator) +
+        scale_shape_manual(name = "",
+                           values = 21,
+                           labels = comparator) +
+        scale_colour_manual(name = "",
+                            values = line_colours) +
+        labs(title = title,
+             subtitle = subtitle,
+             x = xlab,
+             y= ylab) +
+        theme_phe("fingertips") +
+        theme(legend.position = "bottom")
+    if (!missing(fill)) {
         trends <- trends +
-                guides(shape = "none",
-                       linetype = "none")
-        return(trends)
+            geom_point(data = filter(data, {{ area }} == area_name),
+                       aes(fill = {{ fill }}),
+                       shape = 21,
+                       size = point_size, show.legend = F) +
+            scale_fill_phe("fingertips")
+    } else {
+        trends <- trends +
+            geom_point(data = filter(data, {{ area }} == area_name),
+                       fill = "#C9C9C9",
+                       shape = 21,
+                       size = point_size, show.legend = F)
+    }
+    if (!missing(lowerci) & !missing(upperci)) {
+        trends <- trends +
+            geom_errorbar(data = filter(data, {{ area }} == area_name),
+                          aes(ymin = {{ lowerci }},
+                              ymax = {{ upperci }}),
+                          width=.2)
+
+    }
+    trends <- trends +
+        guides(shape = "none",
+               linetype = "none")
+    return(trends)
 }
 
 #' Plot population pyramid
@@ -526,7 +526,7 @@ trends <- function(data, timeperiod, value,
 #' @family quick charts
 #' @import ggplot2
 #' @import dplyr
-#' @importFrom rlang quo_text
+#' @importFrom rlang quo_text `:=`
 #' @importFrom scales breaks_pretty
 #' @examples
 #' library(dplyr)
@@ -562,91 +562,91 @@ population <- function(data, value, sex, age,
                        area, area_name, comparator_1, comparator_2,
                        title, subtitle, xlab) {
 
-        if(!missing(area_name) &
-           !missing(comparator_1) &
-           !missing(comparator_2)) {
-               areas <- c(area_name, comparator_1, comparator_2)
-        } else if (!missing(area_name) &
-                   !missing(comparator_1) &
-                   missing(comparator_2)) {
-                areas <- c(area_name, comparator_1)
-        } else if (!missing(area_name) &
-                   missing(comparator_1) &
-                   missing(comparator_2)) {
-                areas <- area_name
+    if(!missing(area_name) &
+       !missing(comparator_1) &
+       !missing(comparator_2)) {
+        areas <- c(area_name, comparator_1, comparator_2)
+    } else if (!missing(area_name) &
+               !missing(comparator_1) &
+               missing(comparator_2)) {
+        areas <- c(area_name, comparator_1)
+    } else if (!missing(area_name) &
+               missing(comparator_1) &
+               missing(comparator_2)) {
+        areas <- area_name
+    } else {
+        stop("area_name must be complete for a population pyramid to be drawn")
+    }
+
+
+
+    data <- data %>%
+        filter({{ area }} %in% areas) %>%
+        group_by({{ area }}) %>%
+        mutate({{ value }} :=
+                   100 * ({{ value }}) / sum({{ value }}),
+               {{ value }} :=
+                   ifelse({{ sex }} == "Male",
+                          -({{ value }}), ({{ value }})))
+    extremex <- breaks_pretty(n = 3)(0:max(abs(pull(data, {{ value }})),
+                                           na.rm = T))
+    population <- ggplot(filter(data, {{ area }} == area_name),
+                         aes(y = {{ value }},
+                             x = {{ age }},
+                             fill = {{ sex }})) +
+        geom_col(col = "black", width = 0.7) +
+        coord_flip() +
+        scale_y_continuous(breaks = c(rev(-extremex), extremex[2:length(extremex)]),
+                           labels = abs(c(rev(extremex), extremex[2:length(extremex)]))) +
+        scale_fill_manual(name = "",
+                          values = c("Male" = "#5555E6",
+                                     "Female" = "#C2CCFF"),
+                          breaks = c("Male", "Female"),
+                          labels = c(paste(area_name, "(Male)"),
+                                     paste(area_name, "(Female)"))) +
+        labs(title = title,
+             subtitle = subtitle,
+             y = xlab) +
+        theme(legend.position = "bottom",
+              legend.key = element_blank(),
+              axis.title.y = element_blank(),
+              line = element_blank(),
+              rect = element_blank(),
+              panel.grid.major.x = element_line(colour = "gray80"))
+    if (!missing(comparator_1)) {
+        compdata1 <- filter(data, {{ area }} == comparator_1)
+        population <- population +
+            geom_line(data = compdata1,
+                      aes(y = {{ value }},
+                          x = {{ age }},
+                          group = interaction(pull(compdata1, {{ sex }}),
+                                              pull(compdata1, {{ area }})),
+                          col = {{ area }}),
+                      size = 1.5)
+        if (!missing(comparator_2)) {
+            compdata2 <- filter(data, {{ area }} == comparator_2)
+            population <- population +
+                geom_line(data = compdata2,
+                          aes(y = {{ value }},
+                              x = {{ age }},
+                              group = interaction(pull(compdata2, {{ sex }}),
+                                                  pull(compdata2, {{ area }})),
+                              col = {{ area }}),
+                          size = 1.5) +
+                scale_colour_manual(name = "",
+                                    breaks = c(comparator_1, comparator_2),
+                                    limits = c(comparator_1, comparator_2),
+                                    values = c("black","#E563F9"))
+
         } else {
-                stop("area_name must be complete for a population pyramid to be drawn")
+            population <- population +
+                scale_colour_manual(name = "",
+                                    breaks = c(comparator_1),
+                                    limits = c(comparator_1),
+                                    values = c("black"))
         }
-
-
-
-        data <- data %>%
-                filter({{ area }} %in% areas) %>%
-                group_by({{ area }}) %>%
-                mutate({{ value }} :=
-                               100 * ({{ value }}) / sum({{ value }}),
-                       {{ value }} :=
-                               ifelse({{ sex }} == "Male",
-                                      -({{ value }}), ({{ value }})))
-        extremex <- breaks_pretty(n = 3)(0:max(abs(pull(data, {{ value }})),
-                                               na.rm = T))
-        population <- ggplot(filter(data, {{ area }} == area_name),
-                             aes(y = {{ value }},
-                                 x = {{ age }},
-                                 fill = {{ sex }})) +
-                geom_col(col = "black", width = 0.7) +
-                coord_flip() +
-                scale_y_continuous(breaks = c(rev(-extremex), extremex[2:length(extremex)]),
-                                   labels = abs(c(rev(extremex), extremex[2:length(extremex)]))) +
-                scale_fill_manual(name = "",
-                                  values = c("Male" = "#5555E6",
-                                             "Female" = "#C2CCFF"),
-                                  breaks = c("Male", "Female"),
-                                  labels = c(paste(area_name, "(Male)"),
-                                             paste(area_name, "(Female)"))) +
-                labs(title = title,
-                     subtitle = subtitle,
-                     y = xlab) +
-                theme(legend.position = "bottom",
-                      legend.key = element_blank(),
-                      axis.title.y = element_blank(),
-                      line = element_blank(),
-                      rect = element_blank(),
-                      panel.grid.major.x = element_line(colour = "gray80"))
-        if (!missing(comparator_1)) {
-                compdata1 <- filter(data, {{ area }} == comparator_1)
-                population <- population +
-                        geom_line(data = compdata1,
-                                  aes(y = {{ value }},
-                                      x = {{ age }},
-                                      group = interaction(pull(compdata1, {{ sex }}),
-                                                          pull(compdata1, {{ area }})),
-                                      col = {{ area }}),
-                                  size = 1.5)
-                if (!missing(comparator_2)) {
-                        compdata2 <- filter(data, {{ area }} == comparator_2)
-                        population <- population +
-                                geom_line(data = compdata2,
-                                          aes(y = {{ value }},
-                                              x = {{ age }},
-                                              group = interaction(pull(compdata2, {{ sex }}),
-                                                                  pull(compdata2, {{ area }})),
-                                              col = {{ area }}),
-                                          size = 1.5) +
-                                scale_colour_manual(name = "",
-                                                    breaks = c(comparator_1, comparator_2),
-                                                    limits = c(comparator_1, comparator_2),
-                                                    values = c("black","#E563F9"))
-
-                } else {
-                        population <- population +
-                                scale_colour_manual(name = "",
-                                                    breaks = c(comparator_1),
-                                                    limits = c(comparator_1),
-                                                    values = c("black"))
-                }
-        }
-        return(population)
+    }
+    return(population)
 
 }
 
@@ -684,44 +684,44 @@ population <- function(data, value, sex, age,
 box_plots <- function(data, timeperiod, value,
                       title = "", subtitle = "",
                       xlab = "", ylab = "") {
-        data <- data %>%
-                group_by({{ timeperiod }}) %>%
-                summarise(y5 = quantile({{ value }}, 0.05, na.rm = TRUE),
-                          y25 = quantile({{ value }}, 0.25, na.rm = TRUE),
-                          y50 = median({{ value }}, na.rm = TRUE),
-                          y75 = quantile({{ value }}, 0.75, na.rm = TRUE),
-                          y95 = quantile({{ value }}, 0.95, na.rm = TRUE))
-        boxplots <- ggplot(data, aes(x = {{ timeperiod }})) +
-                geom_boxplot(aes(ymin = .data$y5, lower = .data$y25,
-                                 middle = .data$y50, upper = .data$y75,
-                                 ymax = .data$y95),
-                             fill = "#CCCCCC",
-                             stat = "identity") +
-                labs(title = title,
-                     subtitle = subtitle,
-                     x = xlab,
-                     y = ylab) +
-                theme_phe("fingertips")
-        dat <- ggplot_build(boxplots)$data[[1]]
+    data <- data %>%
+        group_by({{ timeperiod }}) %>%
+        summarise(y5 = quantile({{ value }}, 0.05, na.rm = TRUE),
+                  y25 = quantile({{ value }}, 0.25, na.rm = TRUE),
+                  y50 = median({{ value }}, na.rm = TRUE),
+                  y75 = quantile({{ value }}, 0.75, na.rm = TRUE),
+                  y95 = quantile({{ value }}, 0.95, na.rm = TRUE))
+    boxplots <- ggplot(data, aes(x = {{ timeperiod }})) +
+        geom_boxplot(aes(ymin = .data$y5, lower = .data$y25,
+                         middle = .data$y50, upper = .data$y75,
+                         ymax = .data$y95),
+                     fill = "#CCCCCC",
+                     stat = "identity") +
+        labs(title = title,
+             subtitle = subtitle,
+             x = xlab,
+             y = ylab) +
+        theme_phe("fingertips")
+    dat <- ggplot_build(boxplots)$data[[1]]
 
-        boxplots <- boxplots +
-                geom_segment(data = dat,
-                             aes(x = .data$xmin + ((.data$xmax - .data$xmin) * 0.25),
-                                 xend = .data$xmin + ((.data$xmax - .data$xmin) * 0.75),
-                                 y = .data$ymax,
-                                 yend = .data$ymax)) +
-                geom_segment(data = dat,
-                             aes(x = .data$xmin + ((.data$xmax - .data$xmin) * 0.25),
-                                 xend = .data$xmin + ((.data$xmax - .data$xmin) * 0.75),
-                                 y = .data$ymin,
-                                 yend = .data$ymin)) +
-                geom_segment(data = dat,
-                             aes(x = .data$xmin,
-                                 xend = .data$xmax,
-                                 y = .data$middle,
-                                 yend = .data$middle),
-                             colour="red", size = 1)
-        return(boxplots)
+    boxplots <- boxplots +
+        geom_segment(data = dat,
+                     aes(x = .data$xmin + ((.data$xmax - .data$xmin) * 0.25),
+                         xend = .data$xmin + ((.data$xmax - .data$xmin) * 0.75),
+                         y = .data$ymax,
+                         yend = .data$ymax)) +
+        geom_segment(data = dat,
+                     aes(x = .data$xmin + ((.data$xmax - .data$xmin) * 0.25),
+                         xend = .data$xmin + ((.data$xmax - .data$xmin) * 0.75),
+                         y = .data$ymin,
+                         yend = .data$ymin)) +
+        geom_segment(data = dat,
+                     aes(x = .data$xmin,
+                         xend = .data$xmax,
+                         y = .data$middle,
+                         yend = .data$middle),
+                     colour="red", size = 1)
+    return(boxplots)
 
 }
 
@@ -776,107 +776,107 @@ box_plots <- function(data, timeperiod, value,
 #' @export
 map <- function(data, ons_api, area_code, fill, type = "static", value, name_for_label,
                 title = "", subtitle = "", copyright_size = 4, copyright_year = Sys.Date()) {
-        if (missing(ons_api)) stop("ons_api must contain a string to a geojson url on the ONS geography portal")
-        if (ensure_ons_api_available(ons_api)) {
-                shp <- sf::read_sf(ons_api)
-                all_area_codes <- data %>%
-                        pull({{ area_code }}) %>%
-                        unique()
-                join_field <- vapply(shp, function(x) sum(x %in% all_area_codes),
-                                     numeric(1))
-                join_field <- names(join_field[join_field == max(join_field)])
-                if (length(join_field) != 1) stop("There is no clear field in the shape file that contains the area codes in the field you have identified")
-                shp <- shp %>%
-                        filter(grepl("^E", !! quo(!! sym(join_field))))
-                if (type == "static") {
-                        data <- data %>%
-                                mutate({{ area_code }} :=
-                                               as.character({{ area_code }}))
-                        shp <- shp %>%
-                                mutate(AreaCode = as.character(!! quo(!! sym(join_field)))) %>%
-                                left_join(data, setNames("AreaCode", rlang::as_name(rlang::enquo(area_code))))
-                        if (is.numeric(copyright_year) & nchar(copyright_year) == 4) {
-                                copyright_year <- as.character(copyright_year)
-                        } else if (inherits(copyright_year, 'Date')) {
-                                copyright_year <- format(copyright_year, "%Y")
-                        } else {
-                                stop("copyright_year must be either a 4 digit numeric class or Date class")
-                        }
-                        copyright <- data.frame(val = paste0("Contains Ordnance Survey data\n",
-                                                             paste0("\uA9 Crown copyright and database right ",
-                                                                    copyright_year),
-                                                             "\n",
-                                                             "Contains National Statistics data\n",
-                                                             paste0("\uA9 Crown copyright and database right ",
-                                                                    copyright_year)),
-                                                x = max(shp$long),
-                                                y = min(shp$lat))
-                        map <- ggplot(shp) +
-                                geom_sf(aes(fill = {{ fill }})) +
-                                coord_sf(datum = NA) +
-                                scale_fill_phe(theme = "fingertips") +
-                                theme_void() +
-                                geom_text(data = copyright,
-                                          aes(x = .data$x,
-                                              y = .data$y,
-                                              label = .data$val),
-                                          colour = "black",
-                                          hjust = 1,
-                                          vjust = 0,
-                                          size = copyright_size) +
-                                labs(title = title,
-                                     subtitle = subtitle,
-                                     fill = "")
+    if (missing(ons_api)) stop("ons_api must contain a string to a geojson url on the ONS geography portal")
+    if (ensure_ons_api_available(ons_api)) {
+        shp <- sf::read_sf(ons_api)
+        all_area_codes <- data %>%
+            pull({{ area_code }}) %>%
+            unique()
+        join_field <- vapply(shp, function(x) sum(x %in% all_area_codes),
+                             numeric(1))
+        join_field <- names(join_field[join_field == max(join_field)])
+        if (length(join_field) != 1) stop("There is no clear field in the shape file that contains the area codes in the field you have identified")
+        shp <- shp %>%
+            filter(grepl("^E", !! quo(!! sym(join_field))))
+        if (type == "static") {
+            data <- data %>%
+                mutate({{ area_code }} :=
+                           as.character({{ area_code }}))
+            shp <- shp %>%
+                mutate(AreaCode = as.character(!! quo(!! sym(join_field)))) %>%
+                left_join(data, setNames("AreaCode", rlang::as_name(rlang::enquo(area_code))))
+            if (is.numeric(copyright_year) & nchar(copyright_year) == 4) {
+                copyright_year <- as.character(copyright_year)
+            } else if (inherits(copyright_year, 'Date')) {
+                copyright_year <- format(copyright_year, "%Y")
+            } else {
+                stop("copyright_year must be either a 4 digit numeric class or Date class")
+            }
+            copyright <- data.frame(val = paste0("Contains Ordnance Survey data\n",
+                                                 paste0("\uA9 Crown copyright and database right ",
+                                                        copyright_year),
+                                                 "\n",
+                                                 "Contains National Statistics data\n",
+                                                 paste0("\uA9 Crown copyright and database right ",
+                                                        copyright_year)),
+                                    x = max(shp$long),
+                                    y = min(shp$lat))
+            map <- ggplot(shp) +
+                geom_sf(aes(fill = {{ fill }})) +
+                coord_sf(datum = NA) +
+                scale_fill_phe(theme = "fingertips") +
+                theme_void() +
+                geom_text(data = copyright,
+                          aes(x = .data$x,
+                              y = .data$y,
+                              label = .data$val),
+                          colour = "black",
+                          hjust = 1,
+                          vjust = 0,
+                          size = copyright_size) +
+                labs(title = title,
+                     subtitle = subtitle,
+                     fill = "")
 
-                } else if (type == "interactive") { # nocov start
-                        ftipspal <- scale_fill_phe("fingertips")
-                        ftipspal <- ftipspal$palette(1)
+        } else if (type == "interactive") { # nocov start
+            ftipspal <- scale_fill_phe("fingertips")
+            ftipspal <- ftipspal$palette(1)
 
-                        if (is.factor(pull(data, {{ fill }}))) {
-                                factpal <- colorFactor(ftipspal[levels(pull(data, {{ fill }}))],
-                                                       domain = pull(data, {{ fill }}),
-                                                       ordered = TRUE)
-                        } else {
-                                factpal <- colorFactor(ftipspal[unique(pull(data, {{ fill }}))],
-                                                       domain = pull(data, {{ fill }}),
-                                                       ordered = TRUE)
-                        }
+            if (is.factor(pull(data, {{ fill }}))) {
+                factpal <- colorFactor(ftipspal[levels(pull(data, {{ fill }}))],
+                                       domain = pull(data, {{ fill }}),
+                                       ordered = TRUE)
+            } else {
+                factpal <- colorFactor(ftipspal[unique(pull(data, {{ fill }}))],
+                                       domain = pull(data, {{ fill }}),
+                                       ordered = TRUE)
+            }
 
 
-                        data <- data %>%
-                                mutate({{ area_code }} :=
-                                               as.character({{ area_code }}))
-                        shp <- shp %>%
-                                mutate(AreaCode = as.character(!! quo(!! sym(join_field)))) %>%
-                                left_join(data, setNames("AreaCode", rlang::as_name(rlang::enquo(area_code))))
-                        if (!missing(name_for_label)) {
-                                labels <- sprintf("<strong>%s</strong><br/>Value: %g",
-                                                  pull(shp, {{ name_for_label }}),
-                                                  pull(shp, {{ value }}))
-                        } else {
-                                labels <- sprintf("<strong>%s</strong><br/>Value: %g",
-                                                  pull(shp, {{ join_field }}),
-                                                  pull(shp, {{ value }}))
-                        }
+            data <- data %>%
+                mutate({{ area_code }} :=
+                           as.character({{ area_code }}))
+            shp <- shp %>%
+                mutate(AreaCode = as.character(!! quo(!! sym(join_field)))) %>%
+                left_join(data, setNames("AreaCode", rlang::as_name(rlang::enquo(area_code))))
+            if (!missing(name_for_label)) {
+                labels <- sprintf("<strong>%s</strong><br/>Value: %g",
+                                  pull(shp, {{ name_for_label }}),
+                                  pull(shp, {{ value }}))
+            } else {
+                labels <- sprintf("<strong>%s</strong><br/>Value: %g",
+                                  pull(shp, {{ join_field }}),
+                                  pull(shp, {{ value }}))
+            }
 
-                        map <- leaflet(shp)  %>%
-                                addTiles() %>%
-                                addPolygons(fillColor =
-                                                    ~ factpal(pull(shp, {{ fill }})),
-                                            weight = 2,
-                                            opacity = 1,
-                                            color = "white",
-                                            dashArray = "3",
-                                            fillOpacity = 0.7,
-                                            popup = labels) %>%
-                                addLegend("topright",
-                                          pal = factpal,
-                                          values = ~ pull(shp, {{ fill }}),
-                                          title = title,
-                                          opacity = 1)
-                } # nocov end
-                return(map)
-        }
+            map <- leaflet(shp)  %>%
+                addTiles() %>%
+                addPolygons(fillColor =
+                                ~ factpal(pull(shp, {{ fill }})),
+                            weight = 2,
+                            opacity = 1,
+                            color = "white",
+                            dashArray = "3",
+                            fillOpacity = 0.7,
+                            popup = labels) %>%
+                addLegend("topright",
+                          pal = factpal,
+                          values = ~ pull(shp, {{ fill }}),
+                          title = title,
+                          opacity = 1)
+        } # nocov end
+        return(map)
+    }
 
 
 }
@@ -1003,7 +1003,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
 #' @import ggplot2
 #' @import dplyr
 #' @importFrom grDevices rgb
-#' @importFrom rlang quo_text .data
+#' @importFrom rlang quo_text .data `:=`
 #' @importFrom utils tail
 #' @importFrom stats reformulate
 #' @importFrom stringr str_trim
@@ -1120,288 +1120,288 @@ area_profiles <- function(data,
                           horizontal_arrow_multiplier = 1) {
 
 
-        if (sum(median_line_area_code %in% pull(data, {{ area_code }})) < 1)
-                stop(paste0(median_line_area_code, " not in area_code field provided"))
-        if (sum(local_area_code %in% pull(data, {{ area_code }})) < 1)
-                stop(paste0(local_area_code, " not in area_code field provided"))
-        if (!is.na(comparator_area_code) &
-            sum(comparator_area_code %in% pull(data, {{ area_code }})) < 1)
-                stop(paste0(comparator_area_code, " not in area_code field provided"))
-        if (length(header_labels) != 8)
-                stop("header_labels argument must have a length of 8")
-        if (length(header_positions) != 8)
-                stop("header_positions argument must have a length of 8")
+    if (sum(median_line_area_code %in% pull(data, {{ area_code }})) < 1)
+        stop(paste0(median_line_area_code, " not in area_code field provided"))
+    if (sum(local_area_code %in% pull(data, {{ area_code }})) < 1)
+        stop(paste0(local_area_code, " not in area_code field provided"))
+    if (!is.na(comparator_area_code) &
+        sum(comparator_area_code %in% pull(data, {{ area_code }})) < 1)
+        stop(paste0(comparator_area_code, " not in area_code field provided"))
+    if (length(header_labels) != 8)
+        stop("header_labels argument must have a length of 8")
+    if (length(header_positions) != 8)
+        stop("header_positions argument must have a length of 8")
 
 
-        # check for multiple values for an area per indicator
-        check_message <- spine_data_check(data, {{ indicator }}, {{ area_code }})
-        if (!is.na(check_message)) stop(check_message)
+    # check for multiple values for an area per indicator
+    check_message <- spine_data_check(data, {{ indicator }}, {{ area_code }})
+    if (!is.na(check_message)) stop(check_message)
 
-        # create data table
-        if (is.factor(pull(data, {{ indicator }}))) {
-                ind_order <- levels(pull(data, {{ indicator }}))
-        } else {
-                data <- data %>%
-                        mutate({{ indicator }} :=
-                                       factor({{ indicator }}))
-                ind_order <- levels(pull(data, {{ indicator }}))
-        }
+    # create data table
+    if (is.factor(pull(data, {{ indicator }}))) {
+        ind_order <- levels(pull(data, {{ indicator }}))
+    } else {
+        data <- data %>%
+            mutate({{ indicator }} :=
+                       factor({{ indicator }}))
+        ind_order <- levels(pull(data, {{ indicator }}))
+    }
 
-        if (datatable == TRUE) {
-                if (!is.na(dps) & !is.integer(dps) & !is.numeric(dps)) stop("The dps argument must be a number or NA")
-                dftable <- create_datatable(data,
-                                            {{ indicator }},
-                                            {{ area_code }},
-                                            {{ timeperiod }},
-                                            {{ trend }},
-                                            {{ count }},
-                                            {{ value }},
-                                            local_area_code,
-                                            median_line_area_code,
-                                            comparator_area_code,
-                                            dps = dps,
-                                            header_width = diff(range(header_positions)),
-                                            horizontal_arrow_multiplier = horizontal_arrow_multiplier)
-                dftable <- dftable %>%
-                        mutate({{ indicator }} :=
-                                                  factor({{ indicator }},
-                                                         levels = ind_order))
-        } else {
-                dftable <- NA
-        }
+    if (datatable == TRUE) {
+        if (!is.na(dps) & !is.integer(dps) & !is.numeric(dps)) stop("The dps argument must be a number or NA")
+        dftable <- create_datatable(data,
+                                    {{ indicator }},
+                                    {{ area_code }},
+                                    {{ timeperiod }},
+                                    {{ trend }},
+                                    {{ count }},
+                                    {{ value }},
+                                    local_area_code,
+                                    median_line_area_code,
+                                    comparator_area_code,
+                                    dps = dps,
+                                    header_width = diff(range(header_positions)),
+                                    horizontal_arrow_multiplier = horizontal_arrow_multiplier)
+        dftable <- dftable %>%
+            mutate({{ indicator }} :=
+                       factor({{ indicator }},
+                              levels = ind_order))
+    } else {
+        dftable <- NA
+    }
 
-        # rescale data for charting
-        dfrescaled <- spine_rescaler(data,
-                                     {{ area_code }},
-                                     {{ indicator }},
-                                     {{ significance }},
-                                     {{ polarity }},
-                                     {{ area_type }},
-                                     {{ value }},
-                                     {{ timeperiod }},
-                                     local_area_code,
-                                     median_line_area_code,
-                                     comparator_area_code,
-                                     percent_display,
-                                     dps = dps)
-        if (rlang::as_name(rlang::enquo(domain)) != "no_domains") {
-                domain_lu <- data %>%
-                        select({{ indicator }}, {{ domain }}) %>%
-                        mutate({{ domain }} := factor({{ domain }})) %>%
-                        unique
-                dfrescaled$bars <- dfrescaled$bars %>%
-                        merge(domain_lu,
-                              by = rlang::as_name(rlang::enquo(indicator)),
-                              all.x =TRUE)
-                dfrescaled$points <- dfrescaled$points %>%
-                        merge(domain_lu,
-                              by = rlang::as_name(rlang::enquo(indicator)),
-                              all.x =TRUE)
-                if (is.data.frame(dftable))
-                        dftable <- dftable %>%
-                        merge(domain_lu,
-                              by = rlang::as_name(rlang::enquo(indicator)),
-                              all.x =TRUE)
-        }
-
-        fingertips_cols <- c('Better' = '#92D050', 'Same' = '#FFC000',
-                             'Worse' = '#C00000', 'Not compared' = '#C9C9C9',
-                             'None' = '#A6A6A6', 'Higher' = '#BED2FF',
-                             'Similar' = '#FFC000', 'Lower'='#5555E6',
-                             'Worst' = '#FFFFFF','Q25' = '#C9C9C9',
-                             'Q75' = '#8B8B8B','Best' = '#C9C9C9')
-        if (length(cols) == 1) {
-                if (cols == "fingertips") {
-                        cols <- fingertips_cols
-                }
-        }
-
-        missing_cols <- setdiff(names(fingertips_cols),
-                                names(cols))
-        if (length(missing_cols) > 0) cols <- c(cols, fingertips_cols[missing_cols])
-
-        vline_length <- dfrescaled$bars %>%
-                pull({{ indicator }}) %>%
-                unique %>%
-                length
-
+    # rescale data for charting
+    dfrescaled <- spine_rescaler(data,
+                                 {{ area_code }},
+                                 {{ indicator }},
+                                 {{ significance }},
+                                 {{ polarity }},
+                                 {{ area_type }},
+                                 {{ value }},
+                                 {{ timeperiod }},
+                                 local_area_code,
+                                 median_line_area_code,
+                                 comparator_area_code,
+                                 percent_display,
+                                 dps = dps)
+    if (rlang::as_name(rlang::enquo(domain)) != "no_domains") {
+        domain_lu <- data %>%
+            select({{ indicator }}, {{ domain }}) %>%
+            mutate({{ domain }} := factor({{ domain }})) %>%
+            unique
         dfrescaled$bars <- dfrescaled$bars %>%
-                mutate(y = case_when(
-                        y == 1.05 ~ header_positions[length(header_positions)],
-                        y == -0.05 ~ header_positions[length(header_positions) - 1]
-                        ),
-                       {{ indicator }} :=
-                               factor({{ indicator }},
-                                      levels = ind_order))
-        dfrescaled$points <- dfrescaled$points  %>%
-                mutate({{ indicator }} :=
-                               factor({{ indicator }},
-                                      levels = ind_order))
-        p <- ggplot(dfrescaled$bars,
-                    aes(x = {{ indicator }},
-                        y = .data$quantiles)) +
-                geom_col(aes(fill = .data$GraphPoint),
-                         width = bar_width,
-                         na.rm = TRUE)
+            merge(domain_lu,
+                  by = rlang::as_name(rlang::enquo(indicator)),
+                  all.x =TRUE)
+        dfrescaled$points <- dfrescaled$points %>%
+            merge(domain_lu,
+                  by = rlang::as_name(rlang::enquo(indicator)),
+                  all.x =TRUE)
+        if (is.data.frame(dftable))
+            dftable <- dftable %>%
+            merge(domain_lu,
+                  by = rlang::as_name(rlang::enquo(indicator)),
+                  all.x =TRUE)
+    }
 
-
-        if (!is.na(comparator_area_code)) {
-                rescaled_comparator_field <- "region"
-                p <- p +
-                        geom_point(data = dfrescaled$points,
-                                   aes(x = {{ indicator }},
-                                       y = !! sym(rescaled_comparator_field)),
-                                   shape = comparator_point_shape,
-                                   colour = comparator_point_outline,
-                                   fill = comparator_point_fill,
-                                   size = 2.5 * relative_point_size,
-                                   na.rm = TRUE)
+    fingertips_cols <- c('Better' = '#92D050', 'Same' = '#FFC000',
+                         'Worse' = '#C00000', 'Not compared' = '#C9C9C9',
+                         'None' = '#A6A6A6', 'Higher' = '#BED2FF',
+                         'Similar' = '#FFC000', 'Lower'='#5555E6',
+                         'Worst' = '#FFFFFF','Q25' = '#C9C9C9',
+                         'Q75' = '#8B8B8B','Best' = '#C9C9C9')
+    if (length(cols) == 1) {
+        if (cols == "fingertips") {
+            cols <- fingertips_cols
         }
+    }
+
+    missing_cols <- setdiff(names(fingertips_cols),
+                            names(cols))
+    if (length(missing_cols) > 0) cols <- c(cols, fingertips_cols[missing_cols])
+
+    vline_length <- dfrescaled$bars %>%
+        pull({{ indicator }}) %>%
+        unique %>%
+        length
+
+    dfrescaled$bars <- dfrescaled$bars %>%
+        mutate(y = case_when(
+            y == 1.05 ~ header_positions[length(header_positions)],
+            y == -0.05 ~ header_positions[length(header_positions) - 1]
+        ),
+        {{ indicator }} :=
+            factor({{ indicator }},
+                   levels = ind_order))
+    dfrescaled$points <- dfrescaled$points  %>%
+        mutate({{ indicator }} :=
+                   factor({{ indicator }},
+                          levels = ind_order))
+    p <- ggplot(dfrescaled$bars,
+                aes(x = {{ indicator }},
+                    y = .data$quantiles)) +
+        geom_col(aes(fill = .data$GraphPoint),
+                 width = bar_width,
+                 na.rm = TRUE)
+
+
+    if (!is.na(comparator_area_code)) {
+        rescaled_comparator_field <- "region"
         p <- p +
-                geom_point(data = dfrescaled$points,
-                           aes(x = {{ indicator }},
-                               y = .data$area,
-                               fill = {{ significance }}),
-                           shape = local_point_shape,
-                           colour = local_point_outline,
-                           size = 2.5 * relative_point_size,
-                           na.rm = TRUE) +
-                geom_hline(yintercept = 0.5, col = "darkred") +
-                coord_flip() +
-                scale_fill_manual(values = cols) +
-                scale_colour_manual(values = cols) +
-                theme_minimal() +
-                theme(panel.grid.major = element_blank(),
-                      axis.text = element_text(colour = "black")) +
-                labs(x = "", y = "")
+            geom_point(data = dfrescaled$points,
+                       aes(x = {{ indicator }},
+                           y = !! sym(rescaled_comparator_field)),
+                       shape = comparator_point_shape,
+                       colour = comparator_point_outline,
+                       fill = comparator_point_fill,
+                       size = 2.5 * relative_point_size,
+                       na.rm = TRUE)
+    }
+    p <- p +
+        geom_point(data = dfrescaled$points,
+                   aes(x = {{ indicator }},
+                       y = .data$area,
+                       fill = {{ significance }}),
+                   shape = local_point_shape,
+                   colour = local_point_outline,
+                   size = 2.5 * relative_point_size,
+                   na.rm = TRUE) +
+        geom_hline(yintercept = 0.5, col = "darkred") +
+        coord_flip() +
+        scale_fill_manual(values = cols) +
+        scale_colour_manual(values = cols) +
+        theme_minimal() +
+        theme(panel.grid.major = element_blank(),
+              axis.text = element_text(colour = "black")) +
+        labs(x = "", y = "")
 
-        if (is.data.frame(dftable)) {
-                dt_area_field <- "Area_value"
-                dt_comparator_field <- "Comparator_value"
-                dt_median_field <- "Median_value"
-                dftable <- dftable %>%
-                        mutate(ind = {{ indicator }},
-                               count = {{ count }},
-                               tp = {{ timeperiod }})
-                lims <- range(header_positions)
-                lims[1] <- lims[1] + indicator_label_nudgex
-                lims <- lims * 1.06
-                p <- p +
-                        scale_y_continuous(position = "right",
-                                           breaks = header_positions,
-                                           limits = lims,
-                                           labels = header_labels,
-                                           expand = c(0, 0)) +
-                        geom_text(data = dfrescaled$bars[!dfrescaled$bars$GraphPoint %in%
-                                                                 c("Q75", "Q25"), ],
-                                  aes(label = .data$label, y = .data$y),
-                                  col = "black",
-                                  size = 2.5 * relative_text_size,
-                                  lineheight = datatable_line_height,
-                                  hjust = 1,
-                                  na.rm = TRUE) +
-                        geom_text(data = dftable,
-                                  aes(label = !! sym(dt_median_field),
-                                             x = .data$ind),
-                                  y = header_positions[6],
-                                  col = "black",
-                                  size = 2.5 * relative_text_size,
-                                  parse = TRUE,
-                                  lineheight = datatable_line_height,
-                                  hjust = 1,
-                                  na.rm = TRUE) +
-                        geom_text(data = dftable,
-                                  aes(label = !! sym(dt_area_field),
-                                      x = .data$ind),
-                                  y = header_positions[5],
-                                  col = "black",
-                                  size = 2.5 * relative_text_size,
-                                  parse = TRUE,
-                                  lineheight = datatable_line_height,
-                                  hjust = 1,
-                                  na.rm = TRUE) +
-                        geom_text(data = dftable,
-                                  aes(label = count, x = .data$ind),
-                                  y = header_positions[4],
-                                  col = "black",
-                                  size = 2.5 * relative_text_size,
-                                  parse = TRUE,
-                                  lineheight = datatable_line_height,
-                                  hjust = 1,
-                                  na.rm = TRUE) +
-                        geom_text(data = dftable,
-                                  aes(label = .data$tp, x = .data$ind),
-                                  y = header_positions[3],
-                                  col = "black",
-                                  size = 2.5 * relative_text_size,
-                                  lineheight = datatable_line_height,
-                                  hjust = 1,
-                                  na.rm = TRUE) +
-                        geom_spoke(data = dftable,
-                                   aes(x = .data$ind,
-                                       y = header_positions[2],
-                                       angle = .data$direction,
-                                       colour = .data$trend_sig,
-                                       radius = .data$radius * arrow_length),
-                                   size = arrow_thickness,
-                                   arrow = arrow(length = unit(arrow_head_length, "cm"),
-                                           type = "open",
-                                           angle = arrow_head_angle),
-                                   na.rm = TRUE) +
-                        geom_spoke(data = dftable,
-                                   aes(x = .data$ind,
-                                       y = header_positions[2],
-                                       angle = .data$direction + pi,
-                                       colour = .data$trend_sig,
-                                       radius = .data$radius * arrow_length),
-                                   size = arrow_thickness,
-                                   na.rm = TRUE) +
-                        geom_text(data = dftable,
-                                  aes(label = .data$ind,
-                                      y = header_positions[1],
-                                      x = .data$ind),
-                                  hjust = 0,
-                                  nudge_y = indicator_label_nudgex,
-                                  col = "black",
-                                  size = 2.5 * relative_text_size,
-                                  lineheight = datatable_line_height,
-                                  na.rm = TRUE) +
-                        theme(axis.text.x = element_text(size = 0.9 * rel(relative_text_size)),
-                              axis.text.y = element_blank(),
-                              panel.grid.minor = element_blank(),
-                              legend.position = "none")
-        } else {
-                p <- p +
-                        theme(axis.text.x = element_blank(),
-                              panel.grid.minor = element_blank(),
-                              legend.position = "none")
-        }
-        if (rlang::as_name(rlang::enquo(domain)) != "no_domains") {
-                p <- p +
-                        facet_grid(rows = vars({{ domain }}),
-                                   space = "free_y",
-                                   scales = "free_y",
-                                   switch = "y") +
-                        theme(panel.spacing = unit(0, "lines"),
-                              strip.placement = "outside",
-                              strip.background = element_blank(),
-                              strip.text = element_text(size = rel(relative_domain_text_size))
-                        )
+    if (is.data.frame(dftable)) {
+        dt_area_field <- "Area_value"
+        dt_comparator_field <- "Comparator_value"
+        dt_median_field <- "Median_value"
+        dftable <- dftable %>%
+            mutate(ind = {{ indicator }},
+                   count = {{ count }},
+                   tp = {{ timeperiod }})
+        lims <- range(header_positions)
+        lims[1] <- lims[1] + indicator_label_nudgex
+        lims <- lims * 1.06
+        p <- p +
+            scale_y_continuous(position = "right",
+                               breaks = header_positions,
+                               limits = lims,
+                               labels = header_labels,
+                               expand = c(0, 0)) +
+            geom_text(data = dfrescaled$bars[!dfrescaled$bars$GraphPoint %in%
+                                                 c("Q75", "Q25"), ],
+                      aes(label = .data$label, y = .data$y),
+                      col = "black",
+                      size = 2.5 * relative_text_size,
+                      lineheight = datatable_line_height,
+                      hjust = 1,
+                      na.rm = TRUE) +
+            geom_text(data = dftable,
+                      aes(label = !! sym(dt_median_field),
+                          x = .data$ind),
+                      y = header_positions[6],
+                      col = "black",
+                      size = 2.5 * relative_text_size,
+                      parse = TRUE,
+                      lineheight = datatable_line_height,
+                      hjust = 1,
+                      na.rm = TRUE) +
+            geom_text(data = dftable,
+                      aes(label = !! sym(dt_area_field),
+                          x = .data$ind),
+                      y = header_positions[5],
+                      col = "black",
+                      size = 2.5 * relative_text_size,
+                      parse = TRUE,
+                      lineheight = datatable_line_height,
+                      hjust = 1,
+                      na.rm = TRUE) +
+            geom_text(data = dftable,
+                      aes(label = count, x = .data$ind),
+                      y = header_positions[4],
+                      col = "black",
+                      size = 2.5 * relative_text_size,
+                      parse = TRUE,
+                      lineheight = datatable_line_height,
+                      hjust = 1,
+                      na.rm = TRUE) +
+            geom_text(data = dftable,
+                      aes(label = .data$tp, x = .data$ind),
+                      y = header_positions[3],
+                      col = "black",
+                      size = 2.5 * relative_text_size,
+                      lineheight = datatable_line_height,
+                      hjust = 1,
+                      na.rm = TRUE) +
+            geom_spoke(data = dftable,
+                       aes(x = .data$ind,
+                           y = header_positions[2],
+                           angle = .data$direction,
+                           colour = .data$trend_sig,
+                           radius = .data$radius * arrow_length),
+                       size = arrow_thickness,
+                       arrow = arrow(length = unit(arrow_head_length, "cm"),
+                                     type = "open",
+                                     angle = arrow_head_angle),
+                       na.rm = TRUE) +
+            geom_spoke(data = dftable,
+                       aes(x = .data$ind,
+                           y = header_positions[2],
+                           angle = .data$direction + pi,
+                           colour = .data$trend_sig,
+                           radius = .data$radius * arrow_length),
+                       size = arrow_thickness,
+                       na.rm = TRUE) +
+            geom_text(data = dftable,
+                      aes(label = .data$ind,
+                          y = header_positions[1],
+                          x = .data$ind),
+                      hjust = 0,
+                      nudge_y = indicator_label_nudgex,
+                      col = "black",
+                      size = 2.5 * relative_text_size,
+                      lineheight = datatable_line_height,
+                      na.rm = TRUE) +
+            theme(axis.text.x = element_text(size = 0.9 * rel(relative_text_size)),
+                  axis.text.y = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  legend.position = "none")
+    } else {
+        p <- p +
+            theme(axis.text.x = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  legend.position = "none")
+    }
+    if (rlang::as_name(rlang::enquo(domain)) != "no_domains") {
+        p <- p +
+            facet_grid(rows = vars({{ domain }}),
+                       space = "free_y",
+                       scales = "free_y",
+                       switch = "y") +
+            theme(panel.spacing = unit(0, "lines"),
+                  strip.placement = "outside",
+                  strip.background = element_blank(),
+                  strip.text = element_text(size = rel(relative_domain_text_size))
+            )
 
-        }
-        if (show_dividers == "all") {
-                p <- p +
-                        geom_vline(xintercept = seq(-0.5, vline_length + 0.5),
-                                   colour = "black",
-                                   size = 0.2)
-        } else if (show_dividers == "outer") {
-                p <- p +
-                        annotate("segment", x=-Inf, xend=-Inf, y=-Inf, yend=Inf) +
-                        theme(axis.line.x = element_line())
-        }
-        if (header_positions[length(header_positions)] < 1) {
-                warning("Some bars may not display if the final value of the header_positions argument is less than 1")
-        }
-        return(p)
+    }
+    if (show_dividers == "all") {
+        p <- p +
+            geom_vline(xintercept = seq(-0.5, vline_length + 0.5),
+                       colour = "black",
+                       size = 0.2)
+    } else if (show_dividers == "outer") {
+        p <- p +
+            annotate("segment", x = -Inf, xend = -Inf, y = -Inf, yend = Inf) +
+            theme(axis.line.x = element_line())
+    }
+    if (header_positions[length(header_positions)] < 1) {
+        warning("Some bars may not display if the final value of the header_positions argument is less than 1")
+    }
+    return(p)
 
 }

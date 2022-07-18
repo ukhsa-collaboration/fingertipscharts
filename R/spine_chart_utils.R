@@ -60,7 +60,7 @@ spine_data_check <- function(data, indicator, area_code) {
 #'   length when horizonal
 #' @import dplyr
 #' @importFrom tidyr pivot_wider
-#' @importFrom rlang  .data as_name enquo
+#' @importFrom rlang  .data as_name enquo `:=`
 #' @importFrom scales comma
 #' @return A data frame containing the information that sits alongside the spine
 #'   chart
@@ -176,7 +176,7 @@ create_datatable <- function(data, indicator,
 #' @importFrom tidyr pivot_longer
 #' @importFrom stats quantile
 #' @importFrom scales comma
-#' @importFrom rlang as_name enquo .data
+#' @importFrom rlang as_name enquo .data `:=`
 spine_rescaler <- function(data,
                            area_code,
                            indicator,

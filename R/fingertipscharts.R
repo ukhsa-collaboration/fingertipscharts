@@ -7,5 +7,4 @@
 #' @docType package
 #' @name fingertipscharts
 NULL
-globalVariables(c(':=',
-                  'no_domains'))
+globalVariables(c("no_domains"))
