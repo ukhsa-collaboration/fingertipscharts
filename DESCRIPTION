@@ -5,7 +5,7 @@ Title: Produce Charts that you See on the Fingertips Website
 Description: Use Fingertips charts to recreate the visualisations 
     that are displayed on the Fingertips website (<http://fingertips.phe.org.uk/>).
 Depends: R (>= 3.4.0)
-Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@phe.gov.uk", c("aut", "cre")))
+Authors@R: c(person("Sebastian", "Fox", , "sebastian.fox@dhsc.gov.uk", c("aut", "cre")))
 URL: https://fingertips.phe.org.uk, 
     https://publichealthengland.github.io/fingertipscharts/
 BugReports: https://github.com/PublicHealthEngland/fingertipscharts/issues
