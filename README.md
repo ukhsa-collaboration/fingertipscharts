@@ -7,7 +7,7 @@
 # fingertipscharts
 
 This is an R package to help users to easily reproduce charts that are
-displayed on Public Health England’s
+displayed on Office for Health Improvement and Disparities’
 [Fingertips](http://fingertips.phe.org.uk/) data tool. Along with the
 `fingertipsR` package, this package can be used to help users bring the
 data on the website into their own outputs.
