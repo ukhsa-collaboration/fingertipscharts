@@ -155,7 +155,12 @@ create_datatable <- function(data, indicator,
                 merge(data_trend,
                       by = rlang::as_name(rlang::enquo(indicator)),
                       all.x = TRUE) %>%
-                select({{ indicator }}, .data$direction, .data$trend_sig, {{ timeperiod }}, {{ count }}, everything())
+                select({{ indicator }},
+                       "direction",
+                       "trend_sig",
+                       {{ timeperiod }},
+                       {{ count }},
+                       everything())
 
 
         return(data_temp)
@@ -254,7 +259,7 @@ spine_rescaler <- function(data,
                 merge(mean,
                       by = rlang::as_name(rlang::enquo(indicator)),
                       all.x = TRUE) %>%
-                rename(mean = .data$regionalvalue)
+                rename(mean = "regionalvalue")
 
         scaled_spine_inputs <- function(IndicatorName, Q0, Q25, mean, Q75, Q100, Significance, Polarity, areavalue, regionalvalue) {
                 Polarity <- stringr::str_trim(Polarity)
@@ -336,10 +341,10 @@ spine_rescaler <- function(data,
                                         FALSE),
                        Worst = ifelse(.data$reverse == TRUE, .data$Q100, .data$Q0),
                        Best = ifelse(.data$reverse == TRUE, .data$Q0, .data$Q100)) %>%
-                select({{ indicator }}, .data$Best, .data$Worst) %>%
+                select({{ indicator }}, "Best", "Worst") %>%
                 tidyr::pivot_longer(names_to = "GraphPoint",
                                     values_to = "label",
-                                    cols = .data$Best:.data$Worst) %>%
+                                    cols = "Best":"Worst") %>%
                 mutate(y = ifelse(.data$GraphPoint == "Best", 1.05, -0.05),
                        dps_2b_removed = dps,
                        label = ifelse(is.na(.data$label),
@@ -352,7 +357,7 @@ spine_rescaler <- function(data,
                                                      big.mark = ",",
                                                      drop0trailing = TRUE))),
                        GraphPoint = factor(.data$GraphPoint, levels = c("Best","Q75","Q25","Worst"))) %>%
-                select(-(.data$dps_2b_removed))
+                select(!c("dps_2b_removed"))
 
         timeperiod <- data %>%
                 select({{ indicator }}, {{ timeperiod }}) %>%
@@ -361,9 +366,9 @@ spine_rescaler <- function(data,
                 mutate({{ indicator }} := as.character({{ indicator }}))
 
         areadata <- areadata %>%
-                select({{ indicator }}, .data$areavalue)
+                select({{ indicator }}, "areavalue")
         mean <- mean %>%
-                rename(England = .data$regionalvalue)
+                rename(England = "regionalvalue")
 
         if (!is.na(comparator_area_code))
                 mean <- merge(parentdata, mean,

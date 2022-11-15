@@ -622,7 +622,7 @@ population <- function(data, value, sex, age,
                           group = interaction(pull(compdata1, {{ sex }}),
                                               pull(compdata1, {{ area }})),
                           col = {{ area }}),
-                      size = 1.5)
+                      linewidth = 1.5)
         if (!missing(comparator_2)) {
             compdata2 <- filter(data, {{ area }} == comparator_2)
             population <- population +
@@ -632,7 +632,7 @@ population <- function(data, value, sex, age,
                               group = interaction(pull(compdata2, {{ sex }}),
                                                   pull(compdata2, {{ area }})),
                               col = {{ area }}),
-                          size = 1.5) +
+                          linewidth = 1.5) +
                 scale_colour_manual(name = "",
                                     breaks = c(comparator_1, comparator_2),
                                     limits = c(comparator_1, comparator_2),
@@ -720,7 +720,8 @@ box_plots <- function(data, timeperiod, value,
                          xend = .data$xmax,
                          y = .data$middle,
                          yend = .data$middle),
-                     colour="red", size = 1)
+                     colour="red",
+                     linewidth = 1)
     return(boxplots)
 
 }
@@ -1343,7 +1344,7 @@ area_profiles <- function(data,
                            angle = .data$direction,
                            colour = .data$trend_sig,
                            radius = .data$radius * arrow_length),
-                       size = arrow_thickness,
+                       linewidth = arrow_thickness,
                        arrow = arrow(length = unit(arrow_head_length, "cm"),
                                      type = "open",
                                      angle = arrow_head_angle),
@@ -1354,7 +1355,7 @@ area_profiles <- function(data,
                            angle = .data$direction + pi,
                            colour = .data$trend_sig,
                            radius = .data$radius * arrow_length),
-                       size = arrow_thickness,
+                       linewidth = arrow_thickness,
                        na.rm = TRUE) +
             geom_text(data = dftable,
                       aes(label = .data$ind,
@@ -1393,7 +1394,7 @@ area_profiles <- function(data,
         p <- p +
             geom_vline(xintercept = seq(-0.5, vline_length + 0.5),
                        colour = "black",
-                       size = 0.2)
+                       linewidth = 0.2)
     } else if (show_dividers == "outer") {
         p <- p +
             annotate("segment", x = -Inf, xend = -Inf, y = -Inf, yend = Inf) +

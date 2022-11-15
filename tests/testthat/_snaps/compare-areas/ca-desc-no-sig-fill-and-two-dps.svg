@@ -25,18 +25,18 @@
   </clipPath>
 </defs>
 <g clip-path='url(#cpNTQuNzN8NzE0LjUyfDI2Ljg0fDU0MS4yOA==)'>
-<rect x='132.07' y='454.83' width='67.95' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #595959;' />
-<rect x='132.07' y='286.16' width='162.35' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #595959;' />
-<rect x='132.07' y='497.00' width='55.02' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #595959;' />
-<rect x='132.07' y='328.33' width='153.26' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #595959;' />
-<rect x='132.07' y='159.66' width='399.31' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #595959;' />
-<rect x='132.07' y='412.67' width='106.31' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #595959;' />
-<rect x='132.07' y='201.83' width='216.97' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #595959;' />
-<rect x='132.07' y='244.00' width='180.78' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #595959;' />
-<rect x='132.07' y='117.50' width='501.09' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #595959;' />
-<rect x='132.07' y='370.50' width='145.33' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #595959;' />
-<rect x='132.07' y='75.33' width='207.13' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #595959;' />
-<rect x='132.07' y='33.16' width='278.23' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: square; stroke-linejoin: miter; fill: #595959;' />
+<rect x='132.07' y='454.83' width='67.95' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #595959;' />
+<rect x='132.07' y='286.16' width='162.35' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #595959;' />
+<rect x='132.07' y='497.00' width='55.02' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #595959;' />
+<rect x='132.07' y='328.33' width='153.26' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #595959;' />
+<rect x='132.07' y='159.66' width='399.31' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #595959;' />
+<rect x='132.07' y='412.67' width='106.31' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #595959;' />
+<rect x='132.07' y='201.83' width='216.97' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #595959;' />
+<rect x='132.07' y='244.00' width='180.78' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #595959;' />
+<rect x='132.07' y='117.50' width='501.09' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #595959;' />
+<rect x='132.07' y='370.50' width='145.33' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #595959;' />
+<rect x='132.07' y='75.33' width='207.13' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #595959;' />
+<rect x='132.07' y='33.16' width='278.23' height='37.95' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #595959;' />
 <polyline points='203.42,478.03 203.42,469.59 ' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <polyline points='203.42,473.81 196.63,473.81 ' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <polyline points='196.63,478.03 196.63,469.59 ' style='stroke-width: 1.07; stroke-linecap: butt;' />
