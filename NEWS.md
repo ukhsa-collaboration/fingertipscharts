@@ -1,3 +1,8 @@
+# fingertipscharts 0.0.14
+
+* fixed bug with map function caused by change in name of variables long and lat from ons api
+
+
 # fingertipscharts 0.0.13
 
 * fixed bug with map function

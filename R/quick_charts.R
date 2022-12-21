@@ -752,7 +752,7 @@ box_plots <- function(data, timeperiod, value,
 #' @importFrom sf st_as_sf
 #' @examples
 #' \dontrun{
-#' ons_api <- "https://opendata.arcgis.com/datasets/687f346f5023410ba86615655ff33ca9_4.geojson"
+#' ons_api <- "https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Counties_and_Unitary_Authorities_December_2021_EN_BUC/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson"
 #'
 #' p <- map(mapdata,
 #'          ons_api = ons_api,
@@ -779,7 +779,10 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                 title = "", subtitle = "", copyright_size = 4, copyright_year = Sys.Date()) {
     if (missing(ons_api)) stop("ons_api must contain a string to a geojson url on the ONS geography portal")
     if (ensure_ons_api_available(ons_api)) {
-        shp <- sf::read_sf(ons_api)
+        shp <- sf::read_sf(ons_api) |>
+            rename_with(
+                .fn = tolower,
+                .cols = any_of(c("LONG", "LAT")))
         all_area_codes <- data %>%
             pull({{ area_code }}) %>%
             unique()
