@@ -779,7 +779,7 @@ map <- function(data, ons_api, area_code, fill, type = "static", value, name_for
                 title = "", subtitle = "", copyright_size = 4, copyright_year = Sys.Date()) {
     if (missing(ons_api)) stop("ons_api must contain a string to a geojson url on the ONS geography portal")
     if (ensure_ons_api_available(ons_api)) {
-        shp <- sf::read_sf(ons_api) |>
+        shp <- sf::read_sf(ons_api) %>%
             rename_with(
                 .fn = tolower,
                 .cols = any_of(c("LONG", "LAT")))
