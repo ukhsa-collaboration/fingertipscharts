@@ -21,7 +21,7 @@ You can install the latest development version from github using
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("PublicHealthEngland/fingertipscharts",
+remotes::install_github("ukhsa-collaboration/fingertipscharts",
                         build_vignettes = TRUE)
 ```
 
@@ -35,6 +35,7 @@ expanded in the packages vignette.
 ``` r
 library(fingertipscharts)
 library(dplyr)
+#> Warning: package 'dplyr' was built under R version 4.2.3
 
 # Create the data to plot
 df <- create_test_data() %>%

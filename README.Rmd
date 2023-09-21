@@ -31,7 +31,7 @@ You can install the latest development version from github using [remotes](https
 
 ```{r gh-installation, eval = FALSE}
 # install.packages("remotes")
-remotes::install_github("PublicHealthEngland/fingertipscharts",
+remotes::install_github("ukhsa-collaboration/fingertipscharts",
                         build_vignettes = TRUE)
 ```
 
