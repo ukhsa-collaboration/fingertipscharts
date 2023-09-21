@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="index.html">fingertipscharts</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.14</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.14.9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +82,7 @@
 <p>You can install the latest development version from github using <a href="https://github.com/r-lib/remotes" class="external-link">remotes</a>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"PublicHealthEngland/fingertipscharts"</span>,</span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ukhsa-collaboration/fingertipscharts"</span>,</span>
 <span>                        build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -96,6 +96,7 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://fingertips.phe.org.uk" class="external-link">fingertipscharts</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: package 'dplyr' was built under R version 4.2.3</span></span>
 <span></span>
 <span><span class="co"># Create the data to plot</span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_test_data.html">create_test_data</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -227,7 +228,8 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Sebastian Fox <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Annabel Westermann <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Sebastian Fox <br><small class="roles"> Author, contributor </small>  </li>
 </ul>
 </div>
 
@@ -245,7 +247,7 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Sebastian Fox.</p>
+<p>Developed by Annabel Westermann, Sebastian Fox.</p>
 </div>
 
 <div class="pkgdown-footer-right">
